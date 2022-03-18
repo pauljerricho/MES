@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\decaf\Desktop\gozip\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3424019298.index
+299335866.index
+102388931.index
+2378734457.index
+2991065937.index
+3582805144.index

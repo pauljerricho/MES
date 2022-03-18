@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.mapper.MemberMapper">
+	<resultMap type="com.web.dto.StudentDTO" id="student">
+		<id column="student_no" property="sno"/>
+		<result column="name" property="name"/>
+		<result column="major_no" property="majorNo"/>
+		<result column="score" property="score"/>
+	</resultMap>
+	<select id="selectStudent" resultMap="student">
+		select * from student
+	</select>
+
+  <select id="selectAllMember" resultType="member">
+  	select * from member
+  </select>
+  <insert id="insertMember" parameterType="com.web.dto.MemberDTO">
+  	insert into member values(#{id},#{passwd},#{name},#{age})
+  </insert>
+  <delete id="deleteMember" parameterType="String">
+  	delete from member where id like #{id}
+  </delete>
+  <select id="selectMember" parameterType="String" resultType="com.web.dto.MemberDTO">
+  	select * from member where id like #{id}
+  </select>
+	<update id="updateMember" parameterType="member">
+		update member set passwd = #{passwd}, name = #{name}, age = #{age}
+		where id like #{id}
+	</update>  
+	<select id="selectListMember" parameterType="String" resultType="com.web.dto.MemberDTO">
+		select * from member where name like '%' || #{name} || '%'
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
