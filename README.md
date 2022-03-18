@@ -6,6 +6,6 @@
 Hello. My name is Paul jerricho
 I graduated from SangMeong Univ, was studying electricity engineering.
 
-After that I found a course about MES Tech.
+After that I found a course about MES Tech and finished the course in this month.
 
 I always welcome and look forward to have a great relationship 
