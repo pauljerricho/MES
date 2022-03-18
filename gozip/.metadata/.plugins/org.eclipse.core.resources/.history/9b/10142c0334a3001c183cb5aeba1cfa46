@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.BoardMapper">
+	<select id="selectBoardList" parameterType="int" resultType="board">
+		select * from (select ceil(rownum / 7) as pageno, b.* from 
+				(select * from board order by B_NO desc) b) where pageno = #{no}
+	</select>
+	<select id="selectNotice" parameterType="int" resultType="board">
+		select * from board where B_NO <![CDATA[ < ]]> 6 order by B_NO desc
+	</select>
+	
+	<select id="selectShowlist" parameterType="int" resultType="board">
+		select * from board where B_NO <![CDATA[ >= ]]> 6 order by B_NO desc
+	</select>
+	
+	<select id="selectReport" parameterType="int" resultType="report">
+		select id,r_reason,r_content from report
+	</select>
+	
+	<select id="selectAllCount" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="selectAllReport" resultType="int">
+		select count(*) from report
+	</select>
+	
+	<select id="selectTip" resultType="tip">
+		select * from tip
+	</select>
+	
+	<select id="selectAsk" resultType="ask">
+		select * from ask
+	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		insert into board(B_NO, B_TITLE, B_CONTENT, ID, B_DATE, B_VIEW) 
+		values(board_no.nextval,#{b_title},#{b_content},#{id},sysdate,1)
+	</insert>
+	<insert id="insertReport" parameterType="board">
+	    insert into report(id, r_reason, r_content)
+	    values(#{writer},#{title},#{content})
+	</insert>
+	<select id="selectBoard" parameterType="int" resultType="board">
+		select * from board where B_NO = #{B_NO}
+	</select>
+	<select id="selectBest" resultType="board">
+		SELECT * FROM (SELECT ID, B_VIEW ,B_TITLE ,B_CONTENT ,RANK() OVER (ORDER BY B_VIEW DESC) AS R1 FROM BOARD) B WHERE R1 <![CDATA[ <= ]]> 6
+	</select>
+	<update id="addCount" parameterType="int">
+		update board set b_view = b_view + 1 where B_NO = #{B_NO}
+	</update>
+	<update id="updateBoard" parameterType="map">
+		update board set b_title = #{title}, b_content = #{content} where B_NO = #{B_NO} 
+	</update>	
+	<delete id="deleteBoard" parameterType="int">
+		delete from board where B_NO = #{B_NO}
+	</delete>
+	<insert id="insertBoardLike" parameterType="map">
+		insert into board_like values(#{B_NO},#{id})
+	</insert>
+	<delete id="deleteBoardLike" parameterType="map">
+		delete from board_like where writer like #{id} and B_NO = #{B_NO} 
+	</delete>
+	<select id="selectBoardLike" parameterType="int" resultType="int">
+		select count(*) from board_like where B_NO = #{B_NO}
+	</select>
+	<insert id="insertBoardHate" parameterType="map">
+		insert into board_hate values(#{B_NO},#{id})
+	</insert>
+	<delete id="deleteBoardHate" parameterType="map">
+		delete from board_hate where writer like #{id} and B_NO = #{B_NO} 
+	</delete>
+	<select id="selectBoardHate" parameterType="int" resultType="int">
+		select count(*) from board_hate where B_NO = #{B_NO}
+	</select>
+	<select id="selectSearchBoard" parameterType="map" resultType="board">
+		select * from board
+		<choose>
+			<when test="kind.equals('id')">
+				where writer like #{search}
+			</when>
+			<when test="kind.equals('title')">
+				where title like '%' || #{search} || '%'
+			</when>
+			<otherwise>
+				where b_content like '%' || #{search} || '%'
+			</otherwise>
+		</choose>		
+		 order by B_NO desc
+	</select>
+	
+</mapper>
+
+
+
+
+
+

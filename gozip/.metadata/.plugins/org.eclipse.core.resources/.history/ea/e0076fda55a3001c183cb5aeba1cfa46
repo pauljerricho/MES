@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.MemberMapper">
+	<select id="login" parameterType="java.util.HashMap" resultType="member">
+		select * from member where id = #{id} and pw = #{passwd}
+	</select>
+	
+	<select id="selectAllmember" resultType="member">
+		select * from member
+	</select>
+	
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO MEMBER(ID,PW,NAME,BIRTH,EMAIL,PHONE,LVL) VALUES(#{id},#{passwd},#{name},#{birth},#{email},#{phone},9)
+	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="int">
+		select count(*) from member where id = #{id}
+	</select>
+	
+	<update id="updateMember" parameterType="member">
+		update member set PW = #{pw}, NAME = #{name}, BIRTH = #{birth}, EMAIL = #{email}, PHONE = #{phone} where ID = #{id}
+	</update>
+	
+	<delete id="DeleteMember" parameterType="String">
+		delete * from member where id=${id}
+	</delete>
+	
+	<select id="find" parameterType="java.util.HashMap" resultType="member">
+		select id from member where name = #{name} and phone = #{phone}
+	</select>
+	
+	<select id="findpass" parameterType="java.util.HashMap" resultType="member">
+		select pw from member where id = #{id} and EMAIL = #{email}
+	</select>
+</mapper>

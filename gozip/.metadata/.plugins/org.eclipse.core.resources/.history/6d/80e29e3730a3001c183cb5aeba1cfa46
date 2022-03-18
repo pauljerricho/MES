@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>고집 쎈 친구들을 만나보세요.</title>
+</head>
+<script>@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');</script>
+<style>
+*{
+margin: 100px; auto;
+padding: 0px;
+text-align: center;
+font-family: 'Do Hyeon', sans-serif;
+}
+body{
+border: 2px solid black;
+padding: 100px;
+}
+img {
+	margin: 10px;
+	padding: 10px;
+}
+</style>
+<body>
+이름 : 김땡땡<br>
+별명 : 오리<br>
+<img alt="" src="/img/img4_01.png"><br>
+취미 : 오리고기 먹기<br>
+상세설명 : 실내정원 꾸미기를 주로하는 유튜버에요!<br>
+여러분들의 팔로우와 구독은 힘이 됩니다.<br>
+<a href="https://youtu.be/LtL9BTobcBc">요기로 오세요!</a><br>
+
+</body>
+</html>
