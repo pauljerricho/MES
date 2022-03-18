@@ -5,55 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="${pageContext.request.contextPath}/resources/css/signup.css" rel="stylesheet" type="text/css">
 <title>우리방 보다 힙한건 없다. GoZip</title>
-<style type="text/css">
-*{
-font-size: 12px;
-font-weight: bold;
-margin: 0px;
-padding: 0px;
-}
-.box{
-border: 3px solid black;
-padding: 30px;
-margin-top: 150px;
-margin-bottom: 100px;
-}
-form{
-height: 800px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-text-align: center;
-}
-button {
-width: 200px; 
-padding: 7px; 
-border: none; 
-border-radius: 10px; 
-color: white; 
-font-weight: bold; 
-background-color: #3a3a3a; 
-cursor: pointer; 
-outline: none;
-}
-
-input[type=text], input[type=password] {
-  width: 300px;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
-
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-</style>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 
@@ -71,7 +24,9 @@ var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a
 var phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
 // 아이디 유효성 검사(1 = 중복 / 0 != 중복)
 
+
 $(document).ready(function () {
+	//아이디 유효성 검사
 	$("#id").on('blur' , function() {
 		var id = $('#id').val();
 		$.ajax({
@@ -239,6 +194,6 @@ $(document).ready(function () {
 				</button>
 			</div>
 			</div>
-			</form>
+		</form>
 </body>
 </html>

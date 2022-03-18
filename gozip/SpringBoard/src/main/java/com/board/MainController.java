@@ -1,4 +1,5 @@
 package com.board;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,8 +32,9 @@ public class MainController {
 		this.memberService = memberService;
 		this.boardService = boardService;
 	}
-	//메인화면
-	//베스트 게시글 6개 뿌리기
+
+	// 메인화면
+	// 베스트 게시글 6개 뿌리기
 	@RequestMapping("/")
 	public String main(HttpServletRequest request) {
 		List<BoardDTO> list = boardService.selectBest();
@@ -40,8 +42,8 @@ public class MainController {
 		return "home";
 	}
 
-	//홈으로 이동
-	//베스트 게시글 6개 뿌리기
+	// 홈으로 이동
+	// 베스트 게시글 6개 뿌리기
 	@RequestMapping("redirect.do")
 	public String redirect(HttpServletRequest request) {
 		List<BoardDTO> list = boardService.selectBest();
@@ -49,91 +51,91 @@ public class MainController {
 		return "home";
 	}
 
-	//로그인으로 이동
-	//베스트 게시글 6개 뿌리기
+	// 로그인으로 이동
+	// 베스트 게시글 6개 뿌리기
 	@RequestMapping("log.do")
 	public String log(HttpServletRequest request) {
 		List<BoardDTO> list = boardService.selectBest();
 		request.setAttribute("list", list);
 		return "login";
 	}
-	
-	//아이디 찾기 페이지로 이동
+
+	// 아이디 찾기 페이지로 이동
 	@RequestMapping("find1.do")
 	public String find() {
 		return "find";
 	}
-	
-	//아이디 찾기 기능
+
+	// 아이디 찾기 기능
 	@RequestMapping("find.do")
-	public String find(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	public String find(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
 		String name = request.getParameter("name");
 		String phone = request.getParameter("phone");
-		MemberDTO result = memberService.find(name,phone);
+		MemberDTO result = memberService.find(name, phone);
 		if (result == null) {
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().write("<script>alert('이름, 전화번호를 확인하세요');" + " history.back();</script>");
 			return null;
 		}
 		String id = result.getId();
-	    session.setAttribute("id", id);
+		session.setAttribute("id", id);
 		return "findresult";
 	}
-	
-	//비밀번호 찾기 기능
+
+	// 비밀번호 찾기 기능
 	@RequestMapping("findpass.do")
-	public String findpass(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	public String findpass(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
 		String id = request.getParameter("id");
 		String email = request.getParameter("email");
-		MemberDTO result = memberService.findpass(id,email);
-		
+		MemberDTO result = memberService.findpass(id, email);
+
 		if (result == null) {
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().write("<script>alert('아이디, 이메일을 확인하세요');" + " history.back();</script>");
 			return null;
 		}
 		String passwd = result.getpw();
-	    session.setAttribute("passwd", passwd);
+		session.setAttribute("passwd", passwd);
 		return "findresult";
 	}
-	
-	
-	//비토인테리어로 이동
+
+	// 비토인테리어로 이동
 	@RequestMapping("bitointerior.do")
 	public void bitointerior(HttpServletResponse httpServletResponse) throws IOException {
-	    httpServletResponse.sendRedirect("https://blog.naver.com/ecowow");
+		httpServletResponse.sendRedirect("https://blog.naver.com/ecowow");
 	}
-	
-	//상상리퍼블릭으로 이동
+
+	// 상상리퍼블릭으로 이동
 	@RequestMapping("sangsang.do")
 	public void sangsang(HttpServletResponse httpServletResponse) throws IOException {
 		httpServletResponse.sendRedirect("https://sangsangrepublic.imweb.me");
 	}
-	
-	//인테리어랩으로 이동
+
+	// 인테리어랩으로 이동
 	@RequestMapping("interiorlab.do")
 	public void interiorlab(HttpServletResponse httpServletResponse) throws IOException {
-		httpServletResponse.sendRedirect("https://smartstore.naver.com/interiorlab"); 
+		httpServletResponse.sendRedirect("https://smartstore.naver.com/interiorlab");
 	}
-	
-	//갤러리로 이동
+
+	// 갤러리로 이동
 	@RequestMapping("gallery.do")
 	public String gallery() {
 		return "gallery";
 	}
-	
-	//출석으로 이동
+
+	// 출석으로 이동
 	@RequestMapping("attendance.do")
 	public String attendance() {
 		return "attendance";
 	}
-	
-	
-	
-	//로그인 기능
-	//베스트 6개 게시글 뿌리기
+
+	// 로그인 기능
+	// 베스트 6개 게시글 뿌리기
 	@RequestMapping("/login.do")
-	public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
 		response.setContentType("text/html;charset=utf-8");
 		String id = request.getParameter("id");
 		String passwd = request.getParameter("passwd");
@@ -149,25 +151,25 @@ public class MainController {
 		return "home";
 	}
 
-	//회원가입으로 이동
+	// 회원가입으로 이동
 	@RequestMapping("signup.do")
 	public String register() {
 		return "signup";
 	}
-	
-	//이모티콘 상품
+
+	// 이모티콘 상품
 	@RequestMapping("product.do")
 	public String product() {
 		return "product";
 	}
-	
-	//이모티콘 상품 클릭
+
+	// 이모티콘 상품 클릭
 	@RequestMapping("product_serve.do")
-		public String product_serve() {
-			return "product_serve";
+	public String product_serve() {
+		return "product_serve";
 	}
 
-	//회원가입 기능
+	// 회원가입 기능
 	@RequestMapping("register.do")
 	public String register(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id");
@@ -202,81 +204,95 @@ public class MainController {
 		memberService.updateMember(new MemberDTO(id, passwd, name, birth, email, phone, lvl));
 		return "home";
 	}
-	
-	//외뢰하기로 이동
-	//게시글 뿌리기
+
+	// 외뢰하기로 이동
+	// 게시글 뿌리기
 	@RequestMapping("ask.do")
 	public String ask(HttpServletRequest request) {
 		List<AskDTO> list = boardService.selectAsk();
 		request.setAttribute("list", list);
 		return "ask";
 	}
+
 	// 답변하기로 이동
 	@RequestMapping("answer.do")
 	public String answer() {
 		return "answer";
 	}
+
 	// 답변하기로 이동
 	@RequestMapping("answer2.do")
 	public String answer2() {
 		return "answer2";
 	}
-	//게시판 초기화
+
+	// 게시판 초기화
 	@RequestMapping("boardreset.do")
 	public String boardreset() {
 		return "redirect:";
 	}
-	//구독자 목록
+
+	// 구독자 목록
 	@RequestMapping("f_id.do")
 	public String fid() {
 		return "f_id";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow.do")
 	public String follow() {
 		return "follow";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow2.do")
 	public String follow2() {
 		return "follow2";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow3.do")
 	public String follow3() {
 		return "follow3";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow4.do")
 	public String follow4() {
 		return "follow4";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow5.do")
 	public String follow5() {
 		return "follow5";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow6.do")
 	public String follow6() {
 		return "follow6";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow7.do")
 	public String follow7() {
 		return "follow7";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow8.do")
 	public String follow8() {
 		return "follow8";
 	}
-	//소개글 클릭시
+
+	// 소개글 클릭시
 	@RequestMapping("follow9.do")
 	public String follow9() {
 		return "follow9";
 	}
-	//공지사항 뿌리기
+
+	// 공지사항 뿌리기
 	@RequestMapping("notice.do")
 	public String notice(HttpServletRequest request) {
 		int page = 1;
@@ -288,25 +304,27 @@ public class MainController {
 		request.setAttribute("list", list);
 		return "board_list";
 	}
-	//자랑하기 뿌리기
-		@RequestMapping("show.do")
-		public String show(HttpServletRequest request) {
-			int page = 1;
 
-			if (request.getParameter("page") != null) {
-				page = Integer.parseInt(request.getParameter("page"));
-			}
-			// 게시판 글 세팅
-			List<BoardDTO> list = boardService.selectShowlist(page);
-			request.setAttribute("list", list);
-			
-			// 페이징 데이터 셋팅
-			int count = boardService.selectAllCount();
-			PaggingVO vo = new PaggingVO(count, page, 10, 4);
-			request.setAttribute("pagging", vo);
-			return "board_list";
+	// 자랑하기 뿌리기
+	@RequestMapping("show.do")
+	public String show(HttpServletRequest request) {
+		int page = 1;
+
+		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
 		}
-	//게시판으로 이동
+		// 게시판 글 세팅
+		List<BoardDTO> list = boardService.selectShowlist(page);
+		request.setAttribute("list", list);
+
+		// 페이징 데이터 셋팅
+		int count = boardService.selectAllCount();
+		PaggingVO vo = new PaggingVO(count, page, 10, 4);
+		request.setAttribute("pagging", vo);
+		return "board_list";
+	}
+
+	// 게시판으로 이동
 	@RequestMapping("board.do")
 	public String boardList(HttpServletRequest request) {
 		int page = 1;
@@ -317,18 +335,20 @@ public class MainController {
 		// 게시판 글 세팅
 		List<BoardDTO> list = boardService.selectBoardList(page);
 		request.setAttribute("list", list);
-		
+
 		// 페이징 데이터 셋팅
 		int count = boardService.selectAllCount();
 		PaggingVO vo = new PaggingVO(count, page, 7, 4);
 		request.setAttribute("pagging", vo);
 		return "board_list";
 	}
+
 	// 정보수정 페이지로 이동
 	@RequestMapping("profile.do")
 	public String profile() {
 		return "profile";
 	}
+
 	@RequestMapping("search.do")
 	public String search(HttpServletRequest request) {
 		String kind = request.getParameter("kind");
@@ -342,10 +362,12 @@ public class MainController {
 		request.setAttribute("list", list);
 		return "board_list";
 	}
+
 	@RequestMapping("writeView.do")
 	public String writeView() {
 		return "board_write";
 	}
+
 	@RequestMapping("write.do")
 	public String write(HttpServletRequest request, HttpSession session) {
 		String b_title = request.getParameter("title");
@@ -354,14 +376,15 @@ public class MainController {
 		boardService.insertBoard(new BoardDTO(b_title, b_content, id));
 		return "redirect:board.do";
 	}
-	//로그아웃
+
+	// 로그아웃
 	@RequestMapping("logout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
-	//게시글 보기
+
+	// 게시글 보기
 	@RequestMapping("boardView.do")
 	public String boardView(HttpServletRequest request, HttpSession session) {
 		int b_no = Integer.parseInt(request.getParameter("b_no"));
@@ -380,7 +403,8 @@ public class MainController {
 		}
 		return "board_view";
 	}
-	//베스트 게시글 이동
+
+	// 베스트 게시글 이동
 	@RequestMapping("boardView1.do")
 	public String boardView1(HttpServletRequest request, HttpSession session) {
 		int b_no = Integer.parseInt(request.getParameter("b_no"));
@@ -399,6 +423,8 @@ public class MainController {
 		}
 		return "board_view";
 	}
+
+	// 게시글 수정화면으로 이동
 	@RequestMapping("boardUpdateView.do")
 	public String boardUpdateView(HttpServletRequest request) {
 		int b_no = Integer.parseInt(request.getParameter("b_no"));
@@ -407,7 +433,8 @@ public class MainController {
 		request.setAttribute("dto", dto);
 		return "board_update_view";
 	}
-	//게시글 수정하기
+
+	// 게시글 수정하기
 	@RequestMapping("update.do")
 	public String update(HttpServletRequest request) {
 		int b_no = Integer.parseInt(request.getParameter("bno"));
@@ -423,16 +450,19 @@ public class MainController {
 
 		return "redirect:boardView.do?b_no=" + b_no;
 	}
-	//게시글 삭제하기
+
+	// 게시글 삭제하기
 	@RequestMapping("boardDelete.do")
 	public String boardDelete(HttpServletRequest request) {
 		int b_no = Integer.parseInt(request.getParameter("b_no"));
 		boardService.deleteBoard(b_no);
 		return "redirect:board.do";
 	}
-	//좋아요 클릭시
+
+	// 좋아요 클릭시
 	@RequestMapping("boardLike.do")
-	public String boardLike(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	public String boardLike(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
 		int b_no = Integer.parseInt(request.getParameter("bno"));
 		String id = ((MemberDTO) session.getAttribute("member")).getId();
 
@@ -453,6 +483,7 @@ public class MainController {
 		return null;
 	}
 
+	// 싫어요 클릭시
 	@RequestMapping("boardHate.do")
 	public String boardHate(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws IOException {
@@ -474,46 +505,49 @@ public class MainController {
 		response.getWriter().write(obj.toString());
 		return null;
 	}
-	
-	//신고 클릭시
+
+	// 신고 클릭시
 	@RequestMapping("report.do")
 	public String report(HttpServletRequest request, @RequestParam String id) {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		return "report_write";
 	}
-	
-	//신고 글쓰기 클릭시
-		@RequestMapping("report_write.do")
-		public String report_write(HttpServletRequest request, HttpServletResponse response) throws IOException {
-			String writer = request.getParameter("id");
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-			BoardDTO dto = new BoardDTO();
-			System.out.println("id:" + writer);
-			System.out.println("title:" + title);
-			dto.setB_title(title);
-			dto.setId(writer);
-			dto.setB_content(content);
-			boardService.insertReport(dto);
-			response.getWriter().write("<script>window.close()</script>");
-			return null;
-		}
-	//관리자 페이지로 이동
+
+	// 신고 글쓰기 클릭시
+	@RequestMapping("report_write.do")
+	public String report_write(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String writer = request.getParameter("id");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		BoardDTO dto = new BoardDTO();
+		System.out.println("id:" + writer);
+		System.out.println("title:" + title);
+		dto.setB_title(title);
+		dto.setId(writer);
+		dto.setB_content(content);
+		boardService.insertReport(dto);
+		response.getWriter().write("<script>window.close()</script>");
+		return null;
+	}
+
+	// 관리자 페이지로 이동
 	@RequestMapping("admin.do")
 	public String admin() {
 		return "admin";
 	}
-	//멤버 관리 페이지로 이동
+
+	// 멤버 관리 페이지로 이동
 	@RequestMapping("member_page.do")
 	public String member_page(HttpServletRequest request, HttpServletResponse response) {
 		List<MemberDTO> list = memberService.selectAllmember();
 		request.setAttribute("list", list);
 		return "member_page";
 	}
-	//관리자 신고페이지로 이동
+
+	// 관리자 신고페이지로 이동
 	@RequestMapping("report_page.do")
-	public String report_page(HttpServletRequest request ,HttpServletResponse response) {
+	public String report_page(HttpServletRequest request, HttpServletResponse response) {
 		int page = 1;
 		if (request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page"));
@@ -527,22 +561,23 @@ public class MainController {
 		request.setAttribute("pagging", vo);
 		return "report_page";
 	}
-	
-	//관리자 회원 삭제
+
+	// 관리자 회원 삭제
 	@RequestMapping("DeleteMember.do")
 	public String DeleteMember(HttpServletRequest request, HttpServletResponse response, @RequestParam String id) {
 		memberService.DeleteMember(id);
 		return "redirect:member_page.do";
 	}
-	
-	//꿀팁페이지 이동
+
+	// 꿀팁페이지 이동
 	@RequestMapping("tip.do")
 	public String tip(HttpServletRequest request) {
 		List<BoardDTO> list = boardService.selectTip();
 		request.setAttribute("list", list);
 		return "tip";
 	}
-	//테스트 하기
+
+	// 테스트 하기
 	@RequestMapping("1.do")
 	public String test() {
 		return "test";

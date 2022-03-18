@@ -6,54 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>정보수정페이지</title>
-<style type="text/css">
-*{
-font-size: 12px;
-font-weight: bold;
-margin: 0px;
-padding: 0px;
-}
-.box{
-border: 3px solid black;
-padding: 30px;
-margin-top: 150px;
-margin-bottom: 100px;
-}
-form{
-height: 800px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-text-align: center;
-}
-button {
-width: 200px; 
-padding: 7px; 
-border: none; 
-border-radius: 10px; 
-color: white; 
-font-weight: bold; 
-background-color: #3a3a3a; 
-cursor: pointer; 
-outline: none;
-}
-
-input[type=text], input[type=password] {
-  width: 300px;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
-
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-</style>
+<link href="${pageContext.request.contextPath}/resources/css/profile.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 

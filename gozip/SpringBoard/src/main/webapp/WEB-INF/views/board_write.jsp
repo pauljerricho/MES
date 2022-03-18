@@ -57,9 +57,9 @@ textarea {
 	font-size: 12px;
 	}
 	
-	input:hover, textarea:hover,
-	input:focus, textarea:focus {
-	background-color:white;
+input:hover, textarea:hover,
+input:focus, textarea:focus {
+background-color:white;
 	}
 </style>
 </head>

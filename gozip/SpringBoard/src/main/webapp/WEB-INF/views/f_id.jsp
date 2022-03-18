@@ -4,9 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-
-</style>
 <meta charset="UTF-8">
 <title>내 고집이들..</title>
 

@@ -6,30 +6,7 @@
 <meta charset="UTF-8">
 <title>고집 쎈 친구들을 만나보세요.</title>
 </head>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
-*{
-margin: 100px auto;
-padding: 0px;
-text-align: center;
-font-family: 'Do Hyeon', sans-serif;
-font-weight: bold;
-}
-body{
-border: 2px solid black;
-padding: 10px;
-}
-.title{
-margin-top: 100px;
-}
-textarea{
-margin-top: 100px;
-}
-img {
-	margin: 10px;
-	padding: 10px;
-}
-</style>
+<link href="${pageContext.request.contextPath}/resources/css/answer.css" rel="stylesheet" type="text/css">
 <body>
 <header>
 		<%@include file="/WEB-INF/views/head.jsp"%>
