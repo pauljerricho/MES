@@ -1,4 +1,3 @@
-Hello, Git!
 안녕하세요. 2021년도 상명대학교 전기공학과를 졸업하고
 2021~2022년도 4월까지 코리아IT신촌학원에서 1회차 MES과정을 수료했습니다.
 
@@ -6,6 +5,7 @@ Hello, Git!
 
 Hello. My name is Paul jerricho
 I graduated from SangMeong Univ, was studying electricity engineering.
+
 After that I found a course about MES Tech.
 
 I always welcome and look forward to have a great relationship 
