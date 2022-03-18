@@ -14,3 +14,4 @@ for x in range(1, ws.max_row + 1):
         print(ws.cell(row=x,column=y).value, end =" ") # 1 2 3 4..
     
     print()
+#RPA PROJECT(사무자동화)

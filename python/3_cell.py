@@ -28,4 +28,5 @@ for x in range(1,11): # 10개 row
         ws.cell(row=x,column=y,value=index) #1~100까지 자동으로 채워짐
         index += 1
 wb.save("sample2.xlsx")
+#RPA PROJECT(사무자동화)
 

@@ -69,3 +69,4 @@ for col in ws.iter_cols(min_row=1, max_row=5, min_col=1, max_col=3):
 #     print(column[2].value, end=" ")
 
 wb.save("sample3.xlsx")
+#RPA PROJECT(사무자동화)
