@@ -1,0 +1,11 @@
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\bin\Debug\BarcodeReader.exe.config
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\bin\Debug\BarcodeReader.exe
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\bin\Debug\BarcodeReader.pdb
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.csproj.AssemblyReference.cache
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.csproj.SuggestedBindingRedirects.cache
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.Form1.resources
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.Properties.Resources.resources
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.csproj.GenerateResource.cache
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.csproj.CoreCompileInputs.cache
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.exe
+C:\Users\decaf\Desktop\MES\BarcodeReader\BarcodeReader\obj\Debug\BarcodeReader.pdb
