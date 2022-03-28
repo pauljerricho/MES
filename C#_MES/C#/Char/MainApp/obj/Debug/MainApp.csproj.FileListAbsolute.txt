@@ -1,0 +1,8 @@
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\bin\Debug\MainApp.exe.config
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\bin\Debug\MainApp.exe
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\bin\Debug\MainApp.pdb
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\obj\Debug\MainApp.csproj.AssemblyReference.cache
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\obj\Debug\MainApp.csproj.SuggestedBindingRedirects.cache
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\obj\Debug\MainApp.csproj.CoreCompileInputs.cache
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\obj\Debug\MainApp.exe
+C:\Users\decaf\Desktop\MES\C#\Char\MainApp\obj\Debug\MainApp.pdb

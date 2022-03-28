@@ -1,0 +1,8 @@
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\bin\Debug\FloatToIntegral.exe.config
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\bin\Debug\FloatToIntegral.exe
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\bin\Debug\FloatToIntegral.pdb
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\obj\Debug\FloatToIntegral.csproj.AssemblyReference.cache
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\obj\Debug\FloatToIntegral.csproj.SuggestedBindingRedirects.cache
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\obj\Debug\FloatToIntegral.csproj.CoreCompileInputs.cache
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\obj\Debug\FloatToIntegral.exe
+C:\Users\decaf\Desktop\MES\C#\MainApp\FloatToIntegral\obj\Debug\FloatToIntegral.pdb
