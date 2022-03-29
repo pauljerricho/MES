@@ -1,0 +1,3 @@
+D:\git\C#_MES\C#\SwitchExp\MainApp\obj\Debug\MainApp.csproj.AssemblyReference.cache
+D:\git\C#_MES\C#\SwitchExp\MainApp\obj\Debug\MainApp.csproj.SuggestedBindingRedirects.cache
+D:\git\C#_MES\C#\SwitchExp\MainApp\obj\Debug\MainApp.csproj.CoreCompileInputs.cache
