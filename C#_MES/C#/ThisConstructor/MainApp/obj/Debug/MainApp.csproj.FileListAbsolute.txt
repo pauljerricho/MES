@@ -1,0 +1,8 @@
+D:\git\C#_MES\C#\ThisConstructor\MainApp\bin\Debug\MainApp.exe.config
+D:\git\C#_MES\C#\ThisConstructor\MainApp\bin\Debug\MainApp.exe
+D:\git\C#_MES\C#\ThisConstructor\MainApp\bin\Debug\MainApp.pdb
+D:\git\C#_MES\C#\ThisConstructor\MainApp\obj\Debug\MainApp.csproj.AssemblyReference.cache
+D:\git\C#_MES\C#\ThisConstructor\MainApp\obj\Debug\MainApp.csproj.SuggestedBindingRedirects.cache
+D:\git\C#_MES\C#\ThisConstructor\MainApp\obj\Debug\MainApp.csproj.CoreCompileInputs.cache
+D:\git\C#_MES\C#\ThisConstructor\MainApp\obj\Debug\MainApp.exe
+D:\git\C#_MES\C#\ThisConstructor\MainApp\obj\Debug\MainApp.pdb
