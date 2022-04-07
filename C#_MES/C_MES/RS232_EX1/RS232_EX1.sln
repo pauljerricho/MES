@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS232_EX1", "RS232_EX1.csproj", "{33F945FE-EA9E-44EB-8B0E-5FA2E23B840D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33F945FE-EA9E-44EB-8B0E-5FA2E23B840D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F945FE-EA9E-44EB-8B0E-5FA2E23B840D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F945FE-EA9E-44EB-8B0E-5FA2E23B840D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F945FE-EA9E-44EB-8B0E-5FA2E23B840D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {737B3CAE-0EFE-4CB0-AB1E-93FEF7BF7D48}
+	EndGlobalSection
+EndGlobal

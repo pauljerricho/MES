@@ -1,0 +1,11 @@
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.csproj.AssemblyReference.cache
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.csproj.SuggestedBindingRedirects.cache
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.Form1.resources
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.Properties.Resources.resources
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.csproj.GenerateResource.cache
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.csproj.CoreCompileInputs.cache
+D:\git\C#_MES\C_MES\RS232_EX1\bin\Debug\RS232_EX1.exe.config
+D:\git\C#_MES\C_MES\RS232_EX1\bin\Debug\RS232_EX1.exe
+D:\git\C#_MES\C_MES\RS232_EX1\bin\Debug\RS232_EX1.pdb
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.exe
+D:\git\C#_MES\C_MES\RS232_EX1\obj\Debug\RS232_EX1.pdb
