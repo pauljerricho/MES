@@ -1,0 +1,11 @@
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.csproj.AssemblyReference.cache
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.csproj.SuggestedBindingRedirects.cache
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.Form1.resources
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.Properties.Resources.resources
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.csproj.GenerateResource.cache
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.csproj.CoreCompileInputs.cache
+D:\git\C#_MES_PLC\Trafficlight\bin\Debug\Trafficlight.exe.config
+D:\git\C#_MES_PLC\Trafficlight\bin\Debug\Trafficlight.exe
+D:\git\C#_MES_PLC\Trafficlight\bin\Debug\Trafficlight.pdb
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.exe
+D:\git\C#_MES_PLC\Trafficlight\obj\Debug\Trafficlight.pdb
