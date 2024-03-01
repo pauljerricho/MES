@@ -9,7 +9,8 @@
 
 오신 여러분들을 진심으로 환영합니다.
 
-Hello. My name is Paul jerricho
+Hello. My name is Lee_sa
+
 I graduated from SangMeong Univ, was studying electricity engineering.
 
 After that I found a course about MES Tech and finished the course in this month.
