@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>✔ 감코리아</title>
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content">
+				<form name="myform" id="myform" method="post"
+					enctype="multipart/form-data" action="/process/main.html">
+					<!--side_bar-->
+					<ul class="lnb">
+						<li><a href="/index.html"><img src="/img/icon_home.jpg"
+								alt="홈으로"></a></li>
+						<li></li>
+						<li style="cursor: pointer;">공정관리</li>
+					</ul>
+					<!--lnb-->
+					<div class="con">
+						<ul class="admin_list">
+		
+							<li><a href="/process/info_route.html">
+									 <img src="/img/icon_process1_big.png" alt="공정관리"><p>공정 관리</p>
+							</a></li>
+							<li><a href="/process/info_mix.html">
+									 <img src="/img/sub01_d1.png" alt="성분배합비율"><p>성분배합 비율</p>
+							</a></li>
+							<li><a href="/process/info_op_st.html">
+									 <img src="/img/sub01_j1.png" alt="작업표준정보"><p>작업표준 정보</p>
+							</a></li>
+							<li><a href="/process/info_recipe.html">
+									<img src="/img/sub01_o1.png" alt="통합레시피"><p>통합 레시피</p> 
+							</a></li>
+						</ul>
+						<!--admin_list-->
+					</div>
+					<!--sub_con-->
+					<div id="lay" style="overflow: auto;">
+						<div class="bg"></div>
+						<div id="lay2"></div>
+					</div>
+				</form>
+			</div>
+		
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

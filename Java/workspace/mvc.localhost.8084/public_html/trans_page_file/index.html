@@ -1,0 +1,8 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+$lib->lib_fun('tellers_page_trans');
+$req_text = $tellers_page_trans->tellers_page_trans_($_REQUEST['mod'],$_REQUEST['ajax_link_page']);
+if($req_text){
+    require_once($req_text);
+}
+?>

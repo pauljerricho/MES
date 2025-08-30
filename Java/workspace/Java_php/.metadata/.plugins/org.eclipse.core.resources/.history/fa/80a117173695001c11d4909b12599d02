@@ -1,0 +1,24 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_();
+
+$lib->lib_fun("query_where");
+$query_where->query_where_($key1,"(cu_code like '%$search_key%' or c_name like '%$search_key%')","and","1");
+$query_where->query_where_($key1,"cu_code like '%$search_key%'" , "and", "2");
+$query_where->query_where_($key1,"c_name like '%$search_key%'" , "and", "3");
+$where = $query_where->query_where_join_();
+
+if($_POST['start']){
+    $page = (int)($_POST['start']/$_POST['length'])+1;
+}
+
+$orderby_array = array("1"=>"cu_code","2"=>"c_name");
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("json_connet");
+echo $json_connet->json_connet_($echo_data);
+?>

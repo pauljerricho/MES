@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>중복검사</title>
+<style>
+.tr_hover:hover {
+	background: #ddd;
+	cursor: pointer;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var wh_code = urlParams.get("wh_code");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup.popup-17","myform2","","");
+	$("#myform2 input[name='wh_code']").val(wh_code);
+
+
+	
+	//검색
+	javascript_onload_src("script_ajax_layer_pop");
+	$(".popup-17 input[name='wh_code']").keydown(function(){
+		if(event.keyCode==13){
+			script_ajax_layer_pop('/inventory/inventory_dup.html',jQuery('#myform2').serialize(),'.popup-17')
+		}
+	});
+	$(".popup-17 .search_btn").click(function(){
+		script_ajax_layer_pop('/inventory/inventory_dup.html',jQuery('#myform2').serialize(),'.popup-17')
+	});
+	
+	//버튼 이벤트
+	$(".popup-17 .down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	$('.search_in').focus();
+	
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+</script>
+</head>
+<body>
+	<div class="popup popup-17">
+		<div class="pop_close down"></div>
+		<div class="message">창고코드 중복검사</div>
+		<!-- message -->
+		<div class="pop_search">
+			<input type="text" placeholder="창고코드" class="search_in" name="wh_code" value="" readonly>
+			<div class="search_btn">검색</div>
+			<br> <input type="text" style="color: #ff0000;" placeholder="" class="search_no" readonly>
+		</div>
+		<!-- pop_search -->
+		<div class="pop_bp">
+			<div class="btn_pop1 btn_use">사용하기</div>
+			<div class="btn_pop1 down btn_co">취소</div>
+		</div>
+		<!-- pop_bp -->
+	</div>
+	<!--popup-->
+</body>
+</html>

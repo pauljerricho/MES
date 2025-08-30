@@ -1,0 +1,11 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_();
+
+$lib->lib_fun("query_where");
+$query_where->query_where_($key1,"(cu_code like '%$value%' or c_name like '%$value%')","and","1");
+$query_where->query_where_($key1,"(cu_code like '%$value1%' , "and", "2");
+$query_where->query_where_($key1,"(cu_code like '%$value2%' , "and", "3");
+?>

@@ -1,0 +1,12 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+
+error:
+$echo_data = array(
+    "id"=>"test",
+    'error' => $error,
+    'Prevent' => array("Prevent") //변수 변동 방지
+);
+$lib->lib_fun("json_connet");
+echo $json_connet->json_connet_($echo_data);
+?>

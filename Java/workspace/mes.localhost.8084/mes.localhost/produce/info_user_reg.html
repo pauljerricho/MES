@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>작업자정보 등록</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<link rel="stylesheet" href="/css/produce.css">
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'id_dup',id:'id_dup',value:''}));
+
+
+	
+	//입력제한
+	$("#table_reg input[name='user_id']").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(inputVal.replace(/[^a-z0-9\_\-]/gi,''));
+	    }
+	});
+	
+	//중복체크
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#table_reg .btn_dup").click(function(){
+		script_ajax_layer_pop('/produce/id_dup.html',jQuery('#myform').serialize(),'.popup-4');
+	});
+	
+	//등록 버튼
+	$("#myform .bot_btn > .btn_right").click(function(){
+		location.href='/produce/info_user.html';
+	});
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="infoUserRegCont">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/produce/main.html">생산관리</a></li>
+					<li></li>
+					<li><a href="/produce/info_user.html">사용자 정보</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<h2 class="sub_tit">사용자 정보 등록</h2>
+					<table id="table_reg">
+						<tr>
+							<th>아이디 <span class="txt_red">*</span></th>
+							<td>
+								<input type='text' name='user_id' id='user_id' maxlength="30">
+								<div class='btn_dup'>중복검사</div>
+								<label for="user_id" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>사용자명 <span class="txt_red">*</span></th>
+							<td>
+								<input type="text" name="user_name">
+								<label for="user_name" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>부서</th>
+							<td>
+								<input type="text" name="department">
+								<label for="department" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>직책</th>
+							<td>
+								<input type="text" name="position">
+								<label for="position" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>연락처</th>
+							<td>
+								<select name='tel99' onChange='document.myform.tel1.value=this.value;tel2.focus();' class="select_number">
+									<option value='' selected>직접입력</option>
+									<option value='010'>010</option>
+									<option value='011'>011</option>
+									<option value='017'>017</option>
+									<option value='018'>018</option>
+									<option value='019'>019</option>
+								</select> 
+								<input type="text" class="phonenum" name="tel1" onkeyup="script_next_focus(this,3,document.myform.tel2)">
+								<span class="phonespan">-</span> 
+								<input type="text" maxlength="4" class="phonenum" name="tel2" onkeyup="script_next_focus(this,4,document.myform.tel3)">
+								<span class="phonespan">-</span> 
+								<input type="text" maxlength="4" class="phonenum" name="tel3" onkeyup="script_next_focus(this,4,document.myform.bir_date)">
+								<label for="tel" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>생년월일</th>
+							<td>
+								<input type="text" class="btn_candle input_calendar" name="bir_date">
+							</td>
+						</tr>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn"><a href="/produce/info_user.html">취소</a></div>
+							<div class="btn btn_right save" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

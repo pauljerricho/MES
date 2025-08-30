@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>인쇄 형식 선택</title>
+<style>
+.popup_ta .table_search {
+	padding-bottom:20px;
+}
+.table_pop th {
+	width: 50%;
+}
+.td_hover:hover {
+	background: #ddd;
+	cursor: pointer;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup_ta.popup-22","myform2","","");
+	$('#myform2').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+
+
+
+	$(".popup-22 .culha").click(function(){
+		window.open('/printing/culha.html?s_no='+s_no,'생산지시서','width=800, scrollbars=yes, menubar=no, status=no, toolbar=no');
+	});
+	$(".popup-22 .culha1").click(function(){
+		window.open('/printing/culha_1.html?s_no='+s_no,'생산지시서','width=800, scrollbars=yes, menubar=no, status=no, toolbar=no');
+	});
+	$(".popup-22 .down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	alignModal(".popup-22"); //수직 정렬
+});
+</script>
+</head>
+<body>
+	<div class="popup_ta popup-22">
+		<div class="pop_close down"></div>
+		<div class="message">인쇄 형식 선택</div>
+		<!-- message -->
+		<div class="table_search">
+			<table class="table_pop">
+				<tbody>
+					<tr>
+						<th>창고 간소화</th>
+						<th>창고 분할</th>
+					</tr>
+					<tr>
+						<td class="td_hover"><div class="print culha"></div></td>
+						<td class="td_hover"><div class="print culha1"></div></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- table_search -->
+	</div>
+	<!--popup-->
+</body>
+</html>

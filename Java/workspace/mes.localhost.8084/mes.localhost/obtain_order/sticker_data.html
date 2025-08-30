@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>스티커 정보</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<style>
+.s_img .s_img_top {
+	width: 100%;
+	border: 1px solid #c3c9d8;
+	box-sizing: border-box;
+	border-bottom: none;
+	height: 200px;
+	padding: 15px;
+	text-align:center;
+}
+
+.s_img {
+	width: 600px;
+	background: #fff;
+	box-sizing: border-box;
+	position: relative;
+	margin: 20px 0;
+	/*     margin:20px auto; */
+}
+
+.s_img img {
+	width: auto;
+	height: 100%;
+	overflow: hidden;
+}
+
+.s_img .bot {
+	width: 100%;
+	height: 25px;
+}
+
+.shot_input {
+    width: 75%;
+    height: 25px;
+    border: 1px solid #005196;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#table_reg th, #table_reg td {
+	padding: 7px 10px;
+	box-sizing: border-box;
+}
+
+#table_reg td textarea {
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+	resize: none;
+	width: 50%;
+	padding: 3px;
+	line-height: 20px;
+	font-size: 13px;
+	height: 48px;
+	vertical-align: middle;
+}
+
+.btn_06 {
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+	border-left: none;
+	width: 25%;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	cursor: pointer;
+	color: #000;
+	font-size: 13px;
+	background-color: #f1f4f8;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+#table_reg td textarea.three {
+	height: 72px;
+}
+
+#table_reg td input[type=text] {
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+	resize: none;
+	width: 50%;
+	padding: 3px;
+	font-size: 13px;
+	vertical-align: middle;
+}
+
+#table_reg td div {
+	width: 20px;
+	height: 20px;
+	box-sizing: border-box;
+	resize: none;
+	float: left;
+	margin-right: 5px;
+	padding: 3px;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 24px;
+	vertical-align: middle;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'stno',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'chk',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'p_name',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'mt_no',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'mt_number',value:''}));
+
+
+	
+	//이미지 파일 미리보기
+	javascript_onload_src("image_file_check");
+	javascript_onload_src("previewImage");
+	$("#image2").change(function(){
+		if(image_file_check(this)){
+			var file_text = $(this).val().split("\\");
+			$("#myform input[name='chk']").val("ok");
+			$("#image").val(file_text[2]);
+			$("#View_area").html("");
+			previewImage(this,'View_area');
+		}
+	});
+	$("#image, #myform div.btn_06").click(function(){
+		$('#image2').click();
+	});
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content">
+				<!--side_bar-->
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/obtain_order/main.html">수주관리</a></li>
+					<li></li>
+					<li><a href="/obtain_order/info_product.html">제품정보</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<h2 class="sub_tit">스티커 정보 등록</h2>
+					<div class="s_img">
+						<div class="s_img_top" id="View_area"></div>
+						<div class="bot">
+							<input type="text" class="shot_input" name="image" id="image" readonly>
+							<input type="file" name="up_img" id="image2" accept='image/gif,image/jpg,image/jpeg,image/png,image/bmp' style="display: none;">
+							<div class="btn_06">찾아보기</div>
+						</div>
+					</div>
+					<table id="table_reg">
+						<tbody>
+							<tr>
+								<th>제품명</th>
+								<td>
+									<span class="p_name"></span>
+								</td>
+								<th>내용량</th>
+								<td><textarea rows="" cols="" name="capacity"></textarea></td>
+							</tr>
+							<tr>
+								<th>축산물가공품의 유형</th>
+								<td><textarea rows="" cols="" name="product_type"></textarea>
+								</td>
+								<th>유통기한</th>
+								<td><textarea rows="" cols="" name="expiration"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<th>업소명 및 소재지</th>
+								<td colspan="3"><textarea rows="" cols="" name="locality"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<th>원재료명</th>
+								<td colspan="3"><textarea rows="" cols="" name="row_material" class="three"></textarea></td>
+							</tr>
+							<tr>
+								<th>포장재질</th>
+								<td><textarea rows="" cols="" name="packing"></textarea></td>
+								<th>품목제조번호</th>
+								<td><textarea rows="" cols="" name="produce_num"></textarea></td>
+							</tr>
+							<tr>
+								<th rowspan="2">보관방법</th>
+								<td colspan="3"><textarea rows="" cols="" name="store_method1"></textarea></td>
+							</tr>
+							<tr>
+								<td colspan="3"><textarea rows="" cols="" name="store_method2" class="three"></textarea></td>
+							</tr>
+							<tr>
+								<th>반품 및 교환 장소</th>
+								<td colspan="3"><textarea rows="" cols="" name="exchange_place"></textarea></td>
+							</tr>
+							<tr>
+								<th rowspan="4">주의사항</th>
+								<td colspan="3">
+									<div>1.</div> <input type="text" name="caution1" value="">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div>2.</div> <input type="text" name="caution2" value="">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div>3.</div> <input type="text" name="caution3" value="">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<div>4.</div> <input type="text" name="caution4" value="">
+								</td>
+							</tr>
+							<tr>
+								<th>조리방법</th>
+								<td colspan="3"><textarea rows="" cols="" name="cooking_method"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn"><a href="/obtain_order/info_product.html">취소</a></div>
+							<div class="btn btn_right" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

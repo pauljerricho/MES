@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>생산시작</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/produce.css">
+<style>
+.table_ri td input[type=text] {
+  margin-bottom: 2px;
+}
+.table_ri td input[type=text].wh_name {
+  width: 80%;
+}
+.wh_wrap {
+	padding:10px 0;
+}
+label.ck_label {
+  float: right;
+  /* margin-bottom: 10px; */
+}
+@media screen and (max-width :1024px) {
+  .table_ri td input[type=text].wh_name {
+    width: 70%;
+  }
+}
+@media screen and (max-width :768px) {
+  .table_ri td input[type=text].wh_name {
+    width: 50%;
+  }
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'po_code',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'od_no',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'c_name',value:''}));
+
+
+
+	//전체선택
+	javascript_onload_src("script_checkall");
+	$("#myform").on("click","input[name='chk_all']",function(){
+		script_checkall(this,"b_no[]");
+	});
+	
+	//tr 이벤트
+	$("#myform").on("click","#table tbody tr",function(){
+		$(this).closest("tr").find("input[name='b_no[]']").click();
+	});
+	
+	$("#myform").on("click","td.control,input[name='b_no[]']",function(e){
+		e.stopPropagation();
+	});
+	
+	//부자재발주
+	javascript_onload_src("script_check_box");
+	$("#myform .bot_btn > .ma_order").click(function(){
+		if (!script_check_box('myform', 'b_no[]', '1', 'up', '한 개 이상 선택해주세요.')) {
+			return;
+		}else{
+			location.href='/order/ma_order_reg.html?b_no=&od_no=';
+		}
+	});
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+ 	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	$("#table_ro thead tr").prepend("<th>상세</th>");
+ 	$("#table_ro tbody tr").prepend("<td>상세</td>");
+	var table_ro = $("#table_ro").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table_ro );
+});
+function draw_row(table,data,wh_arr){
+	!data['ro_name'] ? data['ro_name']="" : false;
+	!data['user_name'] ? data['user_name']="" : false;
+	!data['mi_name'] ? data['mi_name']="" : false;
+	!data['o_amt'] ? data['o_amt']="" : false;
+	!data['mt_number'] ? data['mt_number']="" : false;
+	!data['p_name'] ? data['p_name']="" : false;
+	!data['req_amount'] ? data['req_amount']="" : false;
+	!data['box_qty'] ? data['box_qty']="" : false;
+	!data['box_unit'] ? data['box_unit']="" : false;
+	
+	var mt_number="",p_name="",division="",wh_name_txt="",zone_name_txt="",quantity_txt="",use_amt_txt="",stock="",req_amount="",box_qty="";
+	var co = {"1":"원재료","2":"부재료","3":"반제품"};
+	$.each(data.mt_number,function(i,v){
+		var wh_name="",zone_name="",quantity="",use_amt="";
+		var req_amt = data.req_amount[i];
+		if(wh_arr[v]){
+			$.each(wh_arr[v],function(idx,val){
+				if(req_amt>0 && val.quantity>0 && req_amt > val.quantity){
+	                req_amt = req_amt - val.quantity;
+	                wh_name += "<div class='mt_wrap'>"+val.wh_name+"</div>";
+	                zone_name += "<div class='mt_wrap'>"+val.zone_name+"</div>";
+	                quantity += "<div class='mt_wrap'>"+val.quantity+"</div>";
+	                use_amt += "<div class='mt_wrap'>"+val.quantity+"</div>";
+	                wh_arr[v][idx]['quantity'] = 0;
+	            }else if(req_amt>0 && val.quantity>0 && req_amt <= val.quantity){
+	                wh_name += "<div class='mt_wrap'>"+val.wh_name+"</div>";
+	                zone_name += "<div class='mt_wrap'>"+val.zone_name+"</div>";
+	                quantity += "<div class='mt_wrap'>"+val.quantity+"</div>";
+	                use_amt += "<div class='mt_wrap'>"+req_amt+"</div>";
+	                wh_arr[v][idx]['quantity'] = val.quantity - req_amt;
+	                req_amt = 0;
+	            }
+			});
+		}else{
+            wh_name = "<div class='mt_wrap'>-</div>";
+            zone_name = "<div class='mt_wrap'>-</div>";
+            quantity = "<div class='mt_wrap'>0</div>";
+            use_amt = "<div class='mt_wrap'>0</div>";
+		}
+		
+		mt_number += "<div class='wh_wrap'>"+data.mt_number[i]+"</div>";
+		p_name += "<div class='wh_wrap'>"+data.p_name[i]+"</div>";
+		division += "<div class='wh_wrap'>"+co[data.division[i]]+"</div>";
+		wh_name_txt += "<div class='wh_wrap'>"+wh_name+"</div>";
+		zone_name_txt += "<div class='wh_wrap'>"+zone_name+"</div>";
+		quantity_txt += "<div class='wh_wrap'>"+quantity+"</div>";
+		use_amt_txt += "<div class='wh_wrap'>"+use_amt+"</div>";
+		req_amount += "<div class='wh_wrap'>"+data.req_amount[i]+"</div>";
+		box_qty += "<div class='wh_wrap'>"+parseFloat(data.box_qty[i]).toFixed(2)+"<span style='padding-left:5px;font-weight:bold;'>"+data.box_unit[i]+"</span></div>";
+	});
+	table.row.add([
+		"<td class='control' tabindex='0'>상세</td>",
+         data['ro_name']+"<br>("+data['user_name']+")",
+         data['mi_name'],
+         data['o_amt'],
+         division,
+         mt_number,
+         p_name,
+         wh_name_txt,
+         zone_name_txt,
+         quantity_txt,
+         use_amt_txt,
+         req_amount,
+         box_qty
+    ]).draw(false);
+	
+	return wh_arr;
+}
+function draw_row2(table,data){
+	!data['mt_number'] ? data['mt_number']="" : false;
+	!data['p_name'] ? data['p_name']="" : false;
+	!data['wh_no'] ? data['wh_no']="" : false;
+	!data['wh_name'] ? data['wh_name']="" : false;
+	!data['zone_name'] ? data['zone_name']="" : false;
+	!data['quantity'] ? data['quantity']="" : false;
+	!data['use_amt'] ? data['use_amt']="" : false;
+	!data['use_amt_txt'] ? data['use_amt_txt']="" : false;
+	!data['req_amount'] ? data['req_amount']="" : false;
+	!data['box_qty'] ? data['box_qty']="" : false;
+	!data['box_unit'] ? data['box_unit']="" : false;
+	!data['stock'] ? data['stock']="" : false;
+	var rqe_amt=0;
+	data['stock'] > data['req_amount'] ? req_amt = 0 : req_amt = data['req_amount'] - data['stock'];  
+	table.row.add([
+		"<td class='control' tabindex='0'>상세</td>",
+         "<input type='checkbox' name='b_no[]' value='"+data['mt_number']+":"+req_amt+"'>",
+         data['mt_number']+"<input type='hidden' name='mt_number[]' value='"+data['mt_number']+"'>",
+         data['p_name']+"<input type='hidden' name='p_name[]' value='"+data['p_name']+"'>",
+         data['wh_name']+"<input type='hidden' name='wh_no[]' value='"+data['wh_no']+"'>",
+         data['zone_name'],
+         data['quantity'],
+         data['use_amt_txt']+"<input type='hidden' name='use_amt[]' value='"+data['use_amt']+"'>",
+         data['stock'],
+         data['req_amount']+"<input type='hidden' name='req_amt[]' value='"+data['req_amount']+"'>",
+         parseFloat(data['box_qty']).toFixed(2)+"<span style='padding-left:5px;font-weight:bold;'>"+data['box_unit']+"</span>"
+    ]).draw(false);
+}
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="produceStateCont">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/produce/main.html">생산관리</a></li>
+					<li></li>
+					<li><a href="/produce/pr_order.html">생산지시 관리</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<div class="tit_box">
+					  <h2 class="sub_tit">생산시작</h2>
+					</div>
+					<!-- tit_box -->
+					<table id="table_reg">
+						<colgroup>
+							<col width="15%">
+							<col width="18%">
+							<col width="15%">
+							<col width="19%">
+							<col width="15%">
+							<col width="18%">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th>작업번호</th>
+								<td id="lotno"></td>
+								<th>제품명</th>
+								<td id="p_name"></td>
+								<th>현재상태</th>
+								<td id="status"></td>
+							</tr>
+							<tr>
+								<th>제품번호</th>
+								<td id="mt_number"></td>
+								<th>생산시작일자</th>
+								<td id="s_date"></td>
+								<th>생산종료일자</th>
+								<td id="e_date"></td>
+							</tr>
+							<tr>
+								<th>BOX 생산수량</th>
+								<td id="box_quantity"></td>
+								<th>낱개 생산수량</th>
+								<td id="piece"></td>
+								<th>생산수량</th>
+								<td id="quantity"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="tit_box tit_box2">
+						<h2 class="sub_tit">공정별 재고</h2>
+					</div>
+					<table id="table_ro" class="table_ri" style="width: 100%">
+						<colgroup>
+							<col width="8%">
+							<col width="8%">
+							<col width="8%">
+							<col width="6%">
+							<col width="8%">
+							<col width="8%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>공정명<br>(작업자)</th>
+								<th>배합명</th>
+								<th>배합수</th>
+								<th>분류</th>
+								<th>제품번호</th>
+								<th>제품명</th>
+								<th>창고명</th>
+								<th>구역명</th>
+								<th>재고량</th>
+								<th>소모량</th>
+								<th>총소모량</th>
+								<th>총소모량(BOX)</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="tit_box tit_box2">
+						<h2 class="sub_tit">제품별 재고</h2>
+					</div>
+					<table id="table" class="table_ri" style="width: 100%">
+						<colgroup>
+							<col width="4%">
+							<col width="12%">
+							<col width="12%">
+							<col width="14%">
+							<col width="13%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th><input type="checkbox" name="chk_all"></th>
+								<th>제품번호</th>
+								<th>제품명</th>
+								<th>창고명</th>
+								<th>구역명</th>
+								<th>재고량</th>
+								<th>소모량</th>
+								<th>총재고량</th>
+								<th>총소모량</th>
+								<th>총소모량(BOX)</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn"><a href="/produce/pr_order.html">취소</a></div>
+							<div class="btn btn_right save" title="생산시작">생산시작</div>
+							<div class="btn btn_right ma_order" title="부자재발주">부자재발주</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

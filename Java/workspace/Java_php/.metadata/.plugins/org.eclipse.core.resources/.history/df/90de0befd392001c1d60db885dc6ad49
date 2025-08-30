@@ -1,0 +1,64 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<div><img src="./img/myungli_image.png" alt="myungli_image" style="width : 100%;height : 100%"></div>
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+<div id="main_content" class="fontstyle">
+    <div id="latest">
+        <h4>자유 게시판  <a href="bd_list.php" style="float : right;">  >> 더 보기</a></h4>
+        <ul>
+<?php 
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("dbi_select");
+$result = $dbi_select->dbi_select_("*","board","","num desc","","5");
+
+if(!$result){
+    echo ("<li>게시판 db테이블이 생성 전이거나 아직 게시글이 없습니다.</li>");
+}else{
+    while($row = mysqli_fetch_array($result)){
+        $row["regist_day"] = substr($row["regist_day"],0,10);
+    
+?>        
+            <li>
+                <span><?=$row["subject"]?></span>
+                <span><?=$row["name"]?></span>
+                <span><?=$row["regist_day"]?></span> 
+            </li>
+<?php 
+    }
+}
+?>
+		</ul>
+    </div>
+    <div id="point_rank">
+        <h4 style="text-align: center">마일리지 순위</h4>
+        <ul>
+<?php 
+$result2 = $dbi_select->dbi_select_("*","members","","point desc","","5");
+
+if(!$result2){
+    echo ("$result2//<li>게시판 db테이블이 생성 전이거나 아직 게시글이 없습니다.</li>");
+}else{
+    echo ($result2);
+    $rank = 1;
+    while($row = mysqli_fetch_array($result2)){
+        $row["name"] = mb_substr($row["name"], 0, 1)." * ".mb_substr($row["name"],2,1);
+?>
+            <li>
+                <span><?$rank?></span>
+                <span><?$row['name']?></span>
+                <span><?$row['id']?></span>
+                <span><?$row['point']?></span>
+            </li>
+<?php 
+        $rank++;
+    }
+}
+
+$db_connect -> db_close();
+?>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+<script>
+$(document).ready(function() {
+	$('.m_menu_list h3').click(function() {
+		$(".m_menu_list .n0").css("color", "#ffffff").css("background-color", "#ff8400");
+		$(this).css("color", "#ffffff").css("background-color", "#ff8400");
+		$(this).addClass('accordian_on');
+		$(".m_menu_list .n0 a").css("color", "#fff");
+		$(".accordian_on a").css("color", "#ffffff");
+		$(this).removeClass('accordian_on');
+	});
+
+	$('.m_menu_list').collapsible({
+		/*contentOpen : 0,*/
+		accordion : true
+	});	
+});
+</script>
+<div class="m_menu">
+	<div class="close_wrap"></div>
+	<!--close_wrap-->
+	<div class="m_menu_list">
+		<h3 class="n0">
+			<a href="#menu01" class="arrow-r arrow-d">발주관리<span class="arrow-r"></span></a>
+		</h3>
+		<div class="sub_menu" style="">
+			<ul>
+				<li><a href='/order/ma_order.html'>발주관리</a></li>
+				<li><a href='/order/info_material.html'>원부재료관리</a></li>
+				<li><a href='/order/info_cooperative.html'>협력업체</a></li>
+			</ul>
+		</div>
+		<!--sub_menu-->
+		<h3 class="n0">
+			<a href="#menu02">수주관리<span class="arrow-r"></span></a>
+		</h3>
+		<div class="sub_menu" style="display: none;">
+			<ul>
+				<li><a href='/obtain_order/pr_or_check.html'>수주관리</a></li>
+				<li><a href='/obtain_order/info_product.html'>제품관리</a></li>
+				<li><a href='/obtain_order/info_customer.html'>고객관리</a></li>
+				<li><a href='/obtain_order/info_company_reg.html'>기업 정보</a></li>
+			</ul>
+		</div>
+		<!--sub_menu-->
+		<h3 class="n0">
+			<a href="#menu03">공정관리<span class="arrow-r"></span></a>
+		</h3>
+		<div class="sub_menu" style="display: none;">
+			<ul>
+				<li><a href='/process/info_route.html'>공정관리</a></li>
+				<li><a href='/process/info_mix.html'>성분배합비율</a></li>
+				<li><a href='/process/info_op_st.html'>작업표준정보</a></li>
+				<li><a href='/process/info_recipe.html'>통합레시피</a></li>
+			</ul>
+		</div>
+		<!--sub_menu-->
+		<h3 class="n0">
+			<a href="#menu04">생산관리<span class="arrow-r"></span></a>
+		</h3>
+		<div class="sub_menu" style="display: none;">
+			<ul>
+				<li><a href='/produce/pr_order.html'>생산관리</a></li>
+				<li><a href='/produce/info_user.html'>작업자정보</a></li>
+			</ul>
+		</div>
+		<!--sub_menu-->
+		<h3 class="n0">
+			<a href="#menu05">재고관리<span class="arrow-r"></span></a>
+		</h3>
+		<div class="sub_menu" style="display: none;">
+			<ul>
+				<li><a href='/inventory/ma_put.html'>입/출고 관리</a></li>
+				<li><a href='/inventory/ma_inventory.html'>재고 관리</a></li>
+				<li><a href='/inventory/ma_inquiry_wa.html'>입고 등록</a></li>
+				<li><a href='/inventory/ma_inquiry_re.html'>출고 등록</a></li>
+				<li><a href='/inventory/info_inventory.html'>창고 관리</a></li>
+				<li><a href='/inventory/request.html'>입/출고 요청</a></li>
+			</ul>
+		</div>
+		<!--sub_menu-->
+		<h3 class="n0">
+			<a href="#menu06">출하 관리<span class="arrow-r"></span></a>
+		</h3>
+		<div class="sub_menu" style="display: none;">
+			<ul>
+				<li><a href='/shipment/pr_order_shipment.html'>출하관리</a></li>
+			</ul>
+		</div>
+	</div>
+	<!--m_menu_list-->
+</div>
+<div id="mlay">
+	<div class="mbg"></div>
+	<div id="mlay2"></div>
+</div>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>출하관리 리스트</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<link rel="stylesheet" href="/css/shipment.css">
+<meta charset="utf-8">
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	js_reonload_src("datepicker");//js 폴더
+	
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/shipment/pr_order_shipment.html","delete");
+	$('#myform').append($('<input/>',{type:'hidden',name:'sh_code',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'date_today',value:''}));
+
+
+
+	//체크박스 전체 선택
+	javascript_onload_src("script_checkall");
+	$("#table input[name='chk_all']").click(function(){
+		script_checkall(this,"s_no[]");
+	});
+	
+	//분류 탭 검색
+	$(".tab li").click(function(){
+		$(".tab li").removeClass("teb_on");
+		$(this).addClass("teb_on");
+	});
+	
+	//버블링 이벤트
+	$("#table").on("click","tbody > tr > td.control, input[type='checkbox']",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 클릭 이벤트
+	$("#table").on("click","tbody tr[role='row']",function(e){
+		var s_no = $(this).find("input[name='s_no[]']").val();
+		location.href='/shipment/pr_order_shipment_mod.html?s_no='+s_no;
+	});
+	
+	//인쇄
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#table").on("click",".print",function(e){
+		e.stopPropagation();
+		script_ajax_layer_pop('/shipment/popup_shipment_print.html?s_no=','','.popup-28');
+	});
+	
+	//거래명세표
+	$("#table").on("click",".transaction", function(e){
+		e.stopPropagation();
+		location.href='/shipment/pr_order_shipment_tran.html?s_no='+s_no;
+	});
+	
+	//출하
+	$("#table").on("click",".state_check",function(e){
+		e.stopPropagation();
+		location.href='/shipment/pr_order_shipment_me.html?s_no='+s_no;
+	});
+	
+	//등록 버튼
+	$("#myform .bot_btn .btn_right").click(function(){
+		location.href='/shipment/pr_order_shipment_reg.html';
+	});
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>1</td><td>2022-03-20</td><td>2022-03-21</td><td>제일식품</td><td>명절선물세트</td><td>2022-03-20<br>09:12:40</td><td>100</td><td>0</td><td>100</td><td><div class='print' title='인쇄'></div></td><td><div class='btn_check transaction' title='거래명세표'>확인</div></td><td><div class='state_check' title='출고요청' value='1' style='color: red; border: 1px solid red;margin-bottom:5px;'>출고요청</div><div class='state_check' title='출하처리' value='2' style='color: green; border: 1px solid green;'>출하처리</div></td></tr>");
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>2</td><td>2022-03-20</td><td>2022-03-21</td><td>제일식품</td><td>명절선물세트</td><td>2022-03-20<br>09:12:40</td><td>100</td><td>0</td><td>100</td><td><div class='print' title='인쇄'></div></td><td><div class='btn_check transaction' title='거래명세표'>확인</div></td><td><div class='state_check' title='출고완료' value='1' style='color: darkorange; border: 1px solid darkorange;margin-bottom:5px;'>출고완료</div><div class='state_check' title='출하처리' value='2' style='color: green; border: 1px solid green;'>출하처리</div></td></tr>");
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>3</td><td>2022-03-20</td><td>2022-03-21</td><td>제일식품</td><td>명절선물세트</td><td>2022-03-20<br>09:12:40</td><td>100</td><td>0</td><td>100</td><td><div class='print' title='인쇄'></div></td><td><div class='btn_check transaction' title='거래명세표'>확인</div></td><td><div class='state_check' title='출하완료' value='' style='color: blue; border: 1px solid blue;'>출하완료</div></td></tr>");
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 2, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="prOrderShipmentCont">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/shipment/main.html">출하관리</a></li>
+					<li></li>
+					<li><a href="#">출하지시 관리</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<div class="tit_box">
+						<h2 class="sub_tit">출하지시 관리</h2>
+						<p class="sub_txt">
+							<span>0</span>개의 데이터가 조회되었습니다.
+						</p>
+					</div>
+					<!-- tit_box -->
+					<table id="table_reg">
+						<tr>
+							<th>출하일자</th>
+							<td>
+								<input type="text" class="btn_candle input_calendar" id='input_date1' name="inout_date1" readonly>
+								<span class="phonespan">~</span>
+								<input type="text" class="btn_candle input_calendar" id='input_date2' name="inout_date2" readonly>
+							</td>
+							<th>납기일자</th>
+							<td>
+								<input type="text" class="btn_candle input_calendar" id='input_date3' name="inout_date3" readonly>
+								<span class="phonespan">~</span>
+								<input type="text" class="btn_candle input_calendar" id='input_date4' name="inout_date4" readonly>
+							</td>
+						</tr>
+					</table>
+					<div class="search_pc">
+			  				<select class="select_pc">
+			  					<option value="0">전체</option>
+			  					<option value="1">출고대기</option>
+			  					<option value="2">출하중</option>
+			  					<option value="3">출하완료</option>
+			  				</select>
+			  				<ul class="tab">
+			  					<li class="teb_on">전체(<span class="tab1">0</span>)</li>
+			  					<li>출고대기(<span class="tab2">0</span>)</li>
+			  					<li>출하중(<span class="tab3">0</span>)</li>
+			  					<li>출하완료(<span class="tab4">0</span>)</li>
+			  				</ul>
+			  				<!--tab-->
+			  				<input type="text" id="search_po_p" name="search_key" placeholder="search">
+			  				<div class="gla" style="cursor:pointer;"></div>
+			  			</div>
+			   		<!-- search_pc -->		
+					<table id="table" class="ui celled table" style="width: 100%">
+						<colgroup>
+							<col width="5%">	<!-- 체크박스 -->
+							<col width="6%">	<!-- 출하코드 -->
+							<col width="9%">	<!-- 출하일자 -->
+							<col width="9%">	<!-- 납기일자 -->
+							<col width="9%">	<!-- 고객업체 -->
+							<col width="13%">	<!-- 제품명 -->
+							<col width="9%">	<!-- 출하등록일자 -->
+							<col width="6%">	<!-- 요청수량 -->
+							<col width="6%">	<!-- 출하수량 -->
+							<col width="6%">	<!-- 미출하수량 -->
+							<col width="6%">	<!-- 인쇄 -->
+							<col width="8%">	<!-- 거래명세표 -->
+							<col width="8%">	<!-- 상태 -->
+						</colgroup>
+						<thead>
+							<tr>
+								<th class="check"><input type="checkbox" name="chk_all"></th>
+								<th>출하코드</th>
+								<th>출하일자</th>
+								<th>납기일자</th>
+								<th>고객업체</th>
+								<th>제품명</th>
+								<th>출하등록일자</th>
+								<th>요청수량</th>
+								<th>출하수량</th>
+								<th>미출하수량</th>
+								<th>인쇄</th>
+								<th>거래명세표</th>
+								<th>상태</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn delete" title="선택삭제">선택삭제</div>
+							<div class="btn btn_right" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

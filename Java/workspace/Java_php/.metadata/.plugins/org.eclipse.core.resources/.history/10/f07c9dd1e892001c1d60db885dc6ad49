@@ -1,0 +1,18 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+
+$id = $_POST["u_id"];
+$pass = $_POST["u_pass"];
+$name = $_POST["u_name"];
+$email1 = $_POST["email1"];
+$email2 = $_POST["email2"];
+
+$lib->lib_fun("message");
+$lib->lib_fun("value_check2");
+if(!$value_check2->value_check2_(array($id,$pass,$name,$email1,$email2))){
+    $error = "인자가 부족하여 처리 할 수 없습니다.";
+    goto error;
+}
+
+
+?>

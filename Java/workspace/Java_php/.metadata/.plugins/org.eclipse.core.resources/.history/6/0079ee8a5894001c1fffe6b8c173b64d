@@ -1,0 +1,7 @@
+$(document).ready(function(){
+	const urlParams = new URLSearchParams(location.search);
+	var num = urlParams.get("num");
+	
+	script_new_reformdata("#write_msg", "myform", "/msg_form.php", "insert");
+	
+});

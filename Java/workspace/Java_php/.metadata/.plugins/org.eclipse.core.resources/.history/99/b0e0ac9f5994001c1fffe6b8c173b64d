@@ -1,0 +1,26 @@
+$(document).ready(function(){
+	const urlParams = new URLSearchParams(location.search);
+	var num = urlParams.get("num");
+	
+	script_new_reformdata("#write_msg", "myform", "/msg_form.php", "insert");
+	$('#myform').append($('</input>',{type:'hidden',name:'rv_id',value:''}));
+	
+	javascript_onload_src("script_trns_form_submit_ajax");
+	javascript_onload_src("script_id_check");
+	javascript_onload_src("script_text_check");
+	
+	$("#write_msg > button").click(function(){
+		if(!script_id_check("myform","rv_id","수신 아이디")){
+			return false
+		}else if(!script_text_check("myform","subject","제목을 입력해주세요.")){
+			return false
+		}else if(!script_text_check("myform","content","내용을 입력해주세요.")){
+			return false
+		}else{
+			let formData = new FormData(document.getElementById("myform"));
+			script_trns_form_submit_ajax(formData,"/index.php");
+		}
+	});
+	
+	
+});

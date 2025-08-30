@@ -1,0 +1,7 @@
+#lgi_box { width: 429px; margin: 0 auto; }
+#lgi_title { margin: 50px 0 0 0; padding-bottom: 5px;}
+#lgi_title span {	font-size: 20px; font-weight: bold; }
+#lgi_form { margin-top: 20px; }
+#lgi_form li { margin-top: 10px; }
+#lgi_form input {	width: 100%; height: 47px; }
+#lgi_form #lgi_btn { margin-top: 15px; margin-bottom: 50px; }

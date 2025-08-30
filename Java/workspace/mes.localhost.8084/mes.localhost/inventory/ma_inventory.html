@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>재고관리 리스트</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<style>
+@media screen and (max-width: 1120px){
+	#search_po_p  { width:230px; background: url(/img/btn_search.jpg) no-repeat 16px 50%; }
+	.gla {display:none;}
+}
+@media screen and (max-width: 880px){
+	.search_pc { display: flex; flex-direction: column-reverse; }
+	.search_pc .tab { margin:0; }
+	#search_po_p  { width:100%; margin:0 0 10px; background: url(/img/btn_search.jpg) no-repeat 16px 50%; }
+	#table { margin: unset; }
+}
+@media screen and (max-width: 615px) {
+	ul.tab {
+		height:auto;
+	}
+	ul.tab li {
+		width:31%;
+		height: auto;
+		margin: 0 1% 10px 1%;
+		padding: 12px 0;
+		text-align: center;
+		font-size:12px;
+		border-right: 1px solid #b3c1cb;
+		line-height: inherit;
+	}
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'bar_no',value:s_no}));
+
+
+
+	//분류 탭 검색
+	$(".tab li").click(function(){
+		$(".tab li").removeClass("teb_on");
+		$(this).addClass("teb_on");
+	});
+	
+	//버블링 이벤트
+	$("#table").on("click","tbody > tr > td.control",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 클릭 이벤트
+	$("#table").on("click","tbody tr[role='row']",function(e){
+		location.href='/inventory/inv_detail.html?s_no=';
+	});
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 6, "asc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+</script>
+</head>
+<body>
+<div class="background"></div>
+<div class="header_wrap">
+	<!--header-->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+	<!--header-->
+</div>
+<!--header_wrap-->
+<!-- 퀵바 -->
+<div class="quick_wrap ui-draggable ui-draggable-handle">
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+</div>
+<!-- quick_wrap -->
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+<!--m_menu-->
+<div class="content">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+	<div class="content_detail" id="content_detail">
+		<div id="content">
+			<ul class="lnb">
+				<li><a href="/index.html"><img src="/img/icon_home.jpg"alt="홈으로"></a></li>
+				<li></li>
+				<li><a href="/inventory/main.html">재고관리</a></li>
+				<li></li>
+				<li><a href="#">재고 관리</a></li>
+			</ul>
+			<!--lnb-->
+			<div class="sub_con">
+				<div class="tit_box">
+					<h2 class="sub_tit">재고 관리</h2>
+					<p class="sub_txt">
+						<span>0</span>개의 데이터가 조회되었습니다.
+					</p>
+				</div>
+				<!-- tit_box -->
+				<div class="search_pc">
+					<select class="select_pc">
+						<option value="0">전체</option>
+						<option value="1">완제품</option>
+						<option value="2">반제품</option>
+						<option value="3">원재료</option>
+						<option value="4">부재료</option>
+					</select>
+					<ul class="tab">
+		   				<li class="teb_on">전체(<span class="tab1">0</span>)</li>
+		   				<li>완제품(<span class="tab2">0</span>)</li>
+		   				<li>반제품(<span class="tab3">0</span>)</li>
+		   				<li>원재료(<span class="tab4">0</span>)</li>
+		   				<li>부재료(<span class="tab5">0</span>)</li>
+		   			</ul>
+		   			<!--tab-->
+					<input type="text" id="search_po_p" name="search_key" placeholder="search">
+					<div class="gla" style="cursor:pointer;"></div>
+				</div>
+				<div id="table_wrapper">
+					<table id="table" style="width: 100%">
+						<colgroup>
+							<col width="4%"> <!--번호-->
+							<col width="8%"> <!--구분-->
+							<col width="12%"> <!--창고명-->
+							<col width="12%"> <!--구역명-->
+							<col width="12%"> <!--제품번호-->
+							<col width="22%"> <!--제품명-->
+							<col width="8%"> <!--총 BOX-->
+							<col width="8%"> <!--총 수량-->
+							<col width="8%"> <!--총 중량-->
+							<col width="6%"> <!--단위-->
+						</colgroup>
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>구분</th>
+								<th>창고명</th>
+								<th>구역명</th>
+								<th>제품번호</th>
+								<th>제품명</th>
+								<th>총 BOX</th>
+								<th>총 수량</th>
+								<th>총 중량</th>
+								<th>단위</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="bot_box">
+				</div>
+				<!-- bot_box -->
+			</div>
+			<!--con-->
+			<div id="lay" style="overflow: auto;">
+				<div class="bg"></div>
+				<div id="lay2"></div>
+			</div>
+		</div>
+		<!--content-->
+	</div>
+</div>
+<!--content-->
+<div id="copy">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+</div>
+<div class="keyboard"></div>
+</body>
+</html>

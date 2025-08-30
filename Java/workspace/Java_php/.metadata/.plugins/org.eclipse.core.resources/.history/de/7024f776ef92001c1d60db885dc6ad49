@@ -1,0 +1,24 @@
+$(document).ready(function(){
+	const urlParams = new URLSearchParams(location.search);
+	var u_id = urlParams.get("u_id");
+	
+	$.ajax({
+		url : '/trans_page_file/',
+		type : 'POST',
+		cache : false,
+		data:{
+			"mode":"data",
+			"u_id":u_id
+		},
+		dataType: 'json',
+		success:function(data){
+			var notice = "";
+			if(!u_id){
+				notice = "<li>아이디를 입력하셈!</li>";
+			}else{
+				
+			}
+		},
+	});
+	
+});

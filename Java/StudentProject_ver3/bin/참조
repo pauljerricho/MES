@@ -1,0 +1,26 @@
+1. Controller 인터페이스
+	execute(Scanner)
+2. HandlerMapping
+	싱글톤
+	createController(int)
+3. vo, main
+
+4. StudentService 클래스
+	싱글톤 적용
+
+
+학생 정보 등록 - RegisterController
+
+1. 학생정보 입력 - vo 생성
+2. 중복된 학번이 있는지 체크 
+3. 중복된 학번이 없으면 list에 추가
+4. 추가 결과를 출력
+
+학생 정보 검색 - SearchController
+
+1. 학생번호 입력
+2. get 메서드 활용
+3. 해당 결과 리턴
+
+
+

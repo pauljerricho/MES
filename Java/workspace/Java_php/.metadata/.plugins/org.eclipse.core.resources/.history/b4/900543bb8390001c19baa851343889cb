@@ -1,0 +1,50 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>PHP 프로그래밍 입문</title>
+</head>
+<body>
+<?php
+$userid = $_POST['id'];
+$subject = $_POST['subject'];
+$content = $_POST['content'];
+$subject = htmlspecialchars($subject, ENT_QUOTES);
+$content = htmlspecialchars($content, ENT_QUOTES);
+$regist_day = date("Y-m-d (H:i)");
+
+
+$lib->lib_fun("message");
+$lib->lib_fun("value_check2");
+if(!$value_check2->value_check2_(array($id,$subject,$content))){
+    echo ("$id,$subject,$content");
+    $message->message_("인자가 부족하여 처리 할 수 없습니다.","//history.back();","exit");
+}
+
+$lib->lib_fun('session_chk');
+$session_chk->session_chk_(array($_SESSION['userid']),"로그인후 이용해주세요!","location.href='/index.php';","");
+
+$userid = $_SESSION['userid'];
+
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("dbi_total_counter");
+
+    $lib->lib_fun("dbi_insert");
+    $sql = $dbi_insert->dbi_insert_("board","id,name,subject,content,regist_day,hit,file_name,file_type,file_copied","'$userid','$name','$subject','$content','$regist_day',0,0,0,0");
+
+$db_connect->db_close();
+
+if($sql){
+    $message->message_("입력 중 오류가 발생되었습니다.","history.back();","exit");
+}else{
+    $message->nomessage_("location.href='/msg_box.php?mode=send';","exit");
+}
+?>
+</body>
+</html>

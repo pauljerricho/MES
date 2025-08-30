@@ -1,0 +1,73 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/bd.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+</head>
+<body> 
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">
+   	<div id="bd_box">
+	    <h3 class="title">
+			자유 게시판
+ 		</h3>	
+   	<?php 
+$num = $_GET["num"];
+$page = $_GET["page"];
+$lib->lib_fun("message");
+$lib->lib_fun("value_check");
+if(!$value_check->value_check_(array($num,$page),"")){
+    $message->message_("인자가 부족하여 처리 할 수 없습니다.","history.back();","exit");
+}
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("data_ione_row_return");
+$row = $data_ione_row_return->data_ione_row_return_("*","board","num=$num","","");
+
+$row['content'] = str_replace(" ","&nbsp",$row['content']);
+$row['content'] = nl2br($row['content']);
+
+$new_hit = $row["hit"] + 1;
+$lib->lib_fun("dbi_update");
+$dbi_update->dbi_update_("board","hit=$new_hit","num=$num");
+?>
+	    <ul id="view_content">
+			<li>
+				<span class="col1"><b>제목 :</b> <?=$row['subject']?></span>
+				<span class="col2"><?=$row['name']?> | <?=$row['regist_day']?></span>
+			</li>
+<?php 
+if($row["file_copied"]){
+    $file_path = "./data/".$row["file_copied"];
+    $file_size = filesize($file_path);
+    
+    $file_save = ">첨부파일 : $row[file_name] ($file_size Byte)
+$nbsp;$nbsp;$nbsp;$nbsp;<a href='bd_download.php?num=$num&file_name=$row[file_name]'>[저장]</a><br><br>";
+}
+
+?>
+			<li><?=$file_save.$row['content']?></li>		
+	    </ul>
+	    <ul class="buttons">
+				<li><button onclick="location.href='bd_list.php?page=<?=$row['page']?>'" class="fontstyle">목록</button></li>
+				<li><button onclick="location.href='bd_modify_form.php?num=<?=$num?>&page=<?=$row['page']?>'" class="fontstyle">수정</button></li>
+				<li><button onclick="location.href='bd_del.php?num=<?=$num?>&page=<?=$row['page']?>'" class="fontstyle">삭제</button></li>
+				<li><button onclick="location.href='bd_form.php'" class="fontstyle">글쓰기</button></li>
+		</ul>
+	</div> <!-- bd_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?>
+</footer>
+</body>
+</html>

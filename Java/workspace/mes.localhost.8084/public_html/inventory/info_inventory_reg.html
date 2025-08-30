@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>창고 등록</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/inventory.css">
+<script>
+$(document).ready(function() {
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/inventory/info_inventory_reg.html","write");
+	$('#myform').append($('<input/>',{type:'hidden',name:'tip_index',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'inventory_dup',id:'inventory_dup',value:''}));
+
+
+	
+	//입력제한
+	$("#table_reg input[name='initial_text']").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(inputVal.replace(/[^A-Za-z0-9]/gi,'').toUpperCase());
+	    }
+	});
+	
+	//중복체크
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#table_reg .btn_dup").click(function(){
+		script_ajax_layer_pop('/inventory/inventory_dup.html',"wh_code=",'.popup-17');
+				
+	});
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+ 	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	//추가버튼 
+	$('#add_row7').on( 'click', function () {
+		draw_row(table);
+	});
+	
+	//삭제버튼
+	$("#myform").on("click", ".btn_plma", function(){
+		table.row($(this).parents('tr')).remove().draw();
+		no_display(); 
+	});
+	
+	 no_display();
+});
+function no_display(){ // 행 삭제 - 숫자입력
+	var a1 = $('.btn_number').length;
+	for(var i=1;i<=a1;i++){
+		$('.btn_number').eq(i-1).text(i);
+	}
+}
+function draw_row(table,data){
+	if(!data){
+		var data = new Array();
+		data = {"wh_no":"","zone_name":"","memo":""};
+	}
+	!data['memo'] ? data['memo']="" : false; 
+	table.row.add([
+         "<td class='control' tabindex='0'>상세</td>",
+         "<div class='btn_plma btn_number'>1</div><input type='hidden' name='wh_no[]' value='"+data['wh_no']+"'>",
+         "<input type='text' name='zone_name[]' value='"+data['zone_name']+"'>",
+         "<input type='text' name='memo[]' value='"+data['memo']+"'>"
+    ]).draw(false);
+	 no_display();
+}
+</script>
+</head>
+<body>
+<div class="background"></div>
+<div class="header_wrap">
+	<!--header-->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+	<!--header-->
+</div>
+<!--header_wrap-->
+<!-- 퀵바 -->
+<div class="quick_wrap ui-draggable ui-draggable-handle">
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+</div>
+<!-- quick_wrap -->
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+<!--m_menu-->
+<div class="content">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+	<div class="content_detail" id="content_detail">
+		<div id="content" class="infoInventoryRegCont">
+			<ul class="lnb">
+				<li><a href="/index.html"><img src="/img/icon_home.jpg"alt="홈으로"></a></li>
+				<li></li>
+				<li><a href="/inventory/main.html">재고관리</a></li>
+				<li></li>
+				<li><a href="/inventory/info_inventory.html">창고현황</a></li>
+			</ul>
+			<!--lnb-->
+			<div class="sub_con">
+				<h2 class="sub_tit">창고 등록</h2>
+				<table id="table_reg">
+					<tr>
+						<th>창고코드 <span class="txt_red">*</span></th>
+						<td>
+							<div class="code_wrap">
+								<select name="initial" class="select_half">
+									<option value="">선택</option>
+									<option value='text'>직접입력</option>
+									<option value='txtall'>직접입력(전체)</option>
+								</select>
+								<input type='text' name='initial_text' id='initial_text' placeholder="코드입력">
+								<input type='text' name='wh_code' id='wh_code' readonly>
+								<div class='btn_dup'>중복검사</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>창고명 <span class="txt_red">*</span></th>
+						<td><input type="text" name="wh_name" id="wh_name"></td>
+					</tr>
+					<tr>
+						<th>위치</th>
+						<td><input type="text" name="location" id="location"></td>
+					</tr>
+				</table>
+				<table class="table_ri" id="table">
+				<thead>
+					<tr>
+						<th style="cursor: pointer;" id="add_row7">추가</th>
+						<th>구역 명 <span class="txt_red">*</span></th>
+						<th>메모</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td><div class="btn_plma btn_number" title="삭제">1</div>
+							<input type="hidden" name="wh_no[]"></td>
+						<td><input type="text" name='zone_name[]'></td>
+						<td><input type="text" name='memo[]'></td>
+					</tr>
+					</tbody>
+				</table>
+				<div class="bot_box">
+					<div class="bot_btn">
+						<div class="btn"><a href="/inventory/info_inventory.html">취소</a></div>
+						<div class="btn btn_right save" title="등록">등록</div>
+					</div>
+					<!-- bot_btn -->
+				</div>
+				<!-- bot_box -->
+			</div>
+			<!--con-->
+			<div id="lay" style="overflow: auto;">
+				<div class="bg"></div>
+				<div id="lay2"></div>
+			</div>
+		</div>
+		<!--content-->
+	</div>
+</div>
+<!--content-->
+<div id="copy">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+</div>
+<div class="keyboard"></div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+</head>
+<body>
+<?php 
+$num =$_POST['num'];
+$page =$_POST['page'];
+
+$subject = $_POST["subject"];
+$content = $_POST["content"];
+
+$lib->lib_fun("message");
+$lib->lib_fun("value_check2");
+if(!$value_check2->value_check2_(array($num,$page),"")){
+    $message->message_("인자가 부족하여 처리할 수 없습니다.","echo($num,$page);//history.back();","exit");
+}
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("file_name_strstr");
+$file_name_strstr->file_name_strstr_(array("upfile"),".gif,.jpg,.jpeg,.png");
+
+$upfile_name = $_FILES["upfile"]["name"];
+if($upfile_name){
+    $upfile_type = $_FILES["upfile"]["type"];
+    
+    $lib->lib_fun("file_upload");
+    $copied_file_name = $file_upload->file_upload_("upfile",'./data',data("Y_m_d_H_i_s"));
+    $update_text = 
+    ",file_copied='$copied_file_name',file_name='$upfile_name',file_type='$upfile_type'";
+}
+
+$subject = htmlspecialchars($subject, ENT_QUOTES);
+$content = htmlspecialchars($content, ENT_QUOTES);
+
+$lib->lib_fun("dbi_update");
+$lib->lib_fun("dbi_update");
+$sql = $dbi_update->dbi_update_("board","subject='$subject',content='$update_text'","num='$num'");
+
+if($sql){
+    $message->message_("입력 중 오류가 발생했습니다.","history.back();","exit");
+}
+
+$db_connect->db_close();
+$message->nomessage_("location.href='bd_list.php?page=$page';","exit");
+?>
+
+</body>
+</html>

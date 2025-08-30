@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>작업자정보 리스트</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<script>
+$(document).ready(function() {
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/produce/info_user.html","delete");
+
+
+
+	//체크박스 전체 선택
+	javascript_onload_src("script_checkall");
+	$("#table input[name='chk_all']").click(function(){
+		script_checkall(this,"s_no[]");
+	});
+	
+	//버블링 이벤트
+	$("#table").on("click","tbody > tr > td.control, input[type='checkbox']",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 클릭 이벤트
+	$("#table").on("click","tbody tr[role='row']",function(e){
+		var s_no = $(this).find("input[name='s_no[]']").val();
+		location.href='/produce/info_user_mod.html?s_no='+s_no;
+	});
+	
+	//등록 버튼
+	$("#myform .bot_btn .btn_right").click(function(){
+		location.href='/produce/info_user_reg.html';
+	});
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>1</td><td>sungjun01</td><td>김성준</td><td>1995-06-10</td><td>생산부서</td><td>대리</td><td>2022-02-22 15:12:42</td></tr>");
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 2, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/produce/main.html">생산관리</a></li>
+					<li></li>
+					<li><a href="#">사용자 정보</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<div class="tit_box">
+						<h2 class="sub_tit">사용자 정보</h2>
+						<p class="sub_txt">
+							<span>1</span>개의 데이터가 조회되었습니다.
+						</p>
+					</div>
+					<!-- tit_box -->
+					<div class="search_pc">
+						<input type="text" id="search_po_p" name="search_key" placeholder="search">
+						<div class="gla"></div>
+					</div>
+					<!-- search_pc -->
+					<div id="table_wrapper">
+					<table id="table" class="ui celled table">
+						<colgroup>
+							<col width="5%">
+							<col width="7%">
+							<col width="14%">
+							<col width="14%">
+							<col width="15%">
+							<col width="13%">
+							<col width="13%">
+							<col width="19%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th><input type="checkbox" name="chk_all"></th>
+								<th>번호</th>
+								<th>아이디</th>
+								<th>성명</th>
+								<th>생년월일</th>
+								<th>부서</th>
+								<th>직책</th>
+								<th>등록일</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					</div>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn delete" title="선택삭제">선택삭제</div>
+							<div class="btn btn_right" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+			</div>
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>입고 취소</title>
+<style>
+#cancel_table tbody tr:hover{
+	background:#ddd;
+	cursor:pointer;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var req_no = urlParams.get("req_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup_ta.popup-22","myform2","/inventory/request_reg_out.html","cancel");
+	$('#myform2').append($('<input/>',{type:'hidden',name:'req_no',value:req_no}));
+
+
+
+	//체크박스
+	javascript_onload_src("script_checkall");
+	$(".popup-22 input[name='chk_all']").click(function(){
+		script_checkall(this,"st_no[]");
+	});
+	
+	//버블링 이벤트
+	$(".popup-22").on("click","#cancel_table > tbody > tr > td.control",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 이벤트
+	$(".popup-22").on("click","#cancel_table tbody tr",function(){
+		$(this).closest("tr").find("input.st_no").click();
+	});
+	
+	//출고취소
+	$(".popup-22 .cancel").click(function(){
+		if(confirm("선택한 출고내역을 취소하시겠습니까?")){
+			$('#lay').fadeOut();
+			$('html, body').css({'overflow': 'visible'});
+		}else{
+			$('#lay').fadeOut();
+			$('html, body').css({'overflow': 'visible'});
+		}
+	});
+	
+	//닫기
+	$(".popup-22 .down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	//데이터테이블
+	$("#cancel_table thead tr").prepend("<th>상세</th>");
+	$("#cancel_table tbody tr").prepend("<td>상세</td>");
+	var year = $("#myform input[name='year']").val();
+	var table = $("#cancel_table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 4, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+</script>
+</head>
+<body>
+	<div class="popup_ta popup-22">
+		<div class="pop_close down"></div>
+		<div class="message">입고 취소</div>
+        <div class="table_search">
+            <table class="table_pop" id="cancel_table">
+            	<colgroup>
+            		<col width="10%">
+            		<col width="23%">
+            		<col width="23%">
+            		<col width="24%">
+            		<col width="20%">
+            	</colgroup>
+            	<thead>
+					<tr>
+						<th><input type="checkbox" name="chk_all"></th>
+						<th>입고창고</th>
+						<th>입고구역</th>
+						<th>입고일자</th>
+						<th>입고량</th>
+					</tr>
+				</thead>
+			</table>
+		</div> <!-- table_search -->
+		<div class="pop_bp">
+			<div class="btn_pop1 down btn_co">닫기</div>
+			<div class="btn_pop1 cancel">입고취소</div>
+		</div><!-- pop_bp -->
+	</div><!--popup-->
+</body>
+</html>

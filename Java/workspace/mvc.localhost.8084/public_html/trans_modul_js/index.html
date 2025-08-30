@@ -1,0 +1,9 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+$GLOBALS['lib'] = $lib;
+$lib->lib_fun('tellers_js_module_trans');
+$req_text = $tellers_js_module_trans->tellers_js_module_trans_($_REQUEST['mod']);
+if($req_text){
+    require_once($req_text);
+}
+?>

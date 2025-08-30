@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>원부재료 검색</title>
+<meta charset="utf-8">
+<style>
+.table_pop tbody tr:hover {
+	background: #ddd;
+	cursor: pointer;
+}
+input[type=radio] {
+    margin-right: 0;
+	vertical-align: -webkit-baseline-middle;
+}
+.popup-22 .pop_radio div {
+	margin: 10px;
+    display: flex;
+    align-items: center;
+}
+.popup-22 .pop_radio {
+	margin: auto;
+	width: fit-content;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var mt_number = urlParams.get("mt_number");
+	var ph_code = urlParams.get("ph_code");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup-22","myform2","popup_material.html","search");
+	$('#myform2').append($('<input/>',{type:'hidden',name:'mt_number',value:mt_number}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'ph_code',value:ph_code}));
+
+
+
+	//버블링 이벤트
+	$(".popup-22").on("click","#table_popup > tbody > tr > td.control",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 이벤트
+	$(".popup-22").on("click","#table_popup tbody tr[role='row']",function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	//닫기 버튼
+	$("div.pop_close.down , div.btn_pop1.down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	//미사용
+	$(".popup-22 .btn_remove").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table_popup tbody").append("<tr><td>완제품</td><td>WAN-0001</td><td>명절선물세트</td><td>100</td><td>kg</td></tr>");
+	$("#table_popup tbody").append("<tr><td>반제품</td><td>BAN-0001</td><td>통조림</td><td>100</td><td>kg</td></tr>");
+	$("#table_popup tbody").append("<tr><td>원재료</td><td>WON-0001</td><td>돼지고기</td><td>1,000</td><td>kg</td></tr>");
+	$("#table_popup tbody").append("<tr><td>부재료</td><td>BUU-0001</td><td>소금</td><td>500</td><td>kg</td></tr>");
+	
+	$("#table_popup thead tr").prepend("<th>상세</th>");
+	$("#table_popup tbody tr").prepend("<td>상세</td>");
+	var table = $("#table_popup").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	alignModal(); //수직 정렬
+});
+
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+</script>
+</head>
+<body>
+<div class="popup_ta popup-22">
+	<div class="pop_close down"></div>
+	<div class="message">재료검색</div>
+	<!-- message -->
+	<div class="pop_search2">
+		<select class="select_half" name="key1">
+			<option value='0'>통합검색</option>
+			<option value='2'>제품명</option>
+			<option value='1'>제품번호</option>
+		</select>
+		<input type="text" class="search_in" name="search_key" id="search_key">
+		<div class="search_btn save">검색</div>
+		<div class="pop_radio">
+			<div>
+				<input type="radio" id="rA" name="ra_check" value="A" checked><label for="rA">전체</label>
+			</div>
+			<div>
+				<input type="radio" id="r1" name="ra_check" value="1"><label for="r1">완제품</label>
+			</div>
+			<div>
+				<input type="radio" id="r2" name="ra_check" value="2"><label for="r2">반제품</label>
+			</div>
+			<div>
+				<input type="radio" id="r3" name="ra_check" value="3"><label for="r3">원재료</label>
+			</div>
+			<div>
+				<input type="radio" id="r4" name="ra_check" value="4"><label for="r4">부재료</label>
+			</div>
+		</div>
+	</div>
+	<!-- pop_search2 -->
+	<div class="table_search">
+		<table class="table_pop" id="table_popup">
+			<thead>
+				<tr>
+					<th>구분</th>
+					<th>제품번호</th>
+					<th>제품명</th>
+					<th>포장지당 무게</th>
+					<th>단위</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<!-- table_search -->
+	<div class="pop_bp">
+		<div class="btn_pop1 btn_remove">미사용</div>
+		<div class="btn_pop1 down btn_co">닫기</div>
+	</div>
+	<!-- pop_bp -->
+</div>
+<!--popup-->
+</body>
+</html>

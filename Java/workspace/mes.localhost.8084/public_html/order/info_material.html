@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>원부재료 정보 리스트</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/order.css">
+<style>
+#table td {
+	padding: 7px 15px;
+	height: 40px;
+}
+td .img_box img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+td .img_box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	border: 0px solid #000;
+	background: #fff;
+	box-sizing: border-box;
+	text-align: center;
+	overflow: hidden;
+}
+@media screen and (max-width: 414px){
+	.btn_barcode {
+		margin:0;
+	}
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/order/info_material.html","delete");
+	$('#myform').append($('<input/>',{type:'hidden',name:'division',value:''})); //Excel 분류별 출력
+
+
+
+	//체크박스 전체 선택
+	javascript_onload_src("script_checkall");
+	$("#table input[name='chk_all']").click(function(){
+		script_checkall(this,"s_no[]");
+	});
+	
+	//버블링 이벤트
+	$("#table").on("click","tbody > tr > td.control,.btn_barcode,input[type='checkbox']",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 클릭 이벤트
+	$("#table").on("click","tbody tr[role='row']",function(e){
+		location.href='/order/info_ma_mod.html?s_no=';
+	});
+	
+	//분류 탭 검색
+	$(".tab li").click(function(){
+		$(".tab li").removeClass("teb_on");
+		$(this).addClass("teb_on");
+	});
+	
+	//등록 버튼
+	$("#myform .bot_btn .btn_right").click(function(){
+		location.href='/order/info_ma_reg.html';
+	});
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table tbody").append("<tr><th><input type='checkbox' name='s_no[]''></th><td>1</td><td><div class='img_box'><img src='/img/img_logo.png'></div></td><td>원재료</td><td>WON-0001</td><td>돼지고기</td><td>30</td><td>1,000</td><td>kg</td><td>50,000</td><td>명리식품</td><td>5년</td><td><div class='btn_barcode' title='바코드' onclick=\"script_ajax_layer_pop('/order/barcode.html','s_no=','.popup_b')\"></div></td></tr>");
+	$("#table tbody").append("<tr><th><input type='checkbox' name='s_no[]''></th><td>2</td><td><div class='img_box'><img src='/img/img_logo.png'></div></td><td>부재료</td><td>BUU-0001</td><td>소금</td><td>30</td><td>500</td><td>kg</td><td>5,000</td><td>프래쉬푸드</td><td>5년</td><td><div class='btn_barcode' title='바코드' onclick=\"script_ajax_layer_pop('/order/barcode.html','s_no=','.popup_b')\"></div></td></tr>");
+	
+	//데이터테이블
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 2, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }, {
+        	orderable: false,
+            targets:   1  
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="infoMaterialCont">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/order/main.html">발주관리</a></li>
+					<li></li>
+					<li><a href="#">원부재료 정보</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<div class="tit_box">
+						<h2 class="sub_tit">원부재료 정보</h2>
+						<p class="sub_txt">
+							<span>2</span>개의 데이터가 조회되었습니다.
+						</p>
+					</div>
+					<!-- tit_box -->
+					<div class="search_pc">
+						<select class="select_pc">
+							<option value="">전체</option>
+							<option value="1">원재료</option>
+							<option value="2">부재료</option>
+						</select>
+						<ul class="tab">
+							<li class="teb_on">전체(<span class="tab1">2</span>)</li>
+							<li>원재료(<span class="tab2">1</span>)</li>
+							<li>부재료(<span class="tab3">1</span>)</li>
+						</ul>
+						<!-- sub_teb -->
+						<input type="text" id="search_po_p" name="search_key" placeholder="search">
+						<div class="gla" style="cursor:pointer;"></div>
+					</div>
+					<!-- search_pc -->
+					<table id="table" class="ui celled table" style="width: 100%">
+						<colgroup>
+							<col width="4%"> <!--체크박스-->
+							<col width="5%"> <!--번호-->
+							<col width="8%"> <!--이미지-->
+							<col width="6%"> <!--분류-->
+							<col width="12%"> <!--제품번호-->
+							<col width="13%"> <!--제품명-->
+							<col width="7%"> <!--BOX당 수량-->
+							<col width="7%"> <!--포장지당 중량-->
+							<col width="7%"> <!--단위-->
+							<col width="9%"> <!--가격-->
+							<col width="10%"> <!--협력업체-->
+							<col width="6%"> <!--유통기한-->
+							<col width="6%"> <!--바코드-->
+						</colgroup>
+						<thead>
+							<tr>
+								<th><input type="checkbox" name="chk_all"></th>
+								<th>번호</th>
+								<th>이미지</th>
+								<th>분류</th>
+								<th>제품번호</th>
+								<th>제품명</th>
+								<th>BOX당 수량</th>
+								<th>포장지당 중량</th>
+								<th>단위</th>
+								<th>가격(원)</th>
+								<th>협력업체</th>
+								<th>유통기한</th>
+								<th>바코드</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn btn_excel">EXCEL</div>
+							<div class="btn delete" title="선택삭제">선택삭제</div>
+							<div class="btn btn_right" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

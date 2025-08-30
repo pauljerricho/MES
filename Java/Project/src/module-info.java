@@ -1,0 +1,3 @@
+module Project {
+	exports controller;
+}

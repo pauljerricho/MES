@@ -1,0 +1,106 @@
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	javascript_onload_src("script_ajax_layer_pop");
+	$(".q_list > .q_storage").click(function(){
+		location.href='/inventory/ma_inventory.html';
+	});
+	$(".q_list > .q_shipment").click(function(){
+		location.href='/shipment/pr_order_shipment.html';
+	});
+	$(".q_list > .q_barcode").click(function(){
+		script_ajax_layer_pop('/popup/popup_barcode.html',jQuery('#myform').serialize(),'.popup-13');
+	});
+
+	var q_list_on = getCookie('q_list_on');	
+	$('.q_menu').click(function() {
+		if (q_list_on == 'no' || !q_list_on) {
+			$('.q_list').show();
+			q_list_on = 'ok';
+			setCookie('q_list_on', q_list_on, 86400);
+		} else {
+			$('.q_list').hide();
+			q_list_on = 'no';
+			setCookie('q_list_on', q_list_on, 86400);
+		}
+	});
+	
+	if (q_list_on == 'ok') {
+		$('.q_list').show();
+	} else {
+		$('.q_list').hide();
+	}
+
+	/* 퀵바_바코드팝업 */
+	var fs_ok_on = getCookie('fs_ok_on');
+	$('.full_screen').click(function() {
+		if (fs_ok_on == 'no') {
+			// start_fullscreen();//이미지 변경
+			fs_ok_on = 'ok';
+			setCookie('fs_ok_on', fs_ok_on, 86400);
+		} else {
+			// stop_fullscreen();//이미지 변경
+			fs_ok_on = 'no';
+			setCookie('fs_ok_on', fs_ok_on, 86400);
+		}
+	});	
+	
+	/* 키보드 */
+	var q_keyd = getCookie('keyboard_on');
+	$(".q_keyboard").click(function() {
+		if (q_keyd == 'ok') {
+			$(".q_keyboard p").text("자판");
+			$(".q_keyboard p").css("color","#fff");
+			$(".q_keyboard img").attr("src","/img/q_keyboard.png");
+			q_keyd = 'no';
+			$('input[type=text]').removeClass('hangulField');
+			setCookie('keyboard_on',q_keyd,86400);
+		} else {
+			$(".q_keyboard p").text("작동중");
+			$(".q_keyboard p").css("color","#e85757");
+			$(".q_keyboard img").attr("src","/img/q_keyboard_on.png");
+			q_keyd = 'ok';
+			$('input[type=text]').addClass('hangulField');
+			setCookie('keyboard_on',q_keyd,86400);
+		}
+	});
+
+	if (q_keyd == 'ok') {
+		$(".q_keyboard p").text("작동중");
+		$(".q_keyboard p").css("color","#e85757");
+		$(".q_keyboard img").attr("src","/img/q_keyboard_on.png");
+		$('input[type=text]').addClass('hangulField');
+	} else {
+		$(".q_keyboard p").text("자판");
+		$(".q_keyboard p").css("color","#fff");
+		$(".q_keyboard img").attr("src","/img/q_keyboard.png");
+		$('input[type=text]').removeClass('hangulField');
+	}	
+});
+</script>
+<!-- q_menu -->
+<div class="q_menu">
+	<img src="/img/q_search.png" alt="menu">
+	<p>MENU</p>
+</div>
+<!-- q_list -->
+<div class="q_list" style="display: none;">
+	<ul>
+		<li class="q_storage">
+			<img src="/img/icon_quality1_on.png" alt="창고">
+			<p>창고</p>
+		</li>
+		<li class="q_shipment">
+			<img src="/img/icon_material1_on.png" alt="출하">
+			<p>출하</p>
+		</li>
+		<!-- <li class="q_barcode btn_popup_barcode">
+			<img src="/img/q_barcode1.png" alt="바코드">
+			<p>바코드</p>
+		</li> -->
+		<li class="q_keyboard">
+			<img src="/img/q_keyboard1.png" alt="자판">
+			<p style="color: rgb(255, 255, 255);">자판</p>
+		</li>
+	</ul>
+</div>

@@ -1,0 +1,473 @@
+/* 공통 */
+#table_reg td .btn_dup {
+    margin-left: 10px;
+    height: 35px;
+    line-height: 35px;
+}
+@media screen and (max-width: 768px) {
+	.btn {
+	    border: 0 !important;
+	    box-shadow: 2px 2px 3px 0px #dedede;
+	}
+}
+
+/* 입출고현황 */
+@media screen and (max-width: 768px) {
+	.maPutCont #table_reg th {
+		width:29% !important;
+	}
+	.maPutCont #table_reg td {
+		width:69%;
+	}
+	.maPutCont input.input_calendar {
+		width:40% !important;
+		height:36px !important;
+	}
+}
+@media screen and (max-width: 490px) {
+	.maPutCont ul.tab li {
+	    width: 31%;
+	}
+}
+
+/* 입고 등록 */
+@media screen and (max-width: 768px) {
+	.maInquiryWaCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom:20px;
+	}
+	.maInquiryWaCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.maInquiryWaCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.maInquiryWaCont .table_ri td {
+		border: 0 !important;
+	}
+	.maInquiryWaCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width: 85px !important;
+	}
+}
+
+/* 출고등록 */
+@media screen and (max-width: 768px) {
+	.maInquiryReCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom:20px !important;
+	}
+	.maInquiryReCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.maInquiryReCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.maInquiryReCont .table_ri td {
+		border: 0 !important;
+	}
+	.maInquiryReCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width: 85px !important;
+	}
+}
+
+/* 창고등록 */
+.infoInventoryRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+}
+.infoInventoryRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoInventoryRegCont #table_reg td #wh_code {
+	width:90px;
+}
+@media screen and (max-width: 768px) {	
+	.infoInventoryRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoInventoryRegCont #table_reg th {
+    	width: 100px;
+	}
+	.infoInventoryRegCont #table_reg th,
+	.infoInventoryRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoInventoryRegCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.infoInventoryRegCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.infoInventoryRegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.infoInventoryRegCont .table_ri td {
+		border: 0 !important;
+	}
+	.infoInventoryRegCont table input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoInventoryRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoInventoryRegCont .bot_box {
+		margin-top:20px;
+	}
+	.infoInventoryRegCont .table_ri col{
+		width: 100px !important;
+	}
+	.infoInventoryRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoInventoryRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoInventoryRegCont #table_reg .code_wrap input[type=text] {
+		display:inline-block;
+	}
+	.infoInventoryRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoInventoryRegCont #table_reg th {
+		width:85px !important;
+	}
+	.infoInventoryRegCont #table_reg td .btn_dup {
+    	height: 30px !important;
+		line-height: 30px !important;
+    	font-size:11px;
+	}
+	.infoInventoryRegCont #table_reg .code_wrap .select_half {
+		height:30px;
+	}
+}
+
+/* 창고 바코드 */
+@media screen and (max-width: 768px) {
+	.infoInventoryBarcodegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoInventoryBarcodegCont #table_reg th {
+    	width: 100px !important;
+	}
+	.infoInventoryBarcodegCont #table_reg th,
+	.infoInventoryBarcodegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoInventoryBarcodegCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.infoInventoryBarcodegCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.infoInventoryBarcodegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.infoInventoryBarcodegCont .table_ri td {
+		border: 0 !important;
+	}
+	.infoInventoryBarcodegCont table input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width: 85px !important;
+	}
+	.infoInventoryBarcodegCont .bot_box {
+		margin-top:20px;
+	}
+	.infoInventoryBarcodegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+
+/* 입고처리 페이지 */
+@media screen and (max-width: 768px) {
+	.requestRegInCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.requestRegInCont #table_reg th {
+    	width: 100px;
+	}
+	.requestRegInCont #table_reg th,
+	.requestRegInCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.requestRegInCont #table_reg th,
+	.requestRegInCont #table_reg td {
+		
+	}
+	.requestRegInCont #table {
+		margin-bottom:20px !important;
+	}
+	.requestRegInCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    width:100% !important;
+	}
+	.requestRegInCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.requestRegInCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.requestRegInCont .table_ri td {
+		border: 0 !important;
+	}
+	.requestRegInCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width:85px !important;
+	}
+	.requestRegInCont .bot_box {
+		margin-top:20px !important;
+	}
+	.requestRegInCont .btn_pmn,
+	.requestRegInCont .btn_pmn .enable {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+}
+
+/* 출고처리 페이지 */
+@media screen and (max-width: 768px) {
+	.requestRegOutCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.requestRegOutCont #table_reg th {
+    	width: 100px;
+	}
+	.requestRegOutCont #table_reg th,
+	.requestRegOutCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.requestRegOutCont #table {
+		margin-bottom:20px !important;
+	}
+	.requestRegOutCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    width:100% !important;
+	}
+	.requestRegOutCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.requestRegOutCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.requestRegOutCont .table_ri td {
+		border: 0 !important;
+	}
+	.requestRegOutCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width:85px !important;
+	}
+	.requestRegOutCont .bot_box {
+		margin-top:20px !important;
+	}
+	.requestRegOutCont .btn_pmn,
+	.requestRegOutCont .btn_pmn .enable {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+}
+
+/* 재고관리 상세페이지 */
+@media screen and (max-width: 768px) {
+	.invDetailCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.invDetailCont #table_reg th {
+    	width: 100px;
+	}
+	.invDetailCont #table_reg th,
+	.invDetailCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.invDetailCont #table_reg th,
+	.invDetailCont #table_reg td {
+		
+	}
+	.invDetailCont #table {
+		margin-bottom:20px !important;
+	}
+	.invDetailCont #table {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    width:100% !important;
+	}
+	.invDetailCont #table thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.invDetailCont #table th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.invDetailCont #table td {
+		border: 0 !important;
+	}
+	.invDetailCont #table input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.invDetailCont .bot_box {
+		margin-top:20px !important;
+	}
+}
+@media screen and (max-width: 500px) {
+	.invDetailCont #table input[type='text'] {
+		width:115px !important;
+	}
+}
+
+/* 입출고요청 리스트 */
+@media screen and (max-width: 1140px) {
+	.requestCont ul.tab li {
+	    float: left;
+	    width: 90px;
+	    font-size:14px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.requestCont #table_reg th {
+		width:29% !important;
+	}
+	.requestCont #table_reg td {
+		width:69%;
+	}
+	.requestCont input.input_calendar {
+		width:40% !important;
+		height:36px !important;
+	}
+}
+@media screen and (max-width: 500px) {
+	.requestCont ul.tab {
+	    height: auto;
+	}
+	.requestCont ul.tab li {
+	    width: 31%;
+	    height: auto;
+	    margin: 0 1% 10px 1%;
+	    padding: 12px 0;
+	    text-align: center;
+	    font-size: 12px;
+	    border-right: 1px solid #b3c1cb;
+	    line-height: inherit;
+	}
+}

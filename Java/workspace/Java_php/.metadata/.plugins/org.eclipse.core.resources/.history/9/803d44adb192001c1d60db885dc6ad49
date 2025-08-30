@@ -1,0 +1,87 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/bd.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+</head>
+<body>
+<?php 
+$num = $_GET['num'];
+$page = $_GET['page'];
+
+$lib->lib_fun("message");
+$lib->lib_fun("value_check2");
+if(!$value_check2->value_check2_(array($num,$page),"")){
+    $message->message_("인자가 부족하여 처리할 수 없습니다.","history.back();","exit");
+}
+?>
+<?php 
+$lib->lib_fun("session_chk");
+$session_chk->session_chk_(array($_SESSION['userid']),"로그인 해주세요!","location.href='/index.php';","");
+?> 
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">
+   	<div id="bd_box">
+	    <h3 id="bd_title">
+	    		글 수정하기
+		</h3>
+
+<?php 
+$lib->lib_fun("script_form_check");
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("data_ione_row_return");
+$row = $data_ione_row_return->data_ione_row_return_("*","board","num='$'","","");
+
+$db_connect->db_close();
+?>
+    <form  name="bd_form" method="post" action="bd_modify.php?num=num&page=page" enctype="multipart/form-data">
+    	 <ul id="bd_form">
+			<li>
+				<span class="col1">이름 : </span>
+				<span class="col2"><?=$row["name"]?></span>
+			</li>		
+    		<li>
+    			<span class="col1">제목 : </span>
+<?php 
+$text = array("subject"=>"제목을 입력해주세요!");
+$script_form_check->script_form_check_("bd_form",$text,"text");
+?>
+    			<span class="col2"><input name="subject" type="text" value="subject" class="fontstyle"></span>
+    		</li>	    	
+    		<li id="text_area">	
+    			<span class="col1">내용 : </span>
+    			<span class="col2">
+    				<textarea name="content" class="fontstyle"><?=$row['content']?></textarea>
+    			</span>
+    		</li>
+    		<li>
+		        <span class="col1"> 첨부 파일 : </span>
+		        <span class="col2"><?$row['file_name']?>&nbsp;<input type="file" name="upfile">&nbsp;</span>
+		    </li>
+    	    </ul>
+    	<ul class="buttons">
+			<li><button type="button" onclick="script_form_check()" class="fontstyle">수정</button></li>
+			<li><button type="button" onclick="location.href='bd_list.php&page=<?=$page?>'" class="fontstyle">목록</button></li>
+		</ul>
+    </form>
+	</div> <!-- bd_box -->
+</section>
+<?php 
+$lib->lib_fun("script_print");
+$script_print->script_print_();
+?>
+<footer>
+    <?php include "footer.php";?>
+</footer>
+</body>
+</html>

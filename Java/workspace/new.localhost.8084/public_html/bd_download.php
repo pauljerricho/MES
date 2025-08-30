@@ -1,0 +1,21 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+
+$num = $_GET["num"];
+$file_name = $_GET['file_name'];
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("data_ione_row_return");
+$row = $data_ione_row_return->data_ione_row_return_("*","board","num='$num' and file_name='$file_name'","","");
+
+if($row['num']){
+    $ie = preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0')!==false && strpos($_SERVER['HTTP_USER_AGENT'], 'rv:11.0')!==false);
+    if($ie){
+        $file_name = iconv('utf-8','euc-kr',$file_name);
+    }
+    $lib->lib_fun("file_download");
+    $file_download->file_download_($row[file_copied],"./data","history.back();",$file_name,"");
+}
+?>

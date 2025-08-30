@@ -1,0 +1,33 @@
+/* 게시판 글쓰기(bd_form.php) */
+#bd_box { position: relative; width: 800px; margin: 0 auto; }
+#bd_box h3 { margin-top: 30px;	padding: 10px; border-bottom: solid 2px #516e7f; font-size: 20px; }
+#bd_form span { display: inline-block; }
+#bd_form .col1 { width: 150px; }
+#bd_form li {	padding: 12px; border-bottom: solid 1px #dddddd; }
+#bd_form input { width: 500px; height: 25px; }
+#bd_form textarea { width: 500px;	height: 150px; }
+#bd_form #text_area {	position: relative;	height: 158px; }
+#bd_form #text_area .col1 { position: absolute; top: 10px; }
+#bd_form #text_area .col2 { position: absolute; left: 166px; }
+#bd_box .buttons { text-align: right; margin: 20px 0 40px 0; }
+#bd_box .buttons li { display: inline; }
+#bd_box .buttons button { padding: 5px 10px; cursor: pointer; }
+/* 게시판 목록보기(bd_list.php) */
+#bd_list li { padding: 10px 0; border-bottom: solid 1px #dddddd; }
+#bd_list span { display: inline-block; text-align: center;}
+#bd_list .col1 { width: 80px; }
+#bd_list .col2 { width: 330px; text-align: left; }
+#bd_list .col3 { width: 100px; }
+#bd_list .col4 { width: 40px; }
+#bd_list .col5 { width: 180px; }
+#bd_list .col6 { width: 40px; }
+#page_num {	text-align: center;	margin: 30px 0 }
+#page_num li { display: inline; }
+/* 게시판 내용보기(bd_view.php) */
+#bd_box { width: 800px; margin: 0 auto; }
+#bd_box .title { margin-top: 30px; padding: 10px; border-bottom: solid 2px #516e7f; font-size: 20px; }
+#view_content li:nth-child(1) {	padding: 15px; border-bottom: solid 1px #aaaaaa; }
+#view_content .col2 { float: right; }
+#view_content li:nth-child(2) {	padding: 15px 15px 80px 15px; border-bottom: solid 1px #cccccc; }
+#view_content li:nth-child(3) button { padding: 5px 20px; margin: 15px 0 40px 720px; cursor: pointer; }
+

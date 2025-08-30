@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>제품 수정</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/obtain_order.css">
+<style>
+.tr_detail {
+	display:none;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'tip_index',id:'tip_index',value:''})); //협력업체 순서
+	$('#myform').append($('<input/>',{type:'hidden',name:'num_dup',id:'num_dup',value:''})); //중복검사 확인
+
+
+	
+	//이미지 파일 미리보기
+	javascript_onload_src("image_file_check");
+	javascript_onload_src("previewImage");
+	$("#image2").change(function(){
+		if(image_file_check(this)){
+			var file_text = $(this).val().split("\\");
+			$("#image").val(file_text[2]);
+			$("#View_area").html("");
+			previewImage(this,'View_area');
+		}
+	});
+	$("#image, #myform div.btn_06").click(function(){
+		$('#image2').click();
+	});
+	
+	//입력제한
+	$("#table_reg input[name='initial_text']").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(inputVal.replace(/[^A-Za-z0-9]/gi,'').toUpperCase());
+	    }
+	});
+	$("#myform input[name='box_quantity'],#myform input[name='expiration_term1'],#myform input[name='display_order']").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(Number(inputVal.replace(/[^0-9]/gi,'')));
+	    }
+	});
+	//포장지당 중량
+	$("#myform input[name='sacks_unit']").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(inputVal.replace(/[^0-9\.]/gi,''));
+	    }
+	});
+	//단가
+	javascript_onload_src("addComma");
+	$("#myform #p_price").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(addComma(Number(inputVal.replace(/[^0-9]/gi,''))));
+	    }
+	});
+	
+	//중복체크
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#table_reg .btn_dup").on("click",function(){
+		script_ajax_layer_pop('/obtain_order/product_dup.html',"mt_number=",'.popup-4');
+	});
+	
+	//BOX 표시단위
+	$("#table_reg select[name='box_unit']").on("change",function(){
+		if($(this).val()=="A"){
+			$("#box_unit_text").css("display","inline-block");
+			$("#box_unit_text").val("");
+		}else{
+			$("#box_unit_text").css("display","none");
+			$("#box_unit_text").val("BOX");
+		}
+	});
+	
+	//협력업체
+	$("#myform").on("click", "input[name='c_name[]']", function() {
+		$('#tip_index').val($('#myform .insearch').index(this));
+		script_ajax_layer_pop('/popup/popup_coo.html','','.popup-5');
+	});
+	
+	//작업표준정보
+	$("#myform").on("click", "#wk_name", function() {
+		script_ajax_layer_pop('/obtain_order/popup_work_standard.html',jQuery('#myform').serialize(),'.popup-5');
+	});
+	
+	//구분
+	$("#myform").on("click", "input[name='ra_check']", function() {
+		$(this).val()==3 ? $("#myform .tr_detail").css("display","table-row") : $("#myform .tr_detail").css("display","none");
+	});
+	
+	//수정 버튼
+	$("#myform .bot_btn > .btn_right").click(function(){
+		location.href='/obtain_order/info_product.html';
+	});
+	
+	
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#View_area").html("<img src='/img/img_logo.png' alt='제품 이미지'>");
+	$("#table_reg .tr_detail").css("display","table-row");
+	$("#myform input[name='image']").val("/img/img_logo.png");
+	$("#table_reg #mt_number").closest("td").html("BAN-0001");
+	$("#table_reg input[name='p_name']").val("통조림");
+	$("#table_reg input[name='standard']").val("ST");
+	$("#table_reg input[name='box_quantity']").val("30");
+	$("#table_reg input[name='sacks_unit']").val("100");
+	$("#table_reg input[name='p_price']").val("20,000");
+	$("#table_reg input[name='expiration_term1']").val("5");
+	$("#table_reg select[name='expiration_term2'] option[value='Y']").prop("selected",true);
+	$("#table_reg input[name='wk_name']").val("선물 세트 포장");
+	$("#table_reg input[name='wk_code']").val("OP-0001");
+	$("#table_reg select[name='mix_standard'] option[value='Q']").prop("selected",true);
+	$("#table_reg input[name='ra_check'][value='3']").prop("checked",true);
+	$("#table_reg input[name='display_order']").val("1");
+	$("#table_reg input[name='display_yn'][value='N']").prop("checked",true);
+	$("#table_reg input[name='c_name[]']").eq(0).val("명리식품");
+	$("#table_reg input[name='pt_code[]']").eq(0).val("COP-0001");
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="infoPdRegCont">
+				<!--side_bar-->
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/obtain_order/main.html">수주관리</a></li>
+					<li></li>
+					<li><a href="/obtain_order/info_product.html">제품정보</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<h2 class="sub_tit">제품 수정</h2>
+					<div class="s_img">
+						<div class="s_img_top" id='View_area'></div>
+						<div class='bot'>
+							<input type='text' class='shot_input' name='image' id='image'>
+							<input type='file' name='up_img' id='image2' accept='image/gif,image/jpg,image/jpeg,image/png,image/bmp' style='display: none;'>
+							<div class='btn_06'>찾아보기</div>
+						</div>
+					</div>
+					<table id="table_reg">
+						<tr>
+							<th>제품번호 <span class="txt_red">*</span></th>
+							<td>
+								<div class="td_wrap code_wrap">
+									<select name="initial" class="select_half">
+										<option value="">선택</option>
+										<option value='text'>직접입력</option>
+										<option value='txtall'>직접입력(전체)</option>
+									</select>
+									<input type='text' name='initial_text' id='initial_text' class="input_half" placeholder="코드입력">
+									<input type='text' name='mt_number' id='mt_number' class="input_half" readonly>
+									<div class='btn_dup'>중복검사</div>
+								</div>
+								<label for="initial_text" class="error"></label>
+								<label for="mt_number" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>제품명 <span class="txt_red">*</span></th>
+							<td>
+								<input type="text" name="p_name" id="p_name">
+								<label for="p_name" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>규격</th>
+							<td>
+								<input type="text" id="standard" name="standard" style="width:100% !important;">
+								<label for="standard" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>BOX당 수량 <span class="txt_red">*</span></th>
+							<td>
+								<input type="text" name="box_quantity">
+								<label for="box_quantity" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>BOX 표시단위</th>
+							<td>
+								<div class="td_wrap code_wrap">
+									<select name="box_unit" class="select_half">
+										<option value="BOX">BOX</option>
+										<option value="콘티">콘티</option>
+										<option value="A">직접입력</option>
+									</select>
+									<input type='text' name='box_unit_text' id='box_unit_text' class="input_half" value="BOX">
+								</div>
+								<label for="box_unit_text" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>포장지당 중량 (단위) <span class="txt_red">*</span></th>
+							<td>
+								<div class="td_wrap">
+									<input type="text" name="sacks_unit" class="sacks_unit">
+									<select name="p_unit" class="p_unit">
+										<option value="kg">kg</option>
+										<option value="g">g</option>
+										<option value="mg">mg</option>
+										<option value="L">L</option>
+										<option value="ml">ml</option>
+									</select>
+								</div>
+								<label for="sacks_unit" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>가격(원)</th>
+							<td>
+								<input type="text" id="p_price" name="p_price">
+								<label for="p_price" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>협력업체</th>
+							<td>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="1." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="2." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="3." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="4." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="5." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="6." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="7." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="8." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="9." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+								<div class="pt_line">
+									<input type="text" class="insearch" name="c_name[]" placeholder="10." readonly>
+									<input type="hidden" name="pt_code[]">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>유통기한 <span class="txt_red">*</span></th>
+							<td>
+								<div class="td_wrap">
+									<input type="text" class="input_half" name="expiration_term1">
+									<select class="select_half" name="expiration_term2" style="margin-left: 10px;">
+										<option value='D'>일</option>
+										<option value='M'>개월</option>
+										<option value='Y'>년</option>
+									</select>
+								</div>
+								<label for="expiration_term1" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>작업표준정보 <span class="txt_red">*</span></th>
+							<td>
+								<input type="text" id="wk_name" class="insearch" name="wk_name" readonly>
+								<input type="hidden" id="wk_code" name="wk_code">
+								<label for="wk_name" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>진열순서</th>
+							<td>
+								<input type="text" id="display_order" name="display_order">
+							</td>
+						</tr>
+						<tr>
+							<th>진열여부<br>(수주/출하)</th>
+							<td>
+								<label><input type="radio" name="display_yn" value="Y">YES</label>
+								<label><input type="radio" name="display_yn" value="N" checked>NO</label>
+							</td>
+						</tr>
+						<tr>
+							<th>구분 <span class="txt_red">*</span></th>
+							<td>
+								<label><input type="radio" name="ra_check" value="0" checked>완제품</label>
+								<label><input type="radio" name="ra_check" value="3">반제품</label>
+								<label for="ra_check" class="error"></label>
+							</td>
+						</tr>
+						<tr class="tr_detail">
+							<th>성분배합 기준</th>
+							<td>
+								<select class="mix_standard" name="mix_standard">
+									<option value='A'>미정</option>
+									<option value='Q'>수량</option>
+									<option value='W'>중량</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn"><a href="/obtain_order/info_product.html">취소</a></div>
+							<div class="btn btn_right" title="수정">수정</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

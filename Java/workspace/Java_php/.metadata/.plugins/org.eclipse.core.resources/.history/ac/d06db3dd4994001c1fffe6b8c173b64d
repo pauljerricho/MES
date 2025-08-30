@@ -1,0 +1,10 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+
+$mode = $_POST['mode'];
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_(); //세션 스타트
+
+
+?>

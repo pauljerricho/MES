@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lib_Login</title>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="script/script.js"></script>
+</head>
+<body>
+    <h1><a href="#"><img src="images/logo.png" alt=""></a></h1>
+    <main>
+        <form action="#" method="post" id="loginFrm">
+            <fieldset>
+                <legend class="skip">로그인 양식</legend>
+                <ul>
+                    <li>
+                        <span class="id_bg"><!--배경이미지--></span>
+                        <span><input type="text" placeholder="아이디(이메일)" name="user_id"></span>
+                    </li>
+                    <li class="error id_error">아이디(이메일)을 입력해주세요!</li>
+                    <li>
+                        <span class="pw_bg"><!--배경이미지--></span>
+                        <span><input type="password" placeholder="비밀번호" name="user_pw"></span>
+                        <span class="pw_show_hide" title="문자보이기"></span>
+                    </li>
+                    <li class="error pw_error">비밀번호를 입력해주세요!</li>
+                </ul>
+                <div class="btm">
+                    <p>
+                        <label>
+                            <input type="checkbox" name="login_y" id="login_y">
+                            <span>자동로그인</span>
+                        </label>
+                    </p>
+                    <a href="#" class="idpw_search">아이디(이메일)/비밀번호 찾기</a>
+                </div>
+                <button type="submit" id="login_btn">로그인</button>
+            </fieldset>
+        </form>
+        <a href="#" class="join_link">회원가입</a>
+    </main>
+    <footer>
+        Library _ System 1.0
+    </footer>
+    
+</body>
+
+</html>

@@ -1,0 +1,323 @@
+/* 공통 */
+#table_reg td .btn_dup {
+    margin-left: 10px;
+    height: 35px;
+    line-height: 35px;
+}
+@media screen and (max-width: 768px) {
+	#table_reg .btn_dup {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.btn {
+	    border: 0 !important;
+	    box-shadow: 2px 2px 3px 0px #dedede;
+	}
+}
+
+/* 출하관리 리스트 */
+.prOrderShipmentCont .state_check {
+	margin: 0 auto;
+	padding: 5px 8px;
+	width:fit-content;
+	background:#fff;
+}
+@media screen and (max-width: 1560px) {
+	.prOrderShipmentCont #table_reg,
+	.prOrderShipmentCont #table_reg thead,
+	.prOrderShipmentCont #table_reg tbody,
+	.prOrderShipmentCont #table_reg th,
+	.prOrderShipmentCont #table_reg td,
+	.prOrderShipmentCont #table_reg tr {
+		display: inline-block;
+		width:100%;
+		height:auto;
+	}
+	.prOrderShipmentCont #table_reg th,
+	.prOrderShipmentCont #table_reg td {
+		border: 0 !important;
+	}
+	.prOrderShipmentCont #table_reg {
+		height:auto;
+	}
+	.prOrderShipmentCont #table_reg th {
+		width:29.3%;
+		line-height:40px;
+		border: 0 !important;
+		border-right: 1px solid #a9a9a9 !important;
+	}
+	.prOrderShipmentCont #table_reg th:first-child {
+		border-bottom: 1px solid #a9a9a9 !important;
+	}
+	.prOrderShipmentCont #table_reg td {
+		width:70%;
+		line-height:40px;
+		border: 0 !important;
+	}
+	.prOrderShipmentCont #table_reg td:nth-child(2) {
+		border-bottom: 1px solid #a9a9a9 !important;
+	}
+	.prOrderShipmentCont #table_reg td > div {
+		display: flex;
+		align-items:center;
+	}
+	.prOrderShipmentCont #table_reg .phonespan {
+	    position: relative;
+	    top: 0;
+	    height: auto;
+	    margin: 0 10px;
+	    font-size: 16px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.prOrderShipmentCont #table_reg th {
+		width:29% !important;
+	}
+	.prOrderShipmentCont #table_reg td {
+		width:69%;
+	}
+	.prOrderShipmentCont input.input_calendar {
+		width:40% !important;
+		height:36px !important;
+	}
+}
+
+/* 출고지시처리 */
+.prOrderShipmentMeCont .sub_con div.tit_box2 {
+	margin-top:20px;
+}
+@media screen and (max-width: 768px) {
+	.prOrderShipmentMeCont .sub_con .tit_box {
+	    display: block;
+	    text-align:center;
+	}
+	.prOrderShipmentMeCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.prOrderShipmentMeCont #table_reg th {
+    	width: 100px;
+	}
+	.prOrderShipmentMeCont #table_reg th,
+	.prOrderShipmentMeCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.prOrderShipmentMeCont #table {
+		margin-bottom:20px !important;
+	}
+	.prOrderShipmentMeCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    width:100% !important;
+	}
+	.prOrderShipmentMeCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.prOrderShipmentMeCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.prOrderShipmentMeCont .table_ri td {
+		border: 0 !important;
+	}
+	.prOrderShipmentMeCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.prOrderShipmentMeCont .bot_box {
+		margin-top:20px !important;
+	}
+	.prOrderShipmentMeCont .btn_pmn,
+	.prOrderShipmentMeCont .btn_pmn .enable {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		width:35px !important;
+	}
+	.prOrderShipmentMeCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+
+/* 출하지시처리 */
+.prOrderShipmentConfCont .enable {
+	background: #ff8400 !important;
+	color: #fff !important;
+}
+
+.prOrderShipmentConfCont .del_left {
+	vertical-align: middle;
+	padding-left: 10%;
+	cursor: pointer;
+}
+
+.prOrderShipmentConfCont .canc {
+	vertical-align: middle;
+	padding-left: 10%;
+	cursor: pointer;
+}
+
+.prOrderShipmentConfCont .wh_wrap {
+    margin: 8px 5px;
+}
+
+.prOrderShipmentConfCont .finish_cancel {
+	display:none;
+}
+
+.prOrderShipmentConfCont #table_sh_inout tbody tr:hover {
+	background:#ddd;
+	cursor:pointer;
+}
+
+.prOrderShipmentConfCont label.error {
+    display:none;
+}
+@media screen and (max-width: 768px) {
+	.prOrderShipmentConfCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.prOrderShipmentConfCont #table_reg th {
+    	width: 100px;
+	}
+	.prOrderShipmentConfCont #table_reg th,
+	.prOrderShipmentConfCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.prOrderShipmentConfCont #table {
+		margin-bottom:20px !important;
+	}
+	.prOrderShipmentConfCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    width:100% !important;
+	}
+	.prOrderShipmentConfCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.prOrderShipmentConfCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.prOrderShipmentConfCont .table_ri td {
+		border: 0 !important;
+	}
+	.prOrderShipmentConfCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.prOrderShipmentConfCont .bot_box {
+		margin-top:20px !important;
+	}
+	.prOrderShipmentConfCont .btn_pmn,
+	.prOrderShipmentConfCont .btn_pmn .enable {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		width:35px !important;
+	}
+	.prOrderShipmentConfCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+	
+/* 출하지시등록 */
+@media screen and (max-width: 768px) {
+	.prOrderShipmentRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.prOrderShipmentRegCont #table_reg th {
+    	width: 100px !important;
+	}
+	.prOrderShipmentRegCont #table_reg th,
+	.prOrderShipmentRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.prOrderShipmentRegCont .table_ri {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.prOrderShipmentRegCont .table_ri thead tr th {
+		border-bottom: 3px solid #fff !important;
+	}
+	.prOrderShipmentRegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.prOrderShipmentRegCont .table_ri td {
+		border: 0 !important;
+	}
+	.prOrderShipmentRegCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width: 70px !important;
+	}
+	.prOrderShipmentRegCont .bot_box {
+		margin-top:20px;
+	}
+	.prOrderShipmentRegCont .table_ri col{
+		width: 100px !important;
+	}
+	.prOrderShipmentRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+@media screen and (max-width: 414px) {
+	.prOrderShipmentConfCont #table_reg th {
+		width:75px !important;
+	}
+	.prOrderShipmentRegCont #table_reg th {
+		width:85px !important;
+	}
+	.prOrderShipmentRegCont #od_address, .prOrderShipmentRegCont #od_address2 {
+		width:98% !important;
+	}
+}

@@ -1,0 +1,5 @@
+$(document).ready(function() {
+
+	script_new_reformdata("#main_content","myform","/mem_modify_form.php","update");
+
+});

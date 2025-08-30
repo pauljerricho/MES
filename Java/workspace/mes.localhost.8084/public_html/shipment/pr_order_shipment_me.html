@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>출고 지시</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/shipment.css">
+<style>
+#table_out tbody tr:hover{
+	background:#ddd;
+	cursor:pointer;
+}
+.enable {
+	background: #ff8400 !important;
+	color: #fff !important;
+}
+.wh_wrap {
+    margin: 8px 5px;
+}
+label.error {
+    display:none;
+}
+@media screen and (max-width: 768px){
+	.wh_wrap {
+	    margin:0;
+	}
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	var h_no = urlParams.get("h_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'h_no',value:h_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'tip_index',id:'tip_index',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'tip_index2',id:'tip_index2',value:''}));
+
+
+
+	//수기 버튼
+	$("#myform .btn_pmn").click(function(){
+		var id = $(this).attr("id");
+		if(id=="nor"){
+			$("#table tbody tr[role='row'] input.no_out_indiv").each(function(i,v){
+				$("#table tbody tr[role='row'] input.sh_cnt").eq(i).val($(this).val());
+				//반응형
+			    if($("#table tbody tr.child ul[data-dtr-index='"+i+"']").length){
+			    	$("#table tbody tr.child ul[data-dtr-index='"+i+"']").find('.sh_cnt').val($(this).val());
+			    }
+			});
+		}else{
+			$("#table tbody tr[role='row'] input.sh_cnt").each(function(i,v){
+				$("#table tbody tr[role='row'] input.sh_cnt").eq(i).val(0);
+			});
+		}
+	});
+	
+	//바코드 
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#myform").on("click", "#table .btn_barcode", function() {
+		script_ajax_layer_pop('/popup/popup_box_confirm.html',"s_no=&e_date=&count=",'.popup-b');
+	});
+	
+	//버블링 이벤트
+	$("#myform").on("click","td.control",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 클릭
+	$("#myform").on("click", "#table_out tbody tr[role='row']", function(){
+		location.href="/inventory/request_reg_out.html?s_no=";
+	});
+	
+	//요청 바코드
+	$("#myform").on("click", "#table_out tbody tr .btn_barcode", function(e){
+		e.stopPropagation();
+		script_ajax_layer_pop('/popup/popup_request.html',"s_no=&date=",'.popup-b');
+	});
+	
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		inventorying : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "inventorying":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	$("#table_out thead tr").prepend("<th>상세</th>");
+	$("#table_out tbody tr").prepend("<td>상세</td>");
+	var list_table = $("#table_out").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 5,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( list_table );
+});
+function draw_row(table,data,index){
+	var wh_name="",zone_name="",quantity="",out_qty="",sh_cnt="",outQtySum=0,no_out=0,no_out_indiv=0;
+	$.each(data.wh_arr,function(i,v){
+		no_out_indiv = v.quantity - v.out_qty;
+		no_out_indiv < 0 ? no_out_indiv = 0 : false;
+		wh_name += "<div class='wh_wrap'>"+v.wh_name+"<input type='hidden' class='sh_whno' name='sh_whno["+index+"][]' value='"+v.sh_whno+"'></div>";
+		zone_name += "<div class='wh_wrap'>"+v.zone_name+"<input type='hidden' class='wh_no' name='wh_no["+index+"][]' value='"+v.wh_no+"'></div>";
+		quantity += "<div class='wh_wrap'>"+v.quantity+"<input type='hidden' class='no_out_indiv' value='"+no_out_indiv+"'></div>";
+		out_qty += "<div class='wh_wrap'>"+v.out_qty+"<input type='hidden' class='out_qty' value='"+v.out_qty+"'></div>";
+		sh_cnt += "<div class='wh_wrap'><input type='text' class='sh_cnt' name='sh_cnt["+index+"][]' value='0' readonly><input type='hidden' class='req_amount' value='"+v.no_out+"'></div>";
+		outQtySum += Number(v.out_qty);
+	});
+	table.row.add([
+         "<td class='control' tabindex='0'>상세</td>",
+         "<div class='btn_barcode'></div>",
+         wh_name,
+         zone_name,
+         sh_cnt,
+         "<input type='hidden' class='sh_no' name='sh_no[]' value='"+data['sh_no']+"'>"+data['article_num'],
+         data['pd_number']+"<input type='hidden' class='mt_number' name='mt_number[]' value='"+data['pd_number']+"'><input type='hidden' class='box_quantity' name='box_quantity[]' value='"+data['box_quantity']+"'>",
+         data['p_name']+"<input type='hidden' class='p_name' name='p_name[]' value='"+data['p_name']+"'>",
+         quantity,
+         data['quantity']+"<input type='hidden' class='quantity' value='"+data['quantity']+"'>",
+         out_qty,
+         outQtySum+"<input type='hidden' class='out' value='"+outQtySum+"'>",
+         data['no_out']+"<input type='hidden' class='no_out' value='"+data['no_out']+"'>",
+         data['over']+"<input type='hidden' class='over' value='"+data['over']+"'>",
+         data['unit'],
+         data['meno']
+    ]).draw(false);
+}
+function change_insert(state){
+    if(state=='plus'){
+        $('#plus').addClass("enable");
+        $('#minus').removeClass("enable");
+        $('#nor').removeClass("enable");
+        $("#myform input[type='text']").prop("readonly",true);
+        $("#myform input[type='text']").click(function(){
+        	return false;
+        });
+    }else if(state=='minus'){
+        $('#plus').removeClass("enable");
+        $('#minus').addClass("enable");
+        $('#nor').removeClass("enable");
+        $("#myform input[type='text']").prop("readonly",true);
+        $("#myform input[type='text']").click(function(){
+        	return false;
+        });
+    }else{
+        $('#plus').removeClass("enable");
+        $('#minus').removeClass("enable");
+        $('#nor').addClass("enable");
+        $("#myform input.sh_cnt").prop("readonly",false);
+        $("#myform input[type='text']").click(function(){
+        	return true;
+        });
+    }
+}
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="prOrderShipmentMeCont">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/shipment/main.html">출하관리</a></li>
+					<li></li>
+					<li><a href="/shipment/pr_order_shipment.html">출하지시 관리</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<h2 class="sub_tit">출고요청</h2>
+					<table id="table_reg">
+						<tbody>
+							<tr>
+								<th>출하일자</th>
+								<td id="od_date"></td>
+							</tr>
+							<tr>
+								<th>거래처</th>
+								<td id="c_name"></td>
+							</tr>
+							<tr>
+								<th>납품장소</th>
+								<td id="n_address"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="btn06 btn_pmn" id="nor" onclick="change_insert('nor');">수기</div>
+					<div class="btn06 btn_pmn" id="minus" onclick="change_insert('minus');">-</div>
+					<div class="btn06 btn_pmn enable" id="plus" onclick="change_insert('plus');">+</div>
+					<table class="table_ri" id="table">
+						<colgroup>
+							<col width="5%">		<!-- 바코드 -->
+							<col width="9%">		<!-- 창고명 -->
+							<col width="9%">		<!-- 구역명 -->
+							<col width="9%">		<!-- 처리수량 -->
+							<col width="3%">		<!-- 번호 -->
+							<col width="9%">		<!-- 제품번호 -->
+							<col width="9%">		<!-- 제품명 -->
+							<col width="6%">		<!-- 수량 -->
+							<col width="6%">		<!-- 총 수량 -->
+							<col width="6%">		<!-- 출고수량 -->
+							<col width="6%">		<!-- 총 출고수량 -->
+							<col width="6%">		<!-- 미출고수량 -->
+							<col width="6%">		<!-- 초과수량 -->
+							<col width="5%">		<!-- 단위 -->
+							<col width="6%">		<!-- 메모 -->
+						</colgroup>
+						<thead>
+							<tr>
+								<th>바코드</th>
+								<th>창고명</th>
+								<th>구역명</th>
+								<th>처리수량</th>
+								<th>번호</th>
+								<th>제품번호</th>
+								<th>제품명</th>
+								<th>수량</th>
+								<th>총 수량</th>
+								<th>출고수량</th>
+								<th>총 출고수량</th>
+								<th>미출고수량</th>
+								<th>초과수량</th>
+								<th>단위</th>
+								<th>메모</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<table class="table_ri">
+						<colgroup>
+							<col width="16%">
+							<col width="16%">
+							<col width="17%">
+							<col width="17%">
+							<col width="17%">
+							<col width="17%">
+						</colgroup>
+						<tr>
+							<th rowspan="2">합계</th>
+							<th>총 수량</th>
+							<th>출고수량</th>
+							<th>미출고수량</th>
+							<th>초과수량</th>
+							<th>처리수량</th>
+						</tr>
+						<tr>
+							<td id="sum_qty">0</td>
+							<td id="sum_out">0</td>
+							<td id="sum_noout">0</td>
+							<td id="sum_over">0</td>
+							<td id="sum_dispose">0</td>
+						</tr>
+					</table>
+					<div class="tit_box tit_box2">
+			  				<h2 class="sub_tit">출하출고 요청</h2>
+			  			</div>
+			  			<table id="table_out" class="table_ri">
+						<colgroup>
+							<col width="7%"> <!--번호-->
+							<col width="13%"> <!--업체명-->
+							<col width="13%"> <!--제품명-->
+							<col width="11%"> <!--요청수량-->
+							<col width="11%"> <!--출고수량-->
+							<col width="10%"> <!--요청정보-->
+							<col width="10%"> <!--상태-->
+							<col width="13%"> <!--요청일자-->
+							<col width="12%"> <!--바코드-->
+						</colgroup>
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>업체명</th>
+								<th>제품명</th>
+								<th>요청수량</th>
+								<th>출고수량</th>
+								<th>요청정보</th>
+								<th>상태</th>
+								<th>요청일자</th>
+								<th>바코드</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn"><a href="/shipment/pr_order_shipment.html">목록</a></div>
+							<div class="btn btn_right finish" title="출고완료">출고완료</div>
+							<div class="btn btn_right save" title="출고">출고</div>
+						</div>
+						<!-- bot_btn -->
+						<label class="error"></label>
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

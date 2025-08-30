@@ -1,0 +1,56 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/bd.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+</head>
+<body> 
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">
+   	<div id="bd_box">
+   	<?php 
+$num = $_GET['num'];
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("data_ione_row_return");
+$row = $data_ione_row_return->data_ione_row_return_("*","board","num='$num'","","");
+
+$row['content'] = str_replace(" ","&nbsp",$row['content']);
+$row['content'] = str_replace("\n","<br>",$row['content']);
+
+$row2 = $data_ione_row_return->data_ione_row_return_("name,content","board","id='$row[id]'","","");
+
+?>
+	    <h3 class="title">
+			자유 게시판
+ 		</h3>	
+	    <ul id="view_content">
+			<li>
+				<span class="col1"><b>제목 :</b> <?=$row['subject']?></span>
+				<span class="col2"><?=$row2['name']?> | <?=$row['regist_day']?></span>
+			</li>
+			<li><?=row['content']?></li>		
+	    </ul>
+	    <ul class="buttons">
+				<li><button onclick="location.href='bd_list.php?page=page'" class="fontstyle">목록</button></li>
+				<li><button onclick="location.href='bd_modify_form.php?num=num&page=page'" class="fontstyle">수정</button></li>
+				<li><button onclick="location.href='bd_del.php?num=num&page=page'" class="fontstyle">삭제</button></li>
+				<li><button onclick="location.href='bd_form.php'" class="fontstyle">글쓰기</button></li>
+		</ul>
+	</div> <!-- bd_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?>
+</footer>
+</body>
+</html>

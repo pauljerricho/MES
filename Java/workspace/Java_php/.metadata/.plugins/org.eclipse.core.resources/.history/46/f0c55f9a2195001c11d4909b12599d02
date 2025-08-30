@@ -1,0 +1,14 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+$lib = new lib_road();
+$lib->lib_road_dir_("$_SERVER[DOCUMENT_ROOT]/../lib");
+$lib->ulib_road_dir_("$_SERVER[DOCUMENT_ROOT]/../lib_u");
+$lib->lib_token_("13fad411d723c612deb778ec83c36756021ace5cdb9d83c9d7d878d1a43a0f3a");
+$lib->lib_password_("");
+$lib->update_yn = "Y";
+$lib->upload_yn = "Y";
+$lib->lib_start();
+
+$lib->lib_fun("tellers_trans"); //MVC모델을 쓰기 위해서 첨부
+$tellers_trans->tellers_trans_(); //MVC모델을 쓰기 위해서 첨부
+?>

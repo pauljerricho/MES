@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>중복검사</title>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var wk_code = urlParams.get("wk_code");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup.popup-4","myform2","","");
+	$("#myform2 input[name='wk_code']").val(wk_code);
+
+
+
+	//검색 이벤트
+	javascript_onload_src("script_ajax_layer_pop");
+	$(".popup-4 input[name='wk_code']").keydown(function(event){
+		if(event.keyCode==13){
+			script_ajax_layer_pop('/process/op_st_dup.html',jQuery('#myform2').serialize(),'.popup-4')
+		}
+	});
+	$(".popup-4 .search_btn").click(function(){
+		script_ajax_layer_pop('/process/op_st_dup.html',jQuery('#myform2').serialize(),'.popup-4')
+	});
+	
+	//버튼 이벤트
+	$(".popup-4 .down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+</script>
+</head>
+<body>
+	<div class="popup popup-4">
+		<div class="pop_close down"></div>
+		<div class="message">작업코드 중복검사</div>
+		<!-- message -->
+		<div class="pop_search">
+			<input type="text" class="search_in" name="wk_code" placeholder="작업코드" value="" readonly>
+			<div class="search_btn">검색</div><br>
+			<input type="text" class="search_no" style="color: #ff0000;" readonly>
+		</div>
+		<!-- pop_search -->
+		<div class="pop_bp">
+			<div class="btn_pop1 btn_use">사용하기</div>
+			<div class="btn_pop1 down btn_co">취소</div>
+		</div>
+		<!-- pop_bp -->
+	</div>
+	<!--popup-->
+</body>
+</html>

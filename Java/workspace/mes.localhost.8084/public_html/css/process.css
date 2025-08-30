@@ -1,0 +1,403 @@
+/* 공통 */
+#table_reg td .btn_dup {
+    margin-left: 10px;
+    height: 35px;
+    line-height: 35px;
+}
+@media screen and (max-width: 768px) {
+	#table_reg .btn_dup {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.btn {
+	    border: 0 !important;
+	    box-shadow: 2px 2px 3px 0px #dedede;
+	}
+}
+
+/* 공정등록 */
+.infoRouteRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+}
+.infoRouteRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoRouteRegCont #table_reg td #ro_code {
+	width:90px;
+}
+@media screen and (max-width: 768px) {
+	.infoRouteRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoRouteRegCont #table_reg th {
+    	width: 100px;
+	}
+	.infoRouteRegCont #table_reg th,
+	.infoRouteRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoRouteRegCont #table_reg input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoRouteRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoRouteRegCont #table_reg td .btn_dup {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.infoRouteRegCont #table_reg input[type=radio] {
+    	margin-right: 0px;
+	}
+	.infoRouteRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoRouteRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoRouteRegCont #table_reg .code_wrap input[type=text] {
+		display:inline-block;
+	}
+	.infoRouteRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoRouteRegCont #table_reg th{
+		width: 100px !important;
+	}
+	.infoRouteRegCont #table_reg td .btn_dup {
+    	height: 30px !important;
+		line-height: 30px !important;
+    	font-size:11px;
+	}
+	.infoRouteRegCont #table_reg .code_wrap .select_half {
+		height:30px;
+	}
+}
+	
+/* 성분배합비율 등록 */
+.infoMixRegCont #table td div.batter_wrap {
+	text-align:center;
+}
+.infoMixRegCont #table td input.batter {
+	display:inline-block;
+	width:80%;
+	margin-right:5px;
+}
+.infoMixRegCont #table td div.unit {
+	display:inline-block;
+	width:20px;
+}
+.infoMixRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+}
+.infoMixRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoMixRegCont #table_reg td #mi_code {
+	width:90px;
+}
+@media screen and (max-width: 768px) {	
+	.infoMixRegCont #table_reg{
+	margin-bottom:15px;
+	}
+	.infoMixRegCont .table_ri{
+	margin-top:15px;
+	margin-bottom:12px;
+	}
+	.infoMixRegCont #table_reg,
+	.infoMixRegCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.infoMixRegCont #table_reg thead tr th,
+	.infoMixRegCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+	}
+	.infoMixRegCont #table_reg th,
+	.infoMixRegCont #table_reg td,
+	.infoMixRegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.infoMixRegCont .table_ri td {
+		border: 0 !important;
+	}
+	.infoMixRegCont #table_reg th {
+		width:28%;
+	}
+	.infoMixRegCont #table_reg td {
+		width:70%;
+		padding: 10px !important;
+	}
+	.infoMixRegCont #table_reg input[type='text'],
+	.infoMixRegCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoMixRegCont #table input[type='text'] {
+		/* width:150px !important; */
+		margin:auto;
+	}
+	.infoMixRegCont #table td div.unit {
+		width:fit-content;
+	}
+	.infoMixRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoMixRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoMixRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoMixRegCont #table_reg .code_wrap input[type=text] {
+		display:inline-block;
+	}
+	.infoMixRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoMixRegCont #table_reg td .btn_dup {
+    	height: 30px !important;
+		line-height: 30px !important;
+    	font-size:11px;
+	}
+	.infoMixRegCont #table_reg .code_wrap .select_half {
+		height:30px;
+	}
+}
+	
+/* 작업표준정보 등록 */
+.infoOpStRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+}
+.infoOpStRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoOpStRegCont #table_reg td #wk_code {
+	width:90px;
+}
+@media screen and (max-width: 768px) {
+	.infoOpStRegCont #table_reg{
+	margin-bottom:15px;
+	}
+	.infoOpStRegCont .table_ri{
+	margin-top:15px;
+	margin-bottom:12px;
+	}
+	.infoOpStRegCont #table_reg,
+	.infoOpStRegCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.infoOpStRegCont #table_reg thead tr th,
+	.infoOpStRegCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+	}
+	.infoOpStRegCont #table_reg th,
+	.infoOpStRegCont #table_reg td,
+	.infoOpStRegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.infoOpStRegCont .table_ri td {
+		border: 0 !important;
+	}
+	.infoOpStRegCont #table_reg th {
+		width:28%;
+	}
+	.infoOpStRegCont #table_reg td {
+		width:70%;
+	}
+	.infoOpStRegCont #table_reg input[type='text'],
+	.infoOpStRegCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoOpStRegCont .table_ri td input[type=text]{
+		width: 80px !important;
+	}
+	.infoOpStRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoOpStRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoOpStRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoOpStRegCont #table_reg .code_wrap input[type=text] {
+		display:inline-block;
+	}
+	.infoOpStRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoOpStRegCont #table_reg td .btn_dup {
+    	height: 30px !important;
+		line-height: 30px !important;
+    	font-size:11px;
+	}
+	.infoOpStRegCont #table_reg .code_wrap .select_half {
+		height:30px;
+	}
+	.infoOpStRegCont #table_reg input[type='text'],
+	.infoOpStRegCont .table_ri input[type='text'] {
+		margin-top:15px;
+	}
+}
+	
+/* 통합레시피 등록 */
+.infoRecipeRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+}
+.infoRecipeRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoRecipeRegCont #table_reg td #re_code,
+.infoRecipeRegCont #table_reg td #output {
+	width:90px;
+}
+@media screen and (max-width: 768px) {
+	.infoRecipeRegCont #table_reg{
+	margin-bottom:15px;
+	}
+	.infoRecipeRegCont .table_ri{
+	margin-top:15px;
+	margin-bottom:12px;
+	}
+	.infoRecipeRegCont #table_reg td input[type=text]{
+		width:70%;
+	}
+	.infoRecipeRegCont #table_reg,
+	.infoRecipeRegCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.infoRecipeRegCont #table_reg thead tr th,
+	.infoRecipeRegCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+	}
+	.infoRecipeRegCont #table_reg th,
+	.infoRecipeRegCont #table_reg td,
+	.infoRecipeRegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.infoRecipeRegCont .table_ri td {
+		border: 0 !important;
+	}
+	.infoRecipeRegCont #table_reg th {
+		width:28%;
+	}
+	.infoRecipeRegCont #table_reg td {
+		width:70%;
+		padding: 10px !important;
+	}
+	.infoRecipeRegCont #table_reg input[type='text'],
+	.infoRecipeRegCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoRecipeRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoRecipeRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+	.infoRecipeRegCont #table_reg td #output {
+		width:50%;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoRecipeRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoRecipeRegCont #table_reg .code_wrap input[type=text] {
+		display:inline-block;
+	}
+	.infoRecipeRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+	.infoRecipeRegCont #table_reg td input[type=text]{
+		width:98%;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoRecipeRegCont #table_reg td .btn_dup {
+    	height: 30px !important;
+		line-height: 30px !important;
+    	font-size:11px;
+	}
+	.infoRecipeRegCont #table_reg td select.select_half {
+		height:30px;
+	}
+}

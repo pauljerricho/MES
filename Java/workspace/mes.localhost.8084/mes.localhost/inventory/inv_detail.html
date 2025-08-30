@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>재고 등록</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/inventory.css">
+<style>
+#table input.in, .table input.out {
+	width: 130px !important;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+#table input.input_calendar {
+	width: 130px !important;
+	vertical-align: middle;
+	text-align: left !important;
+	padding-left: 10px;
+}
+
+span.in_day, span.out_day {
+	margin: 0 5px 0 5px;
+	vertical-align: middle;
+}
+#table td input[type=text]{
+	width:130px;
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	js_reonload_src("datepicker");//js 폴더
+	
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+
+
+
+	//입력제한
+	$("#myform").on("keyup", "input.in, input.out", function(event) {
+		var role = $(this).closest("tr").attr("role");
+		var mode = $(this).attr("class").split(" ");
+		var tip_index = 0;
+		role ? tip_index = $("#table tbody tr ."+mode[0]).index(this) : tip_index = $(this).closest("li").attr("data-dt-row");
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(Number(inputVal.replace(/[^0-9]/gi,'')));
+		    !role ? $("#table tbody tr[role='row'] ."+mode[0]).eq(tip_index).val(Number(inputVal.replace(/[^0-9]/gi,''))) : false; 
+	    }
+	});
+	
+	//전체선택
+	javascript_onload_src("script_checkall");
+	$("#myform").on("click","input[name='chk_all']",function(){
+		script_checkall(this,"b_no[]");
+	});
+	
+	//버블링 이벤트
+	$("#myform").on("click","input",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 이벤트
+	$("#myform").on("click","#table tbody tr[role='row']",function(e){
+		$(this).find("input.b_no").click();
+	});
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+ 	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+function draw_row(table,data){
+	var reg_date;
+	reg_date = data['reg_date'].split(" ");
+	!data['c_name'] ? data['c_name'] = "-" : false; 
+
+	table.row.add([
+         "<td class='control' tabindex='0'>상세</td>",
+         "<input type='checkbox' class='b_no' name='b_no[]' value='"+data['st_code']+"'>",
+         data['article_num']+"<input type='hidden' class='st_code' name='st_code[]' value='"+data['st_code']+"'>",
+         reg_date[0]+"<br>"+reg_date[1],
+         data['c_name'],
+         "<input type='text' class='in' name='in[]' placeholder='입고량'>",
+         "<input type='text' class='out' name='out[]' placeholder='출고량'>",
+         data['box_qty'],
+         data['quantity'],
+         data['weight'],
+         data['expiration_day']
+    ]).draw(false);
+}
+</script>
+</head>
+<body>
+<div class="background"></div>
+<div class="header_wrap">
+	<!--header-->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+	<!--header-->
+</div>
+<!--header_wrap-->
+<!-- 퀵바 -->
+<div class="quick_wrap ui-draggable ui-draggable-handle">
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+</div>
+<!-- quick_wrap -->
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+<!--m_menu-->
+<div class="content">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+	<div class="content_detail" id="content_detail">
+		<div id="content" class="invDetailCont">
+			<ul class="lnb">
+				<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+				<li></li>
+				<li><a href="/inventory/main.html">재고관리</a></li>
+				<li></li>
+				<li><a href="/inventory/ma_inventory.html">재고 관리</a></li>
+			</ul>
+			<!--lnb-->
+			<div class="sub_con">
+				<div class="tit_box">
+					<h2 class="sub_tit">재고 관리</h2>
+					<p class="sub_txt">
+						<span>0</span>개의 데이터가 조회되었습니다.
+					</p>
+				</div>
+				<!-- tit_box -->
+				<table id="table_reg">
+					<colgroup>
+						<col width="20%">
+						<col width="30%">
+						<col width="20%">
+						<col width="30%">
+					</colgroup>
+		   			<tbody>
+		   				<tr>
+		   					<th>제품번호</th>
+		   					<td id="mt_number"></td>
+		   					<th>제품명</th>
+		   					<td id="p_name"></td>
+		   				</tr>
+		   				<tr>
+		   					<th>규격</th>
+		   					<td id="standard"></td>
+		   					<th>단위</th>
+		   					<td id="p_unit"></td>
+		   				</tr>
+		   				<tr>
+		   					<th>BOX당 수량</th>
+		   					<td id="box_quantity"></td>
+		   					<th>포장지당 중량</th>
+		   					<td id="sacks_unit"></td>
+		   				</tr>
+		   				<tr>
+		   					<th>구분</th>
+		   					<td id="division"></td>
+		   					<th>창고명/구역명</th>
+		   					<td id="wh_name"></td>
+		   				</tr>
+		   			</tbody>
+				</table>
+				<table id="table" style="width:100%;">
+					<colgroup>
+						<col width="5%">
+						<col width="5%">
+						<col width="9%">
+						<col width="9%">
+						<col width="9%">
+						<col width="9%">
+						<col width="7%">
+						<col width="7%">
+						<col width="7%">
+						<col width="9%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th><input type="checkbox" name="chk_all"></th>
+							<th>번호</th>
+							<th>입고일</th>
+							<th>업체명</th>
+							<th>수기입고</th>
+							<th>수기출고</th>
+							<th>BOX수량</th>
+							<th>수량</th>
+							<th>중량(kg)</th>
+							<th>유통기한</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" name="b_no[]"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="bot_box">
+					<div class="bot_btn">
+						<div class="btn"><a href="/inventory/ma_inventory.html">목록</a></div>
+						<div class="btn btn_right save" title="등록">등록</div>
+						<div class="btn btn_right delete" title="삭제">삭제</div>
+					</div>
+					<!-- bot_btn -->
+				</div>
+				<!-- bot_box -->
+			</div>
+			<!--con-->
+			<div id="lay" style="overflow: auto;">
+				<div class="bg"></div>
+				<div id="lay2"></div>
+			</div>
+		</div>
+		<!--content-->
+	</div>
+</div>
+<!--content-->
+<div id="copy">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+</div>
+<div class="keyboard"></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+$(document).ready(function(){
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup_ta.popup-31","myform2","popup_guest","data");
+	
+	//버블링 이벤트
+	$(".popup-31").on("click","#table_popup > tbody > tr > td.control",function(e){
+		e.stopPropagation();
+	});
+	
+	//닫기
+	$(".popup-31 .down").click(function(){
+		("#myform").reset();
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	//미사용
+	$(".popup-31 .btn_remove").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	
+	//tr 이벤트
+	$(".popup-31").on("click","#table_popup tbody tr",function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table_popup tbody").append("<tr><td>CUS-0001</td><td>제일식품</td></tr>");
+	
+	//데이터테이블
+	$("#table_popup thead tr").prepend("<th>상세</th>");
+	$("#table_popup tbody tr").prepend("<td>상세</td>");
+	var table = $("#table_popup").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});

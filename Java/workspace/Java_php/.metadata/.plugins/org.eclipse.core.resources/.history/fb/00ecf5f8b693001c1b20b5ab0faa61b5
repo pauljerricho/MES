@@ -1,0 +1,20 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_();
+
+$lib->lib_fun("value_check2");
+if(!$value_check2->value_check2_(array($_SESSION['userid']))){
+    $error = "인자가 부족하여 처리 할 수 없습니다.";
+    goto error; //error:로 이동
+}
+error:
+$echo_data = array(
+    "id"=>"test",
+    'error' => $error,
+    'Prevent' => array("Prevent") //변수 변동 방지
+);
+$lib->lib_fun("json_connet");
+echo $json_connet->json_connet_($echo_data);
+?>

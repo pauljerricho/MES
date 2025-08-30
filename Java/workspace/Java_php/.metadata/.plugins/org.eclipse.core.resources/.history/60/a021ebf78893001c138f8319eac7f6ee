@@ -1,0 +1,7 @@
+$(document).ready(function(){
+	javascript_onload_src("script_trns_form_submit_ajax");
+	javascript_onload_src("script_id_check");
+	javascript_onload_src("script_pass_check");
+	
+	script_new_reformdata("#main_content","myform","/lgi_form.php","login");
+});

@@ -1,0 +1,402 @@
+/* 공통 */
+#table_reg td .btn_dup {
+    margin-left: 10px;
+    height: 35px;
+    line-height: 35px;
+}
+@media screen and (max-width: 768px) {
+	#table_reg .btn_dup {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.btn {
+	    border: 0 !important;
+	    box-shadow: 2px 2px 3px 0px #dedede;
+	}
+}
+
+/* 생산관리 리스트 */
+@media screen and (max-width: 1560px) {
+	.prOrderCont #table_reg,
+	.prOrderCont #table_reg thead,
+	.prOrderCont #table_reg tbody,
+	.prOrderCont #table_reg th,
+	.prOrderCont #table_reg td,
+	.prOrderCont #table_reg tr {
+		display: inline-block;
+		width:100%;
+		height:auto;
+	}
+	.prOrderCont #table_reg th,
+	.prOrderCont #table_reg td {
+		border: 0 !important;
+	}
+	.prOrderCont #table_reg {
+		height:auto;
+	}
+	.prOrderCont #table_reg th {
+		width:29.3%;
+		line-height:40px;
+		border: 0 !important;
+		border-right: 1px solid #a9a9a9 !important;
+	}
+	.prOrderCont #table_reg th:first-child {
+		border-bottom: 1px solid #a9a9a9 !important;
+	}
+	.prOrderCont #table_reg td {
+		width:70%;
+		line-height:40px;
+		border: 0 !important;
+	}
+	.prOrderCont #table_reg td:nth-child(2) {
+		border-bottom: 1px solid #a9a9a9 !important;
+	}
+	.prOrderCont #table_reg td > div {
+		display: flex;
+		align-items:center;
+	}
+	.prOrderCont #table_reg .phonespan {
+	    position: relative;
+	    top: 0;
+	    height: auto;
+	    margin: 0 10px;
+	    font-size: 16px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.prOrderCont #table_reg th {
+		width:29% !important;
+	}
+	.prOrderCont #table_reg td {
+		width:69%;
+	}
+	.prOrderCont input.input_calendar {
+		width:40% !important;
+		height:36px !important;
+	}
+}
+
+/* 생산등록 */
+.prOrderRegCont .date_table {
+	display:none;
+}
+@media screen and (max-width: 768px) {
+	.prOrderRegCont #table_reg{
+	margin-bottom:15px;
+	width: 100% !important;
+	}
+	.prOrderRegCont #table_reg:nth-child(5) tr{
+		height: 55px;
+	}
+	.prOrderRegCont .table_ri{
+	margin-top:15px;
+	margin-bottom:12px;
+	}
+	.prOrderRegCont #table_reg,
+	.prOrderRegCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.prOrderRegCont #table_reg thead tr th,
+	.prOrderRegCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+	}
+	.prOrderRegCont #table_reg th,
+	.prOrderRegCont #table_reg td,
+	.prOrderRegCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.prOrderRegCont .table_ri td {
+		border: 0 !important;
+	}
+	.prOrderRegCont #table_reg th {
+		width:28%;
+	}
+	.prOrderRegCont #table_reg td {
+		width:70%;
+		padding: 10px !important;
+	}
+	.prOrderRegCont .table_ri td input[type=text]{
+		width: 80px !important;
+	}
+	
+	.prOrderRegCont #table_reg input[type='text'],
+	.prOrderRegCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width:95%;
+	}
+	.prOrderRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+
+/* 생산시작 */
+.produceStateCont .sub_con div.tit_box2 {
+	margin-top:20px;
+}
+@media screen and (max-width: 768px) {
+	.produceStateCont .sub_con .tit_box {
+	    display: block;
+	    text-align:center;
+	}
+	.produceStateCont #table_reg{
+		margin-bottom:15px;
+		width: 100% !important;
+	}
+	.produceStateCont .table_ri{
+		margin-top:15px !important;
+		margin-bottom:12px !important;
+	}
+	.produceStateCont #table_reg,
+	.produceStateCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.produceStateCont #table_reg thead tr th,
+	.produceStateCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+		font-size: 11px;
+	}
+	.produceStateCont #table_reg th,
+	.produceStateCont #table_reg td,
+	.produceStateCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.produceStateCont .table_ri td {
+		border: 0 !important;
+	}
+	.produceStateCont #table_reg th {
+		width:10%;
+		font-size:11px;
+	}
+	.produceStateCont #table_reg td {
+		width:18%;
+		padding: 8px !important;
+	}
+	.produceStateCont .table_ri{
+		margin: 20px 0;
+	}
+	.produceStateCont .table_ri td input[type=text]{
+		width: 80px !important;
+	}
+	
+	.produceStateCont #table_reg input[type='text'],
+	.produceStateCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width:95%;
+	}
+}
+
+/* 생산중 - 부자재출고 */
+.produceStateReleaseCont .sub_con div.tit_box2 {
+	margin-top:20px;
+}
+@media screen and (max-width: 768px) {
+	.produceStateReleaseCont .sub_con .tit_box {
+	    display: block;
+	    text-align:center;
+	}
+	.produceStateReleaseCont #table_reg{
+		margin-bottom:15px;
+		width: 100% !important;
+	}
+	.produceStateReleaseCont .table_ri{
+		margin-top:15px !important;
+		margin-bottom:12px !important;
+	}
+	.produceStateReleaseCont #table_reg,
+	.produceStateReleaseCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.produceStateReleaseCont #table_reg thead tr th,
+	.produceStateReleaseCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+		font-size: 11px;
+	}
+	.produceStateReleaseCont #table_reg th,
+	.produceStateReleaseCont #table_reg td,
+	.produceStateReleaseCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.produceStateReleaseCont .table_ri td {
+		border: 0 !important;
+	}
+	.produceStateReleaseCont #table_reg th {
+		width:10%;
+		font-size:11px;
+	}
+	.produceStateReleaseCont #table_reg td {
+		width:18%;
+		padding: 8px !important;
+	}
+	.produceStateReleaseCont .table_ri{
+		margin: 20px 0;
+	}
+	.produceStateReleaseCont .table_ri td input[type=text]{
+		width: 80px !important;
+	}
+	
+	.produceStateReleaseCont #table_reg input[type='text'],
+	.produceStateReleaseCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width:95%;
+	}
+}
+	
+/* 생산중 - 제품입고 */
+.produceStateEndCont .sub_con div.tit_box2 {
+	margin-top:20px;
+}
+@media screen and (max-width: 768px) {
+	.produceStateEndCont .sub_con .tit_box {
+	    display: block;
+	    text-align:center;
+	}
+	.produceStateEndCont #table_reg{
+		margin-bottom:15px;
+		width: 100% !important;
+	}
+	.produceStateEndCont .table_ri{
+		margin-top:15px !important;
+		margin-bottom:12px !important;
+	}
+	.produceStateEndCont #table_reg,
+	.produceStateEndCont .table_ri{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.produceStateEndCont #table_reg thead tr th,
+	.produceStateEndCont #table_reg thead tr td {
+		border-bottom: 3px solid #fff !important;
+		font-size: 11px;
+	}
+	.produceStateEndCont #table_reg th,
+	.produceStateEndCont #table_reg td,
+	.produceStateEndCont .table_ri th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.produceStateEndCont .table_ri td {
+		border: 0 !important;
+	}
+	.produceStateEndCont #table_reg th {
+		width:10%;
+		font-size:11px;
+	}
+	.produceStateEndCont #table_reg td {
+		width:18%;
+		padding: 8px !important;
+	}
+	.produceStateEndCont .table_ri{
+		margin: 20px 0;
+	}
+	.produceStateEndCont .table_ri td input[type=text]{
+		width: 80px !important;
+	}
+	
+	.produceStateEndCont #table_reg input[type='text'],
+	.produceStateEndCont .table_ri input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+		width:95%;
+	}
+	.produceStateEndCont .table_ri td input[type=text]{
+		margin:auto !important;
+	}
+}
+
+/* 사용자정보 등록 */
+@media screen and (max-width: 768px) {
+	.infoUserRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoUserRegCont #table_reg th {
+    	width: 100px;
+	}
+	.infoUserRegCont #table_reg th,
+	.infoUserRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoUserRegCont #table_reg input[type='text'] {
+		width:75%;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoUserRegCont #table_reg .select_number{
+		width:15%;
+		heigth:35px;
+	}
+	.infoUserRegCont #table_reg input[type=text].phonenum {
+		width:16%;
+	}
+	.infoUserRegCont #table_reg td .btn_dup {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.infoUserRegCont #table_reg input[type=radio] {
+    	margin-right: 0px;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoUserRegCont #table_reg td .btn_dup {
+		top : 10px;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoUserRegCont #table_reg th{
+		width:85px;
+	}
+	.infoUserRegCont #table_reg td .btn_dup {
+		height:25px;
+		line-height: 25px;
+		right:2%;
+	}
+}
+@media screen and (max-width: 320px) {
+	.infoUserRegCont #table_reg td .btn_dup {
+		top:14px;
+	}
+}

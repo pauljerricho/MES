@@ -1,0 +1,8 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_();
+
+
+?>

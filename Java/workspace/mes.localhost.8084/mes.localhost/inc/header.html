@@ -1,0 +1,33 @@
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	javascript_onload_src("time_clock");
+	$(".header > .logo > a").attr('href',function(i,originalValue){
+		return "/index.html";
+	});
+	$(".header > .btn_back").click(function(){
+		history.back();
+	});
+	$(".header > .btn_home").click(function(){
+		window.location.href='/index.html';
+	});
+	$(".header > .btn_next").click(function(){
+		history.forward();
+	});
+});
+$(window).load(function(){
+  realTimer();
+  setInterval(realTimer, 500);
+});
+</script>
+<div class="header">
+	<div class="logo">
+		<a href="/index.html"><img src="/img/img_logo.png" alt="(주)감코리아"></a>
+	</div>
+	<!--logo-->
+	<div class="btn_menu"></div>
+	<div class="btn_back"></div>
+	<div class="btn_home"></div>
+	<div class="btn_next"></div>
+	<span id="nowTimes" class="time head_font"></span>
+</div>

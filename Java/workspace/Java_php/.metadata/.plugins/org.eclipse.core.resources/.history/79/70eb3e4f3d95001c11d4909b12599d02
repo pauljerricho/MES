@@ -1,0 +1,48 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/ysolib.inc");
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_();
+
+$key1 = $_POST['key1'];
+$search_key = $_POST['$search_key'];
+
+$search_key1 = $_POST['columns'][0]['search']['value'];
+$search_key2 = $_POST['columns'][1]['search']['value'];
+$search_key3 = $_POST['columns'][2]['search']['value'];
+
+$lib->lib_fun("query_where");
+$query_where->query_where_($search_key1,"(cu_code like '%$search_key1%' or c_name like '%$search_key1%')","and","1");
+$query_where->query_where_($search_key2,"cu_code like '%$search_key2%'" , "and", "2");
+$query_where->query_where_($search_key3,"c_name like '%$search_key3%'" , "and", "3");
+$where = $query_where->query_where_join_();
+
+if($_POST['start']){
+    $page = (int)($_POST['start']/$_POST['length'])+1;
+}
+
+$orderby_array = array("1"=>"cu_code","2"=>"c_name");
+
+$order = $_POST['order'][0];
+$orderby = $orderby_array[$order['column']]." ".$order['dir'];
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("total_idata_row");
+list($data,$total,$row_page) =
+$total_idata_row->total_idata_row_("cu_code,c_name,user_name,businessnum,tel,fax,address_1,cu_manager,cu_ma_email,n_position,n_address,n_address2","customer",$where,$orderby,"","10","10");
+
+$lib->lib_fun("db_close");
+$db_connect->db_close();
+
+empty($data) ? $data = array() : $data;
+
+$echo_data = array(
+    'recordsFiltered' => $total,
+    'data' => $data,
+    
+);
+$lib->lib_fun("json_connet");
+echo $json_connet->json_connet_($echo_data);
+?>

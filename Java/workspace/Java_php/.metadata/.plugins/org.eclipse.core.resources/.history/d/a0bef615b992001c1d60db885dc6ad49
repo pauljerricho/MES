@@ -1,0 +1,78 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/administrator.css">
+<link rel="styelsheet" type="text/css" href="./css/font.css">
+</head>
+<body>
+<?php 
+$lib->lib_fun("session_chk");
+$session_chk->session_chk_(array($_SESSION['userid']),"로그인 해주세요!","location.href='/index.php';","");
+?> 
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">
+   	<div id="admin_box">
+	    <h3 id="member_title">
+	    	회원 정보 및 관리
+		</h3>
+		<ul class="top_buttons">
+			<li><span><a href="admin_member.php">회원관리 </a></span></li>
+			<li><span><a href="admin_board.php">게시물관리</a></span></li>
+		</ul>
+	    <ul id="member_list">
+			<li>
+				<span class="col1">번호</span>
+				<span class="col2">아이디</span>
+				<span class="col3">이름</span>
+				<span class="col4">레벨</span>
+				<span class="col5">마일리지</span>
+				<span class="col6">가입일</span>
+				<span class="col7">수정</span>
+				<span class="col8">삭제</span>
+			</li>
+<?php 
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("total_idata_row");
+list($data,$total_record,$row_page) = $total_idata_row->total_idata_row_("*","members","","num desc","","10","10");
+
+if($total_record){
+    foreach ($data as $key=>$row){
+?>
+			<li>
+				<form method="post" action="adm_mem_udt.php">
+				<input type="hidden" name="num" value="<?=$row['num']?>">
+					<span class="col1"><?=$row['article_num']?></span>
+					<span class="col2">id</a></span>
+					<span class="col3">name</span>
+					<span class="col4"><input type="text" name="level" value="level"></span>
+					<span class="col5"><input type="text" name="point" value="point"></span>
+					<span class="col6">regist_day</span>
+					<span class="col7"><button type="submit" class="fontstyle">MODIFY</button></span>&nbsp;&nbsp;&nbsp;
+					<span class="col8"><button type="button" onclick="location.href='adm_mem_del.php?num=num'" class="fontstyle">DELETE</button></span>
+				</form>
+			</li>
+<?php 
+    }
+}
+?>
+			<li>
+				<div style="text-align:center;">데이터가 없습니다.</div>
+			</li>
+	    </ul>
+	</div> <!-- admin_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?>
+</footer>
+</body>
+</html>

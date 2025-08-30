@@ -1,0 +1,109 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/msg.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+</head>
+<body>
+<?php 
+$lib->lib_fun("session_chk");
+$session_chk->session_chk_(array($_SESSION['userid']),"로그인해주세요.","location.href='/index.php';","");
+ ?>
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">	
+   	<div id="msg_box">
+   	
+<?php 
+$mode = $_GET['mode'];
+if($mode=="send"){
+    echo ("<h3>송신 메시지함</h3>");
+}else{
+    echo ("<h3>수신 메시지함</h3>");
+}
+?>
+	    <div>
+	    	<ul id="message">
+				<li>
+					<span class="col1">번호</span>
+					<span class="col2">제목</span>
+					
+<?php 
+if($mode=="send"){
+    echo ("<span class='col3'>받은이</span>");
+}else{
+    echo ("<span class='col4'>보낸이</span>");
+}
+?>
+					
+					<span class="col4">등록일</span>
+				</li>
+<?php
+$page = $_GET['page'];
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("total_idata_row");
+if($mode=="send"){
+    list($data,$total_record,$row_page) = $total_idata_row->total_idata_row_("*","message","send_id='$userid'","num desc","","10","10");
+}else{
+    list($data,$total_record,$row_page) = $total_idata_row->total_idata_row_("*","message","rv_id='$userid'","num desc","","10","10");    
+}
+
+if($total_record){
+    $lib->lib_fun("data_ione_row_return");
+    foreach ($data as $row){
+        $num = $row["num"];
+        $subject = $row["subject"];
+        $regist_day = $row["regist_day"];
+        $rv_id = $row['rv_id'];
+        $send_id = $row['send_id'];
+        if($mode=="send"){
+            $row2=$data_ione_row_return->data_ione_row_return_("name,id","members","id='$rv_id'","","");
+        }else 
+            $row2=$data_ione_row_return->data_ione_row_return_("name,id","members","id='$send_id'","","");
+?>				
+				<li>
+					<span class="col1"><?=$row['article_num']?></span>
+					<span class="col2"><a href="msg_view.php?mode=<?=$mode?>&num=<?=$row['num']?>"><?=$row['subject']?></a></span>
+					<span class="col3"><?=$row2['name']?>(<?=$row2['id']?>)</span>
+					<span class="col4"><?=$row['regist_day']?></span>
+				</li>
+<?php 
+}
+}else{
+?>
+				<li>
+					<div style="text-align:center;">수신된 메시지가 없습니다.</div>
+				</li>
+<?php 
+}
+
+$db_connect->db_close();
+?>
+	    	</ul>
+			<ul id="page_num">
+<?php 
+$lib->lib_fun("admin_paging");
+$admin_paging->admin_paging_($_REQUEST['page'],$row_page,"mode=$mode","<이전","다음>");
+?>
+			</ul> <!-- page -->	    	
+			<ul class="buttons">
+				<li><button class="fontstyle" onclick="location.href='msg_box.php?mode=rv'">수신 메시지함</button></li>
+				<li><button class="fontstyle" onclick="location.href='msg_box.php?mode=send'">송신 메시지함</button></li>
+				<li><button class="fontstyle" onclick="location.href='msg_form.php'">메시지 전송</button></li>
+			</ul>
+	</div> <!-- msg_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?> -->
+</footer>
+</body>
+</html>

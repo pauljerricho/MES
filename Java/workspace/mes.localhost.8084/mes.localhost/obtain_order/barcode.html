@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>제품 스티커 바코드</title>
+<style>
+.barcode_wrap{ width: 90%; height: auto; margin: 25px auto 25px; border-top: 3px solid #032358; background-color: #ffffff; }
+.barcode_wrap img{ display: block; margin: 0 auto; }
+.barcode_wrap p{ text-align: center; font-size: 11px; line-height: 15px; }
+.print_output{ font-size: 14px; font-weight: bold; margin-left: auto; margin-right: auto; width: 300px;}
+.output{ height: 30px; margin-left: 20px; margin-right: auto; padding-left: 5px; width: 200px; font-size: 14px;}
+.print_type{ display:flex; font-size: 14px; font-weight: bold; margin-left: auto; margin-right: auto; margin-bottom:20px; width: 300px;}
+.typeWrap{ margin-left:20px;}
+.typeWrap label input[type="radio"]{ margin:0;}
+.typeWrap label:last-child{ margin-left:10px;}
+</style>
+<script>
+$(document).ready(function() {
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup_check.popup_b","myform2","","");
+	$('#myform2').append($('<input/>',{type:'hidden',name:'eq_num',value:s_no}));
+
+	$('#myform2').append($('<input/>',{type:'hidden',name:'mode',value:''}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'text',id:'text',value:''}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'item_code',id:'barcodeValue',value:'PD_WAN-0001_000000000000'}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'barcode_name',id:'barcode_name',value:'명절선물세트'}));
+
+	$('#myform2').append($('<input/>',{type:'hidden',name:'btype',id:'code39',value:'code128'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'bgColor',value:'#FFFFFF',size:'7'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'color',value:'#000000',size:'7'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'barWidth',value:'1',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'barHeight',value:'50',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'moduleSize',value:'3',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'quietZoneSize',value:'1',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'posX',value:'0',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'posY',value:'0',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'renderer',id:'css',value:'css'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'p_name',value:'Printer1'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'p_result',value:''}));
+
+	$('#myform2').append($('<textarea/>',{type:'hidden',name:'barcode',id:'barcode',value:'',style:'display:none;'}));
+	$('#myform2').append($('<textarea/>',{type:'hidden',name:'textareas',id:'textareas',value:'',style:'display:none;'}));
+
+
+
+	$('input[name=btype]').click(function(){
+		if ($(this).attr('id') == 'datamatrix') showConfig2D(); else showConfig1D();
+	});
+	$('input[name=renderer]').click(function(){
+		if ($(this).attr('id') == 'canvas') $('#miscCanvas').show(); else $('#miscCanvas').hide();
+	});
+	
+	//닫기
+	$(".popup_b .down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	$("#barcodeTarget").css({
+		"overflow":"unset",
+		"width":"fit-content"
+	});
+	
+	generateBarcode(); //바코드 생성
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+
+function PrintBarcode(data){
+	var barCodeData = data.data.barcodeValue;
+	var data1 = data.data.p_name;
+	var data2 = data.data.mt_number;
+	var data3 = $('#output').val();
+	if(data3<=0){
+		data3=1;
+	}
+	var data4 = data.trim.capacity;
+	var data5 = data.trim.product_type;
+	var data6 = data.trim.locality;
+	var data7 = data.trim.row_material;
+	var data8 = data.trim.packing;
+	var data9 = data.trim.produce_num;
+	var data10 = "st1_"+data.trim.stno;
+	var data11 = data.data.image2;
+	var data12 = data.trim.store_method1;
+	var data13 = data.trim.exchange_place;
+	var data15 = data.trim.cooking_method;
+	var data16 = data.trim.expiration;
+	var data17 = data.trim.store_method2;
+	
+	if(data.data.caution){
+		var cautionArr = data.data.caution.split("|");;
+		var data18,data19,data20,data21;
+		cautionArr[0] ? data18 = cautionArr[0] : data18="";
+		cautionArr[1] ? data19 = cautionArr[1] : data19="";
+		cautionArr[2] ? data20 = cautionArr[2] : data20="";
+		cautionArr[3] ? data21 = cautionArr[3] : data21="";
+	}else{
+		var data18 = "";
+		var data19 = "";
+		var data20 = "";
+		var data21 = "";
+	}
+
+	
+	var d = new Date();
+	var today = d.getFullYear()+"."+(d.getMonth() + 1)+"."+d.getDate();
+	var logo  = data.data.image_root + "sample_logo.png";
+	var citation = data.data.image_root + "citation.jpg";
+	var division = data.data.image_root + "division.jpg";
+	var imageFile = data.data.sticker_root + data10+"."+data11;
+	var strSubmit = "{";
+	strSubmit += "\"mode\":0,";
+	strSubmit += "\"id\":"+issueID+", "; //receipt id. 
+	strSubmit += "\"functions\":{";
+	strSubmit += "	\"func0\":{\"Connect\":[]},";
+	strSubmit += "  \"func1\":{\"ClearBuffer\":[]      },";
+	
+	strSubmit += "  \"func2\":{\"PrintBlock\":[115, 15, 735, 640, 4, 4]},"; // 상자 그리기: 수평 인쇄 시작 위치(dot), 수직 인쇄 시작 위치(dot), 수평 인쇄 끝 위치(dot), 수직 인쇄 끝 위치(dot), 모양 옵션(0: 곂치는 부분 덮어쓰기  1: 겹치는 부분 인쇄 안함  2: 겹치는 부분 삭제  3: 사선  4: 사각형), 사선 또는 사각형의 두께 // 테두리
+	//strSubmit += "  \"func3\":{\"PrintBlock\":[115, 128, 735, 444, 4, 2]},"; // 상자 그리기: 수평 인쇄 시작 위치(dot), 수직 인쇄 시작 위치(dot), 수평 인쇄 끝 위치(dot), 수직 인쇄 끝 위치(dot), 모양 옵션(0: 곂치는 부분 덮어쓰기  1: 겹치는 부분 인쇄 안함  2: 겹치는 부분 삭제  3: 사선  4: 사각형), 사선 또는 사각형의 두께 // 내부상자
+	strSubmit += "  \"func4\":{\"PrintBlock\":[115, 160, 735, 162, 0, 0]},"; // 수평선 그리기 // 제품명 하단, 첫번째 수평선
+	strSubmit += "  \"func5\":{\"PrintBlock\":[115, 212, 735, 214, 0, 0]},"; // 수평선 그리기 // 축산가공유형 하단, 두번째 수평선
+	strSubmit += "  \"func6\":{\"PrintBlock\":[115, 260, 735, 262, 0, 0]},"; // 수평선 그리기 // 소재지 하단, 세번째 수평선
+	strSubmit += "  \"func7\":{\"PrintBlock\":[115, 404, 735, 406, 0, 0]},"; // 수평선 그리기 // 원재료 하단, 네번째 수평선
+	
+	strSubmit += "  \"func8\":{\"PrintBlock\":[216, 128, 218, 262, 0, 0]},"; // 수직선 그리기 // 제품명 우측, 첫번째 수직선
+	strSubmit += "  \"func9\":{\"PrintBlock\":[178, 262, 180, 444, 0, 0]},"; // 수직선 그리기 // 원재료 우측, 두번째 수직선
+	strSubmit += "  \"func10\":{\"PrintBlock\":[546, 128, 548, 214, 0, 0]},"; // 수직선 그리기 // 내용량 좌측, 세번째 수직선
+	strSubmit += "  \"func11\":{\"PrintBlock\":[634, 128, 636, 214, 0, 0]},"; // 수직선 그리기 // 내용량 우측, 네번째 수직선
+	strSubmit += "  \"func12\":{\"PrintBlock\":[474, 404, 476, 444, 0, 0]},"; // 수직선 그리기 // 품목번호 좌측, 다섯번째 수직선
+	strSubmit += "  \"func13\":{\"PrintBlock\":[578, 404, 580, 444, 0, 0]},"; // 수직선 그리기 // 품목번호 우측, 여섯번째 수직선
+
+	strSubmit += "  \"func14\":{\"PrintTrueFontLib\":[108, 132, \"Verdana\", 14, 0, false, \"false\", false, \"제 품 명\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 제품명
+	strSubmit += "  \"func15\":{\"PrintTrueFontLib\":[80, 174, \"Verdana\", 14, 0, false, \"false\", false, \"축산가공품 유형\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 축산가공유형
+	strSubmit += "  \"func16\":{\"PrintTrueFontLib\":[80, 224, \"Verdana\", 14, 0, false, \"false\", false, \"업소명 및 소재지\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 업소명 및 소재지
+	strSubmit += "  \"func17\":{\"PrintTrueFontLib\":[80, 304, \"Verdana\", 14, 0, false, \"false\", false, \"원재료명\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료명
+	strSubmit += "  \"func18\":{\"PrintTrueFontLib\":[88, 412, \"Verdana\", 14, 0, false, \"false\", false, \"포장재질\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 포장재질
+	strSubmit += "  \"func19\":{\"PrintTrueFontLib\":[552, 132, \"Verdana\", 14, 0, false, \"false\", false, \"내 용 량\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 제품명
+	strSubmit += "  \"func20\":{\"PrintTrueFontLib\":[552, 174, \"Verdana\", 14, 0, false, \"false\", false, \"유통기한\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 유통기한
+	strSubmit += "  \"func21\":{\"PrintTrueFontLib\":[476, 412, \"Verdana\", 14, 0, false, \"false\", false, \"품목제조번호\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 품목제조번호
+	//strSubmit += "  \"func22\":{\"PrintImageLibWithSize\":[120, 32, 138, 64, \""+logo+"\", 0, 1]},"; // 로고이미지
+	//strSubmit += "  \"func23\":{\"PrintTrueFontLib\":[150, 100, \"Verdana\", 14, 0, false, \"false\", false, \"감코리아\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 감코리아
+	//strSubmit += "  \"func24\":{\"PrintImageLibWithSize\":[224, 120, 416, 84, \""+imageFile+"\", 0, 1]},"; // 제품 스티커 이미지
+	//strSubmit += "  \"func24\":{\"PrintImageLibWithSize\":[264, 32, 416, 84, \""+imageFile+"\", 0, 1]},"; // 제품 스티커 이미지
+	
+	strSubmit += "  \"func25\":{\"PrintTrueFontLib\":[220, 132, \"Verdana\", 14, 0, false, \"true\", false, \""+data1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 제품명
+	strSubmit += "  \"func26\":{\"PrintTrueFontLib\":[640, 132, \"Verdana\", 14, 0, false, \"false\", false, \""+data4+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 내용량
+	var data5_1 = data5.substr(0,20);
+	var data5_2 = data5.substr(20,20);
+	strSubmit += "  \"func27\":{\"PrintTrueFontLib\":[220, 166, \"Verdana\", 14, 0, false, \"false\", false, \""+data5_1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 축산가공유형
+	strSubmit += "  \"func28\":{\"PrintTrueFontLib\":[220, 186, \"Verdana\", 14, 0, false, \"false\", false, \""+data5_2+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 축산가공유형
+	strSubmit += "  \"func29\":{\"PrintTrueFontLib\":[220, 226, \"Verdana\", 14, 0, false, \"false\", false, \""+data6+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 업소명 소재지
+	var data7_1 = data7.substr(0,40);
+	var data7_2 = data7.substr(40,40);
+	var data7_3 = data7.substr(80,40);
+	var data7_4 = data7.substr(120,40);
+	var data7_5 = data7.substr(160,40);
+	var data7_6 = data7.substr(200,40);
+	var data7_7 = data7.substr(240); 
+	//alert(data7_2);
+	strSubmit += "  \"func30\":{\"PrintTrueFontLib\":[184, 266, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func31\":{\"PrintTrueFontLib\":[184, 286, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_2+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func32\":{\"PrintTrueFontLib\":[184, 306, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_3+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func33\":{\"PrintTrueFontLib\":[184, 326, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_4+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func34\":{\"PrintTrueFontLib\":[184, 346, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_5+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func35\":{\"PrintTrueFontLib\":[184, 366, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_6+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func36\":{\"PrintTrueFontLib\":[184, 386, \"Verdana\", 14, 0, false, \"false\", false, \""+data7_7+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료
+	strSubmit += "  \"func37\":{\"PrintTrueFontLib\":[184, 412, \"Verdana\", 14, 0, false, \"false\", false, \""+data8+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 포장재질
+	strSubmit += "  \"func38\":{\"PrintTrueFontLib\":[584, 412, \"Verdana\", 14, 0, false, \"false\", false, \""+data9+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 품목제조번호
+	//alert(data12);
+	strSubmit += "  \"func39\":{\"PrintTrueFontLib\":[84, 450, \"Verdana\", 14, 0, false, \"true\", false, \"·보관방법:"+data12+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 보관방법
+	strSubmit += "  \"func40\":{\"PrintTrueFontLib\":[84, 548, \"Verdana\", 14, 0, false, \"false\", false, \"·반품 및 교환장소:"+data13+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 반품교환
+	strSubmit += "  \"func41\":{\"PrintTrueFontLib\":[84, 568, \"Verdana\", 14, 0, false, \"true\", false, \"·주의사항 \", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 주의사항
+	var data15_1 = data15.substr(0,20);
+	var data15_2 = data15.substr(20,20);
+	var data15_3 = data15.substr(40,20);
+	var data15_4 = data15.substr(60,20);
+	strSubmit += "  \"func42\":{\"PrintTrueFontLib\":[84, 664, \"Verdana\", 14, 0, false, \"false\", false, \"[조리방법] \", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 조리방법
+	strSubmit += "  \"func43\":{\"PrintTrueFontLib\":[180, 664, \"Verdana\", 14, 0, false, \"false\", false, \""+data15_1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 조리방법
+	strSubmit += "  \"func44\":{\"PrintTrueFontLib\":[180, 684, \"Verdana\", 14, 0, false, \"false\", false, \""+data15_2+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 조리방법
+	strSubmit += "  \"func45\":{\"PrintTrueFontLib\":[180, 704, \"Verdana\", 14, 0, false, \"false\", false, \""+data15_3+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 조리방법
+	strSubmit += "  \"func46\":{\"PrintTrueFontLib\":[180, 724, \"Verdana\", 14, 0, false, \"false\", false, \""+data15_4+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 조리방법
+	
+	strSubmit += "  \"func47\":{\"PrintTrueFontLib\":[640, 176, \"Verdana\", 14, 0, false, \"false\", false, \""+data16+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 유통기한
+	strSubmit += "  \"func48\":{\"PrintImageLibWithSize\":[640, 628, 80, 80, \""+citation+"\", 0, 1]},"; // 이미지
+	strSubmit += "  \"func49\":{\"PrintImageLibWithSize\":[560, 628, 80, 80, \""+division+"\", 0, 1]},"; // 이미지
+	strSubmit += "  \"func50\":{\"Print1DBarcode\":[480, 730, 1, 1, 1, 64, 0, 0, \">B"+barCodeData+"\"]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 바코드심볼(0:code39,1:code128), 좁은바 넓이(dot), 넓은바 넓이(dot), 바코드 높이(dot), 회전(0:0,1:90,2:180,3:270), 바코드 정보 인쇄여부(0:안함,1:바코드하단 크기1,2:바코드상단 크기1,3:바코드하단 크기2,4:바코드상단 크기2), 바코드 데이터값
+	var data17_1 = data17.substr(0,45);
+	var data17_2 = data17.substr(45,45);
+	var data17_3 = data17.substr(90,45);
+	var data17_4 = data17.substr(135,45);
+	strSubmit += "  \"func51\":{\"PrintTrueFontLib\":[84, 470, \"Verdana\", 14, 0, false, \"false\", false, \""+data17_1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 보관방법
+	strSubmit += "  \"func52\":{\"PrintTrueFontLib\":[84, 490, \"Verdana\", 14, 0, false, \"false\", false, \""+data17_2+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 보관방법
+	strSubmit += "  \"func53\":{\"PrintTrueFontLib\":[84, 510, \"Verdana\", 14, 0, false, \"false\", false, \""+data17_3+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 보관방법
+	strSubmit += "  \"func54\":{\"PrintTrueFontLib\":[84, 530, \"Verdana\", 14, 0, false, \"false\", false, \""+data17_4+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 보관방법
+
+	strSubmit += "  \"func55\":{\"PrintTrueFontLib\":[166, 568, \"Verdana\", 14, 0, false, \"false\", false, \""+data18+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 주의사항
+	strSubmit += "  \"func56\":{\"PrintTrueFontLib\":[84, 588, \"Verdana\", 14, 0, false, \"false\", false, \""+data19+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 주의사항
+	strSubmit += "  \"func57\":{\"PrintTrueFontLib\":[84, 608, \"Verdana\", 14, 0, false, \"false\", false, \""+data20+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 주의사항
+	strSubmit += "  \"func58\":{\"PrintTrueFontLib\":[84, 628, \"Verdana\", 14, 0, false, \"false\", false, \""+data21+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 주의사항
+	
+	strSubmit += "  \"func69\":{\"Prints\":["+data3+", 1]},"; // 프린트 수  라벨 세트수, 라벨의 복사본 수 ({\"Prints\":[1, 1]} = 1장,{\"Prints\":[1, 2]} = 2장,{\"Prints\":[2, 1]} = 2장,{\"Prints\":[2, 2]} = 4장)
+	strSubmit += "	\"func70\":{\"Disconnect\":[]}";
+	strSubmit += "		}";
+	strSubmit += "}";
+		
+	
+	issueID++;
+	return strSubmit;
+}
+
+function PrintBarcode2(data){
+
+	var barCodeData = data.data.barcodeValue; //바코드
+	var data1 = data.data.p_name; //제품이름
+	var data2 = $('#output').val(); //출력수
+	if(data2<=0){
+		data2=1;
+	}
+	var data3 = data.comp.address;
+	var data4 = (data.comp.tel).split("-");
+	var logo  = data.data.image_root + "sample_logo.png";
+	
+	var strSubmit = "{";
+	strSubmit += "\"mode\":0,";
+	strSubmit += "\"id\":"+issueID+", "; //receipt id. 
+	strSubmit += "\"functions\":{";
+	strSubmit += "	\"func0\":{\"Connect\":[]},";
+	strSubmit += "  \"func1\":{\"ClearBuffer\":[]      },";
+	strSubmit += "  \"func2\":{\"PrintBlock\":[115, 15, 735, 470, 4, 4]},"; // 상자 그리기: 수평 인쇄 시작 위치(dot), 수직 인쇄 시작 위치(dot), 수평 인쇄 끝 위치(dot), 수직 인쇄 끝 위치(dot), 모양 옵션(0: 곂치는 부분 덮어쓰기  1: 겹치는 부분 인쇄 안함  2: 겹치는 부분 삭제  3: 사선  4: 사각형), 사선 또는 사각형의 두께 // 테두리
+
+	if(data1.length > 12){
+		var c_data1 = data1.substr(12,data1.length-12);
+		data1 = data1.substr(0,12);
+		strSubmit += "  \"func3\":{\"PrintTrueFontLib\":[135, 56, \"Verdana\", 36, 0, false, \"false\", false, \"제품명 : "+data1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 제품명
+		strSubmit += "  \"func4\":{\"PrintTrueFontLib\":[310, 104, \"Verdana\", 36, 0, false, \"false\", false, \""+c_data1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 제품명
+	}else{
+		strSubmit += "  \"func3\":{\"PrintTrueFontLib\":[135, 56, \"Verdana\", 36, 0, false, \"false\", false, \"제품명 : "+data1+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 제품명
+	}
+	strSubmit += "  \"func5\":{\"PrintTrueFontLib\":[135, 140, \"Verdana\", 22, 0, false, \"false\", false, \"※본 제품은 샘플용으로 판매를 하여서는 안됩니다.\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 축산가공유형
+	strSubmit += "  \"func6\":{\"PrintImageLibWithSize\":[220, 150, 420, 200, \""+logo+"\", 0, 1]},"; // 로고이미지
+	strSubmit += "  \"func7\":{\"PrintTrueFontLib\":[150, 334, \"Verdana\", 28, 0, false, \"false\", false, \""+data3+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 업소명 및 소재지
+	strSubmit += "  \"func8\":{\"PrintTrueFontLib\":[132, 410, \"Verdana\", 20, 0, false, \"false\", false, \"TEL : "+data4[0]+")"+data4[1]+"-"+data4[2]+"\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270), 기울기, 두껍게, 밑줄 // 원재료명
+	strSubmit += "  \"func9\":{\"Print1DBarcode\":[420, 394, 1, 1, 1, 64, 0, 0, \">B"+barCodeData+"\"]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 바코드심볼(0:code39,1:code128), 좁은바 넓이(dot), 넓은바 넓이(dot), 바코드 높이(dot), 회전(0:0,1:90,2:180,3:270), 바코드 정보 인쇄여부(0:안함,1:바코드하단 크기1,2:바코드상단 크기1,3:바코드하단 크기2,4:바코드상단 크기2), 바코드 데이터값
+	
+	strSubmit += "  \"func10\":{\"Prints\":["+data2+", 1]},"; // 프린트 수  라벨 세트수, 라벨의 복사본 수 ({\"Prints\":[1, 1]} = 1장,{\"Prints\":[1, 2]} = 2장,{\"Prints\":[2, 1]} = 2장,{\"Prints\":[2, 2]} = 4장)
+	strSubmit += "	\"func11\":{\"Disconnect\":[]}";
+	strSubmit += "		}";
+	strSubmit += "}";
+		
+	
+	issueID++;
+	return strSubmit;
+}
+
+function dlBinAjax(data){
+	var x=new XMLHttpRequest();
+	var data1 = data.data.stno;
+	var data2 = data.data.image2;
+	if(data2){
+		x.open("GET", "/obtain_order/image/"+data.data.mt_number+"/sticker/st1_"+data1+"."+data2, true);
+		x.responseType = 'blob';
+		x.onload=function(e){download(x.response, "st1_"+data1+"."+data2, "image/gif" ); }
+		x.send();
+	}
+}
+</script>
+</head>
+<body>
+	<div class="popup_check popup_b">
+		<div class="pop_close down"></div>
+		<div class="message">
+			바코드 출력
+		</div><!-- message -->
+			<div class="print_type">
+				<span>인쇄 종류</span>
+				<div class="typeWrap">
+					<label><input type="radio" name="printType" value="1" checked>일반</label>
+					<label><input type="radio" name="printType" value="2">샘플</label>
+				</div>
+			</div>
+			<div class="print_output">인쇄 수량<input type="number" class="output" id="output" value="1"></div>
+			<div class="barcode_wrap">
+				<div id="barcodeTarget" class="barcodeTarget" style="margin: auto;"></div>
+				<canvas id="canvasTarget" width="150" height="150"></canvas>
+			</div><!--barcode_box-->
+		<div class="pop_bp">
+			<div class="btn_pop1">출력</div>
+			<div class="btn_pop3 down">닫기</div>
+		</div><!-- pop_bp -->
+	</div><!--popup-->
+</body>
+</html>

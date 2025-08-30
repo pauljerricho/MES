@@ -1,0 +1,91 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/bd.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+</head>
+<body> 
+<header>
+    <?php include "header.php";?>
+</header>
+<section class="fontstyle">
+   	<div id="bd_box">
+	    <h3>
+	       자유 게시판
+		</h3>
+    	<ul id="bd_list">
+			<li>
+				<span class="col1">번호</span>
+				<span class="col2">제목</span>
+				<span class="col3">글쓴이</span>
+				<span class="col4">첨부</span>
+				<span class="col5">등록</span>
+				<span class="col6">조회</span>
+			</li>
+<?php 
+$page = $_GET['page'];
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("total_idata_row");
+list($data,$total_record,$row_page) = $total_idata_row->total_idata_row_("*","board","id='$userid'","num desc","","10","10");
+
+if($total_record){
+    $lib->lib_fun("data_ione_row_return");
+    foreach ($data as $row){
+        $num = $row["num"];
+        $subject = $row["subject"];
+        $name = $row["name"];
+        $regist_day = $row["regist_day"];
+        $hit = $row['hit'];
+        $file_img = $row['file_name']
+        
+
+?>
+			<li>
+				<span class="col1"><?=$row['article_num']?></span>
+				<span class="col2"><a href="bd_view.php?num=num&page=page"><?=$subject?></a></span>
+				<span class="col3"><?=$row['name']?></span>
+				<span class="col4"><?=$file_img?></span>
+				<span class="col5"><?=$row['regist_day']?></span>
+				<span class="col6"><?=$row['hit']?></span>
+			</li>
+<?php 
+    }
+}
+if(!$total_record)
+{
+?>
+			<li>
+				<div style="text-align:center;">데이터가 없습니다.</div>
+			</li>
+<?php 
+}
+?>
+<?php 
+$lib->lib_fun("admin_paging");
+$admin_paging->admin_paging_($_REQUEST['page'],$row_page,"mode=$mode","<이전","다음>");
+?>
+    	</ul>
+		<ul id="page_num">
+			<li></li>
+		</ul> <!-- page -->
+		<ul class="buttons">
+			<li><button onclick="location.href='bd_list.php'" class="fontstyle">목록</button></li>
+			<li><button onclick="location.href='bd_form.php'" class="fontstyle" >글쓰기</button></li>
+			<li><a href="javascript:alert('로그인 후 이용해 주세요!')"><button class="fontstyle">글쓰기</button></a></li>
+			</li>
+		</ul>
+	</div> <!-- bd_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?>
+</footer>
+</body>
+</html>

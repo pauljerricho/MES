@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>발주관리 등록</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/css/order.css">
+<style>
+@media screen and (max-width: 600px){
+    #myform .input_calendar{
+        width:90% !important;
+    }
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	js_reonload_src("datepicker");
+	
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	var b_no = urlParams.get("b_no");
+	var od_no = urlParams.get("od_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/order/ma_order_reg.html","insert");
+	$('#myform').append($('<input/>',{type:'hidden',name:'ph_code',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'b_no',value:b_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'od_no',value:od_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'tip_index',value:''}));
+	
+	
+	
+	//납품처 주소
+	javascript_onload_src("script_ajax_layer_pop");
+	$("input[name='ph_post']").focus(function() {
+		script_ajax_layer_pop('/popup/popup_home.html','post=ph_post&address=ph_address','.popup-31');
+	});
+	
+	//협력업체
+	$("#myform").on("click", ".c_name", function() {
+		script_ajax_layer_pop('/popup/popup_coo.html','','.popup-5');
+	});
+	
+	//제품
+	$("#myform").on("focus", ".mt_number, .p_name", function() {
+		script_ajax_layer_pop('/order/popup_material.html',"",'.popup-22');
+	});
+	
+	//등록 버튼
+	$(".btn.btn_right.save").click(function(){
+		location.href='/order/ma_order.html';
+	});
+
+	headerFixed();
+	no_display();//번호
+	
+	//협력업체 목록
+	$("#table thead tr").prepend("<th>상세</th>");
+ 	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	//추가버튼 
+	$('#add_row1').on( 'click', function () {
+		draw_row(table,'');
+	});
+	
+	//삭제버튼
+	$("#myform").on("click", ".btn_plma", function(){
+		table.row($(this).parents('tr')).remove().draw();
+		no_display();
+	});
+	
+	
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#myform input[name='s_date']").val("2022-02-22");								//발주일자
+	$("#myform input[name='e_date']").val("2022-02-22");								//납기일자
+	$("#myform input[name='ph_post']").val("08589");									//납품처 주소 우편번호
+	$("#myform input[name='ph_address']").val("서울특별시 금천구 가산디지털1로 75-24(가산동)");		//납품처 주소
+	$("#myform input[name='ph_address2']").val("1514호");								//납품처 상세주소
+	$("#myform textarea[name='notice']").text("입고 시 수량을 꼭 확인해주세요");					//유의사항
+	var v = {"ph_no":"1","c_name":"명리식품","pt_code":"COP-0001","mt_number":"WON-0001","p_name":"돼지고기","p_price":"50,000","quantity":"10,000","weight":"10,000,000","box_quantity":"30","p_unit":"kg","box_qty":"1,667","sacks_unit":"1,000","price_sum":"1,500,000","vat":"150,000","total_sum":"1,650,000","division":"1"};
+	table.row().remove().draw();
+	draw_row(table,v);
+    $('#sum_qty3').html("30");				//총 BOX발주수량			
+    $('#sum_qty2').html("10,000,000");		//총 발주중량
+	$('#sum_qty').html("10,000");			//총 발주수량
+    $('#p_price').html("50,000");			//총 단가
+    $('#sum_price').html("1,500,000");		//총 공급가액
+    $('#sum_vat').html("150,000");			//총 부가세
+    $('#total_sum').html("1,650,000");		//총 합계
+});
+
+function draw_row(table,data){
+	if(!data){
+		var data = new Array();
+		var co = new Array("-");
+		data = {"ph_no":"","c_name":"","pt_code":"","mt_number":"","p_name":"","p_price":"","quantity":"","weight":"","box_quantity":"","p_unit":"","box_qty":"","sacks_unit":"","price_sum":"","vat":"","total_sum":"","division":"0"};
+	}else{
+		var co = new Array("-","원재료","부재료");
+		!data['ph_no'] ? data['ph_no']="" : false;
+		!data['c_name'] ? data['c_name']="" : false;
+		!data['pt_code'] ? data['pt_code']="" : false;
+		!data['mt_number'] ? data['mt_number']="" : false;
+		!data['p_name'] ? data['p_name']="" : false;
+		!data['p_price'] ? data['p_price']="" : false;
+		!data['quantity'] ? data['quantity']="" : false;
+		!data['weight'] ? data['weight']="" : false;
+		!data['box_quantity'] ? data['box_quantity']="" : false;
+		!data['p_unit'] ? data['p_unit']="" : false;
+		!data['box_qty'] ? data['box_qty']="" : false;
+		!data['sacks_unit'] ? data['sacks_unit']="" : false;
+		!data['price_sum'] ? data['price_sum']="" : false;
+		!data['vat'] ? data['vat']="" : false;
+		!data['total_sum'] ? data['total_sum']="" : false;
+		!data['division'] ? data['division']="0" : false;
+	}
+	table.row.add([
+		"<td class='control' tabindex='0'>상세</td>",
+		"<div class='btn_plma btn_number' title='삭제' onclick='no_display();'>-</div><input type='hidden' class='ph_no' name='ph_no[]' value='"+data['ph_no']+"'>",
+		"<span class='division'>"+co[data['division']]+"</span>",
+		"<input type='text' class='c_name' name='c_name[]' value='"+data['c_name']+"' style='cursor:pointer;' readonly><input type='hidden' class='pt_code' name='pt_code[]' value='"+data['pt_code']+"'>",
+		"<input type='text' class='mt_number' name='mt_number[]' value='"+data['mt_number']+"' style='cursor:pointer;' readonly><input type='hidden' class='sacks_unit' value='"+data['sacks_unit']+"'><input type='hidden' class='box_quantity' value='"+data['box_qty']+"'><input type='hidden' class='p_unit' name='p_unit[]' value='"+data['p_unit']+"'>",
+		"<input type='text' class='p_name' name='p_name[]' value='"+data['p_name']+"' style='cursor:pointer;' readonly>",
+		"<input type='text' class='quantity3' name='quantity3[]' value='"+data['box_quantity']+"'>",
+		"<input type='text' class='quantity2' name='quantity2[]' value='"+data['weight']+"'>",
+		"<input type='text' class='quantity' name='quantity[]' value='"+data['quantity']+"'>",
+		"<input type='text' class='p_price' name='p_price[]' value='"+data['p_price']+"'>",
+		"<input type='text' class='price_sum' name='price_sum[]' value='"+data['price_sum']+"' readonly>",
+		"<input type='text' class='vat' name='vat[]' value='"+data['vat']+"' readonly>",
+		"<input type='text' class='total_sum' name='total_sum[]' value='"+data['total_sum']+"' readonly>"
+	]).draw(false);
+	no_display();
+}
+
+function no_display(){ // 행 삭제 - 숫자입력
+	var ct = $('.btn_number').length;
+	for(var i=0; i<ct; i++){
+		$('.btn_number').eq(i).text(i+1);
+	}
+}
+
+function headerFixed(){
+	//리스트 상단 헤더 고정
+	var winWidth = $(document).width();
+	var menuOffset = $("#table thead").offset();
+	var tableWidth = $("#table").innerWidth();
+	var colArr = [0,5,5,9,9,9,9,9,9,9,9,9,9];
+	$("#table thead").css("width",tableWidth);
+	$("#table thead tr th").each(function(i,v){
+		var colWidth = tableWidth * colArr[i] / 100;
+		$(this).css("width",colWidth+"px");
+	});
+	if(winWidth>768){
+		$(window).scroll(function() {
+			if($(document).scrollTop() > menuOffset.top) {
+				$("#table thead").addClass('menuFixed');
+			}else{
+				$("#table thead").removeClass('menuFixed');
+			}
+		});
+	}
+}
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="maOrderRegCont">
+				<ul class="lnb">
+					<li><a href="/main.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href='/order/main.html'>발주관리</a></li>
+					<li></li>
+					<li><a href='/order/ma_order.html'>발주관리</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<div class="tit_box">
+						<h2 class="sub_tit">발주 수정</h2>
+					</div>
+					<!-- tit_box -->
+					<table class="tag_table" id="due_table">
+						<tbody>
+							<tr>
+								<th colspan="1">발주일자</th>
+								<td colspan="2">
+									<input type="text" class="btn_candle input_calendar" name="s_date">
+								</td>
+								<th colspan="1">납기일자</th>
+								<td colspan="2">
+									<input type="text" class="btn_candle input_calendar" name="e_date">
+								</td>
+							</tr>
+							<tr>
+								<th colspan="1">납품처 주소</th>
+								<td colspan="5">
+									<input type="text" id="ph_post" class="insearch" name="ph_post" style="display:block;float:none;" readonly>
+									<input type="text" id="ph_address" name="ph_address" style="width:60%;display:block;float:none;" readonly>
+									<input type="text" id="ph_address2" name="ph_address2" style="width:60%;float:none;">
+									<label for="ph_addr" class="error"></label>
+								</td>
+							</tr>
+							<tr>
+								<th>유의사항</th>
+								<td colspan="7"><textarea rows="4" cols="130" name="notice" style="width:92%;"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table_ri" id="table" style="width: 100%">
+						<colgroup>
+							<col width="5%">
+							<col width="5%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th style="cursor: pointer;" id="add_row1">추가</th>
+								<th>구분</th>
+								<th>협력업체</th>
+								<th>제품번호</th>
+								<th>제품명</th>
+								<th>BOX발주수량</th>
+								<th>발주중량(kg)</th>
+								<th>발주수량</th>
+								<th>단가</th>
+								<th>공급가액</th>
+								<th>부가세</th>
+								<th>합계</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+			                    <td>
+			                    	<div class="btn_plma btn_number" title="삭제">1</div>
+			                    	<input type="hidden" class="ph_no" name="ph_no[]">
+			                	</td>
+			                    <td><span class="division">-</span></td>
+			                    <td>
+			                    	<input type="text" class="c_name" name="c_name[]" style="cursor:pointer;" readonly>
+			                    	<input type="hidden" class="pt_code" name="pt_code[]">
+			                	</td>
+			                    <td>
+			                    	<input type="text" class="mt_number" name="mt_number[]" style="cursor:pointer;" readonly>
+			                    	<input type="hidden" class="sacks_unit" name="sacks_unit[]">
+			                    	<input type="hidden" class="box_quantity" name="box_quantity[]">
+			                    	<input type="hidden" class="p_unit" name="p_unit[]">
+			                	</td>
+			                    <td><input type="text" class="p_name" name="p_name[]" style="cursor:pointer;" readonly></td>
+			                    <td><input type="text" class="quantity3" name="quantity3[]"></td>
+			                    <td><input type="text" class="quantity2" name="quantity2[]"></td>
+			                    <td><input type="text" class="quantity" name="quantity[]"></td>
+			                    <td><input type="text" class="p_price" name="p_price[]" readonly></td>
+			                    <td><input type="text" class="price_sum" name="price_sum[]" readonly></td>
+			                    <td><input type="text" class="vat" name="vat[]" readonly></td>
+			                    <td><input type="text" class="total_sum" name="total_sum[]" readonly></td>
+			                </tr>
+						</tbody>
+					</table>
+					<table class="table_ri">
+						<colgroup>
+							<col width="12%">
+							<col width="12%">
+							<col width="12%">
+							<col width="12%">
+							<col width="13%">
+							<col width="13%">
+							<col width="13%">
+							<col width="13%">
+						</colgroup>
+						<tr>
+							<th rowspan="2">총 합계</th>
+							<th>BOX발주수량</th>
+							<th>발주중량</th>
+							<th>발주수량</th>
+							<th>단가</th>
+							<th>공급가액</th>
+							<th>부가세</th>
+							<th>합계</th>
+						</tr>
+						<tr>
+							<td id="sum_qty3">0</td>
+							<td id="sum_qty2">0</td>
+							<td id="sum_qty">0</td>
+							<td id="p_price">0</td>
+							<td id="sum_price">0</td>
+							<td id="sum_vat">0</td>
+							<td id="total_sum">0</td>
+						</tr>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn" title="취소"><a href="/order/ma_order.html">취소</a></div>
+							<div class="btn btn_right save">수정</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

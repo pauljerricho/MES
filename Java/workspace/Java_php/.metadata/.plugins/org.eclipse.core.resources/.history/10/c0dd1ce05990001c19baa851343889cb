@@ -1,0 +1,64 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/msg.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+</head>
+<body> 
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">
+
+   	<div id="msg_box">
+<?php 
+$mode = $_GET['mode'];
+$num = $_GET['num'];
+
+if($mode=="send"){
+    echo("<h3 class='title'>송신 메시지함</h3>");
+}else{
+    echo("<h3 class='title'>수신 메시지함</h3>");
+}
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$lib->lib_fun("data_ione_row_return");
+$row = $data_ione_row_return->data_ione_row_return_("*","message","num='$num'","","");
+
+$row['content'] = str_replace(" ","&nbsp",$row['content']);
+$row['content'] = str_replace("\n","<br>",$row['content']);
+
+if($mode="send"){
+    $row2 = $data_ione_row_return->data_ione_row_return_("name","members","id=$row[rv_id]","","");
+}else {
+    $row2 = $data_ione_row_return->data_ione_row_return_("name","members","id=$row[sned_id]","","");
+}
+?>
+	    
+	    <ul id="view_content">
+			<li>
+				<span class="col1"><b>제목 :</b> subject</span>
+				<span class="col2">msg_name | regist_day</span>
+			</li>
+			<li>content</li>		
+	    </ul>
+	    <ul class="buttons">
+			<li><button onclick="location.href='msg_box.php?mode=rv'" class="fontstyle">수신 메시지함</button></li>
+			<li><button onclick="location.href='msg_box.php?mode=send'" class="fontstyle">송신 메시지함</button></li>
+			<li><button onclick="location.href='msg_response_form.php?num=num'" class="fontstyle">답변하기</button></li>
+			<li><button onclick="location.href='msg_delete.php?num=num&mode=mode'" class="fontstyle">삭제하기</button></li>
+		</ul>
+	</div> <!-- msg_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?></footer> 
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>납품제품 현황</title>
+<meta charset="UTF-8">
+</head>
+<style>
+.tr_hover:hover {
+	background: #ddd;
+	cursor: pointer;
+}
+</style>
+<script>
+$(document).ready(function(){
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup_check.popup-15","myform2","","");
+	$('#myform2').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+
+
+
+	//닫기
+	$(".popup-15 .down").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table_check tbody").append("<tr><td>WON-0001</td><td>돼지고기</td></tr>");
+	$("#table_check tbody").append("<tr><td>BUU-0001</td><td>소금</td></tr>");
+	
+	//데이터테이블
+	var table = $("#table_check").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 0, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+        columnDefs: [ {
+            className: 'control',
+            targets:   0
+          }
+        ]
+	});
+	
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+</script>
+<body>
+	<div class="popup_check popup-15">
+		<div class="pop_close down"></div>
+		<div class="message">납품제품 현황</div>
+		<!-- message -->
+		<div class="pop_search2">
+			<input type="text" class="search_in" name="search_key">
+			<div class="search_btn save">검색</div>
+		</div>
+		<!-- pop_search2 -->
+		<div class="table_search">
+			<table id="table_check" class="table_pop">
+				<colgroup>
+					<col width="50%">
+					<col width="50%">
+				</colgroup>
+				<thead>
+    				<tr>
+    					<th>제품코드</th>
+    					<th>제품명</th>
+    				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<!-- table_search -->
+		<div class="pop_bp"></div>
+		<!-- pop_bp -->
+	</div>
+	<!--popup-->
+</body>
+</html>

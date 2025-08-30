@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>거래처 검색</title>
+<style>
+.table_pop tbody tr:hover {
+	background: #ddd;
+	cursor: pointer;
+}
+</style>
+<script src="/trans_js/?mod=search"></script>
+</head>
+<body>
+	<div class="popup_ta popup-31">
+		<div class="pop_close down"></div>
+		<div class="message">거래처 검색</div>
+		<!-- message -->
+		<div class="pop_search2">
+			<select class="select_half" name="key1">
+				<option value='0'>통합검색</option>
+				<option value='1'>고객업체코드</option>
+				<option value='2'>고객업체명</option>
+			</select>
+			<input type="text" class="search_in" name="search_key">
+			<div class="search_btn save">검색</div>
+		</div>
+		<!-- pop_search2 -->
+		<div class="table_search">
+			<table class="table_pop" id="table_popup">
+				<colgroup>
+					<col width="50%">
+					<col width="50%">
+				</colgroup>
+				<thead>
+   					<tr>
+   						<th>고객업체 코드</th>
+   						<th>고객업체명</th>
+   					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<!-- table_search -->
+		<div class="pop_bp">
+			<div class="btn_pop1 btn_remove">미선택</div>
+			<div class="btn_pop1 down btn_co">취소</div>
+		</div>
+		<!-- pop_bp -->
+	</div>
+	<!--popup-->
+</body>
+</html>

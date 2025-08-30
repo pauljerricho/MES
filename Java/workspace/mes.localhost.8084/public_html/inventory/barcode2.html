@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>창고-위치 바코드</title>
+<meta charset="UTF-8">
+<script src='/js/download.js'></script>
+<title>바코드</title>
+<style>
+.barcode_wrap {
+	width: 90%;
+	height: auto;
+	margin: 25px auto 25px;
+	border-top: 3px solid #032358;
+	background-color: #ffffff;
+}
+
+.barcode_wrap img {
+	display: block;
+	margin: 0 auto;
+}
+
+.barcode_wrap p {
+	text-align: center;
+	font-size: 11px;
+	line-height: 15px;
+}
+
+.barcodeTarget {
+    overflow: unset !important;
+}
+
+.print_output {
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+}
+
+.output {
+	height: 30px;
+	margin-left: 20px;
+	margin-right: auto;
+	padding-left: 5px;
+	width: 200px;
+	font-size: 14px;
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".popup_check.popup_b","myform2","","");
+	$('#myform2').append($('<input/>',{type:'hidden',name:'eq_num',value:s_no}));
+
+	$('#myform2').append($('<input/>',{type:'hidden',name:'text',id:'text',value:''}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'item_code',id:'barcodeValue',value:'WH_WH-0001_0000000000000'}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'barcode_name',id:'barcode_name',value:'1층 A창고'}));
+
+	$('#myform2').append($('<input/>',{type:'hidden',name:'btype',id:'code39',value:'code128'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'bgColor',value:'#FFFFFF',size:'7'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'color',value:'#000000',size:'7'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'barWidth',value:'1',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'barHeight',value:'50',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'moduleSize',value:'3',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'quietZoneSize',value:'1',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'posX',value:'0',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'posY',value:'0',size:'3'}));
+	$('#myform2').append($('<input/>',{type:'hidden',name:'renderer',id:'css',value:'css'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'p_name',value:'Printer1'}));
+	$('#myform2').append($('<input/>',{type:'hidden',id:'p_result',value:''}));
+
+	$('#myform2').append($('<textarea/>',{type:'hidden',name:'barcode',id:'barcode',value:'',style:'display:none;'}));
+	$('#myform2').append($('<textarea/>',{type:'hidden',name:'textareas',id:'textareas',value:'',style:'display:none;'}));
+
+
+
+	$('input[name=btype]').click(function() {
+		if ($(this).attr('id') == 'datamatrix')
+			showConfig2D();
+		else
+			showConfig1D();
+	});
+	$('input[name=renderer]').click(function() {
+		if ($(this).attr('id') == 'canvas')
+			$('#miscCanvas').show();
+		else
+			$('#miscCanvas').hide();
+	});
+	
+	//닫기
+	$(".popup_b .down, .pop_bp .btn_pop3").click(function(){
+		$('#lay').fadeOut();
+		$('html, body').css({'overflow': 'visible'});
+	});
+	
+	$("#barcodeTarget").css({
+		"overflow":"unset",
+		"width":"fit-content"
+	});
+	
+	generateBarcode(); //바코드 생성
+	alignModal(); //수직 정렬
+});
+$(window).resize(function(){
+	alignModal(); //수직 정렬
+});
+
+function PrintBarcode(data) {
+	var barCodeData = data.barcodeValue;
+	var data1 = data.wh_name;
+	var data2 = data.location;
+	var data3 = $('#output').val();
+	if (data3 <= 0) {
+		data3 = 1;
+	}
+	var d = new Date();
+	var today = d.getFullYear() + "." + (d.getMonth() + 1) + "." + d.getDate();
+
+	var strSubmit = "{";
+	strSubmit += "\"mode\":0,";
+	strSubmit += "\"id\":" + issueID + ", "; //receipt id. 
+	strSubmit += "\"functions\":{";
+	strSubmit += "	\"func0\":{\"Connect\":[]},";
+	strSubmit += "  \"func1\":{\"ClearBuffer\":[]      },";
+	
+	strSubmit += "  \"func2\":{\"PrintBlock\":[115, 160, 735, 164, 0, 0]},"; // 수평선 그리기
+	strSubmit += "  \"func3\":{\"PrintBlock\":[340, 10, 344, 460, 0, 0]},"; // 수직선 그리기
+	
+	strSubmit += "  \"func4\":{\"PrintBlock\":[115, 310, 735, 314, 0, 0]},"; // 수평선 그리기
+	strSubmit += "  \"func5\":{\"PrintBlock\":[115, 460, 735, 464, 0, 0]},"; // 수평선 그리기
+	strSubmit += "  \"func6\":{\"PrintBlock\":[115, 10, 735, 640, 4, 4]},"; // 상자 그리기: 수평 인쇄 시작 위치(dot), 수직 인쇄 시작 위치(dot), 수평 인쇄 끝 위치(dot), 수직 인쇄 끝 위치(dot), 모양 옵션(0: 곂치는 부분 덮어쓰기  1: 겹치는 부분 인쇄 안함  2: 겹치는 부분 삭제  3: 사선  4: 사각형), 사선 또는 사각형의 두께 // 테두리
+	
+	strSubmit += "  \"func7\":{\"Print1DBarcode\":[125, 485, 1, 2, 1, 130, 0, 0, \">B" + barCodeData + "\"]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 바코드심볼(0:code39,1:code128), 좁은바 넓이(dot), 넓은바 넓이(dot), 바코드 높이(dot), 회전(0:0,1:90,2:180,3:270), 바코드 정보 인쇄여부(0:안함,1:바코드하단 크기1,2:바코드상단 크기1,3:바코드하단 크기2,4:바코드상단 크기2), 바코드 데이터값
+	strSubmit += "  \"func8\":{\"PrintTrueFontLib\":[150, 60, \"Arial\", 36, 0, false, \"false\", false, \"창고명\", true]},";
+
+	strSubmit += "  \"func9\":{\"PrintTrueFontLib\":[150, 210, \"Arial\", 36, 0, false, \"false\", false, \"위치\", true]},";
+	strSubmit += "  \"func10\":{\"PrintTrueFontLib\":[150, 360, \"Arial\", 36, 0, false, \"false\", false, \"출력일자\", true]},";
+	strSubmit += "  \"func11\":{\"PrintTrueFontLib\":[400, 60, \"Arial\", 32, 0, false, \"false\", false, \"" + data1 + "\", true]},";
+	
+	strSubmit += "  \"func12\":{\"PrintTrueFontLib\":[400, 210, \"Arial\", 32, 0, false, \"false\", false, \"" + data2 + "\", true]},";
+	strSubmit += "  \"func13\":{\"PrintTrueFontLib\":[400, 360, \"Arial\", 32, 0, false, \"false\", false, \"" + today + "\", true]},"; // 수평 인쇄 위치(dot), 수직 인쇄 위치(dot), 글꼴, 글자크기, 회전(0:0,1:90,2:180,3:270)
+	
+	strSubmit += "  \"func14\":{\"Prints\":[" + data3 + ", 1]},"; // 프린트 수  라벨 세트수, 라벨의 복사본 수 ({\"Prints\":[1, 1]} = 1장,{\"Prints\":[1, 2]} = 2장,{\"Prints\":[2, 1]} = 2장,{\"Prints\":[2, 2]} = 4장)
+	strSubmit += "	\"func15\":{\"Disconnect\":[]}";
+	strSubmit += "		}";
+	strSubmit += "}";
+
+	issueID++;
+	return strSubmit;
+}
+
+function dlBinAjax(data) {
+	var x = new XMLHttpRequest();
+	var data1 = "";
+	var data2 = "";
+	x.open("GET", "../inventory/image/" + data1 + "." + data2, true);
+	x.responseType = 'blob';
+	x.onload = function(e) {
+	download(x.response, data1 + "." + data2, "image/gif");
+	}
+	x.send();
+}
+
+</script>
+</head>
+<body>
+	<div class="popup_check popup_b">
+		<div class="pop_close down"></div>
+		<div class="message">바코드 출력</div>
+		<!-- message -->
+		<div class="print_output">
+			인쇄 수량<input type="number" class="output" id="output" value="1">
+		</div>
+		<div class="barcode_wrap">
+			<div id="barcodeTarget" class="barcodeTarget" style="margin: auto;"></div>
+			<canvas id="canvasTarget" width="150" height="150"></canvas>
+		</div>
+		<!--barcode_box-->
+		<div class="pop_bp">
+			<div class="btn_pop1">출력</div>
+			<div class="btn_pop3">닫기</div>
+		</div>
+		<!-- pop_bp -->
+	</div>
+	<!--popup-->
+</body>
+</html>

@@ -1,0 +1,60 @@
+<?php 
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+?>
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<title>MYUNGLI 실습예제</title>
+<link rel="stylesheet" type="text/css" href="./css/common.css">
+<link rel="stylesheet" type="text/css" href="./css/administrator.css">
+<link rel="styelsheet" type="text/css" href="./css/font.css">
+</head>
+<body> 
+<header>
+    <?php include "header.php";?>
+</header>  
+<section class="fontstyle">
+   	<div id="admin_box">
+	    <h3 id="member_title">
+	    	게시판 관리
+		</h3>
+		<ul class="top_buttons">
+			<li><span><a href="admin_member.php">회원관리 </a></span></li>
+			<li><span><a href="admin_board.php">게시물관리</a></span></li>
+		</ul>
+		<form method="post" action="adm_board_del.php">
+		    <ul id="bd_list">
+				<li class="title">
+					<span class="col1">선택</span>
+					<span class="col2">번호</span>
+					<span class="col3">이름</span>
+					<span class="col4">제목</span>
+					<span class="col5">첨부파일명</span>
+					<span class="col6">작성일</span>
+				</li>
+<?php 
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+?>
+				<li>
+					<span class="col1"><input type="checkbox" name="item[]" value="num"></span>
+					<span class="col2">number</span>
+					<span class="col3">name</span>
+					<span class="col4">subject</span>
+					<span class="col5">file_name</span>
+					<span class="col6">regist_day</span>
+				</li>
+				<li>
+					<div style="text-align:center;">데이터가 없습니다.</div>
+				</li>
+		    </ul>
+		    <button type="submit" class="fontstyle">글 삭제</button>
+		</form>	
+	</div> <!-- admin_box -->
+</section> 
+<footer>
+    <?php include "footer.php";?>
+</footer>
+</body>
+</html>

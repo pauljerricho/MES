@@ -1,0 +1,616 @@
+/* 공통 */
+#table_reg td .btn_dup {
+    margin-left: 10px;
+    height: 35px;
+    line-height: 35px;
+}
+@media screen and (max-width: 768px) {
+	#table_reg .btn_dup {
+		border-radius: 5px;
+		box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.btn {
+	    border: 0 !important;
+	    box-shadow: 2px 2px 3px 0px #dedede;
+	}
+	.btn_excel {
+		margin-right:10px;
+	}
+}
+
+/* 수주관리 리스트 */
+@media screen and (max-width: 1560px) {
+	.prOrCheckCont #table_reg,
+	.prOrCheckCont #table_reg thead,
+	.prOrCheckCont #table_reg tbody,
+	.prOrCheckCont #table_reg th,
+	.prOrCheckCont #table_reg td,
+	.prOrCheckCont #table_reg tr {
+		display: inline-block;
+		width:100%;
+		height:auto;
+	}
+	.prOrCheckCont #table_reg th,
+	.prOrCheckCont #table_reg td {
+		border: 0 !important;
+	}
+	.prOrCheckCont #table_reg {
+		height:auto;
+	}
+	.prOrCheckCont #table_reg th {
+		width:29.3%;
+		line-height:40px;
+		border: 0 !important;
+		border-right: 1px solid #a9a9a9 !important;
+	}
+	.prOrCheckCont #table_reg th:first-child {
+		border-bottom: 1px solid #a9a9a9 !important;
+	}
+	.prOrCheckCont #table_reg td {
+		width:70%;
+		line-height:40px;
+		border: 0 !important;
+	}
+	.prOrCheckCont #table_reg td:nth-child(2) {
+		border-bottom: 1px solid #a9a9a9 !important;
+	}
+	.prOrCheckCont #table_reg td > div {
+		display: flex;
+		align-items:center;
+	}
+	.prOrCheckCont #table_reg .phonespan {
+	    position: relative;
+	    top: 0;
+	    float: unset;
+	    height: auto;
+	    margin: 0 10px;
+	    font-size: 16px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.prOrCheckCont #table_reg th {
+		width:29% !important;
+	}
+	.prOrCheckCont #table_reg td {
+		width:69%;
+	}
+	.prOrCheckCont input.input_calendar {
+		width:40% !important;
+	}
+}
+
+/* 수주등록 */
+.prOrCheckRegCont .tag_table th {
+	white-space:nowrap;	
+}
+.prOrCheckRegCont .tag_table .tag_th_st {
+	color: black;
+	font-size:13px;
+}
+.prOrCheckRegCont .tag_table .input_line {
+	padding:0 3px;
+}
+.prOrCheckRegCont .tag_table .email_line {
+	float: left;
+	margin: 0 2px;
+	line-height: 30px;
+}
+@media screen and (max-width: 1320px) {
+	.prOrCheckRegCont .tag_table {
+	    width: 100% !important;
+	}
+	.prOrCheckRegCont .tag_table th,
+	.prOrCheckRegCont .tag_table td {
+		padding:10px;
+	}
+	.prOrCheckRegCont .tag_table .email_line {
+		margin: 0px 6px 0 2px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.prOrCheckRegCont .tag_table,
+	.prOrCheckRegCont #table {
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	}
+	.prOrCheckRegCont .tag_table,
+	.prOrCheckRegCont .tag_table thead,
+	.prOrCheckRegCont .tag_table tbody,
+	.prOrCheckRegCont .tag_table th,
+	.prOrCheckRegCont .tag_table td,
+	.prOrCheckRegCont .tag_table tr {
+		display: inline-block;
+		width:100%;
+		font-size:14px;
+	}
+	.prOrCheckRegCont #table tr th,
+	.prOrCheckRegCont #table tr td {
+		border-bottom: 3px solid #fff !important;
+	}
+	.prOrCheckRegCont .tag_table th,
+	.prOrCheckRegCont .tag_table td,
+	.prOrCheckRegCont #table th {
+		border: 0 !important;
+		background: #f8f8f8;
+	}
+	.prOrCheckRegCont #table td {
+		border: 0 !important;
+	}
+	.prOrCheckRegCont .tag_table th {
+		width:28%;
+	}
+	.prOrCheckRegCont .tag_table td {
+		width:70%;
+		padding: 10px !important;
+	}
+	.prOrCheckRegCont .tag_table input[type='text'],
+	.prOrCheckRegCont #table input[type='text'] {
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.prOrCheckRegCont .tag_table .tag_th_st {
+		width:100%;
+		font-size:22px;
+		font-weight:bold;
+	}
+	.prOrCheckRegCont .tag_table .tag_th_st span:after {
+        content: "";
+        display: block;
+        width: 30px;
+        border-bottom: 2px solid #ff8400;
+        margin: 10px auto;
+	}
+	.prOrCheckRegCont .bot_box {
+		margin-top:20px;
+	}
+	.prOrCheckRegCont .sub_con h2.sub_tit{
+		text-align: center;
+	}
+}
+@media screen and (max-width: 480px) {
+	.prOrCheckRegCont .tag_table,
+	.prOrCheckRegCont .tag_table thead,
+	.prOrCheckRegCont .tag_table tbody,
+	.prOrCheckRegCont .tag_table th,
+	.prOrCheckRegCont .tag_table td,
+	.prOrCheckRegCont .tag_table tr {
+		font-size:12px;
+	}
+	.prOrCheckRegCont .tag_table input[type='text'] {
+		font-size:11px !important;
+	}
+	.prOrCheckRegCont .tag_table .tag_th_st {
+		font-size:18px;
+	}
+	.prOrCheckRegCont .tag_table .tag_th_st span:after {
+        width: 24px;
+	}
+	.prOrCheckRegCont .tag_table #cu_manager {
+		width:100% !important;
+		margin-bottom:10px;
+	}
+	.prOrCheckRegCont .tag_table #bank,
+	.prOrCheckRegCont .tag_table #account_num,
+	.prOrCheckRegCont .tag_table #account_name {
+		width: 60% !important;
+	}
+}
+
+
+/* 제품등록 */
+.infoPdRegCont #table_reg input[type='text'] {
+	display:block;
+	float:none;
+}
+.infoPdRegCont label.error {
+	display:none;
+	line-height:20px;
+}
+.infoPdRegCont .caution {
+	float: left;
+	margin-left: 10px;
+}
+.infoPdRegCont .s_img .s_img_top {
+	width: 100%;
+	border: 1px solid #c3c9d8;
+	box-sizing: border-box;
+	border-bottom: none;
+	height: 377px;
+	padding: 5px;
+}
+.infoPdRegCont .s_img {
+	float: left;
+	width: 377px;
+	background: #fff;
+	box-sizing: border-box;
+	position: relative;
+}
+.infoPdRegCont .s_img img {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.infoPdRegCont .s_img .bot {
+	width: 100%;
+	height: 25px;
+}
+.infoPdRegCont .sub_con h2.sub_tit {
+	margin-bottom: 10px;
+}
+.infoPdRegCont #table_reg {
+	float: right;
+	width: calc(100% - 395px);
+	margin: 0;
+}
+.infoPdRegCont .td_wrap {
+	display:flex;
+	align-items:center;
+}
+.infoPdRegCont .btn_dup {
+	display:inline-block;
+	float:none;
+	margin-left: 7px;
+}
+.infoPdRegCont .btn_06 {
+	border: 1px solid #ccc;
+	width: 32% !important;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	cursor: pointer;
+	color: #000;
+	font-size: 13px;
+	background-color: #f1f4f8;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.infoPdRegCont .shot_input {
+	width: 68% !important;
+	height: 25px;
+	border: 1px solid #005196;
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+.infoPdRegCont .bot_box {
+	margin-top: 20px;
+	clear: both;
+	overflow: hidden;
+	float: left;
+	width: 100%;
+}
+.infoPdRegCont .pt_line {
+	display: block;
+	height: auto;
+	margin: 10px 0;
+}
+.infoPdRegCont #table_reg td .pt_line input[type=text] {
+	float:none;
+}
+.infoPdRegCont #table_reg td .mix_standard,
+.infoPdRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+	float:none;
+}
+.infoPdRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoPdRegCont #table_reg td #box_unit_text {
+	display:none;
+}
+.infoPdRegCont #table_reg td #mt_number {
+	width:90px;
+}
+.infoPdRegCont #table_reg td .sacks_unit {
+	width:120px;
+}
+.infoPdRegCont #table_reg td .p_unit {
+	width:55px;
+	height:36px;
+}
+@media screen and (max-width: 1270px) {
+	.infoPdRegCont .s_img{
+	 	width:100%;
+	 	margin-bottom:20px;
+	}
+	.infoPdRegCont #table_reg{
+		width:100%;
+	}
+}
+@media screen and (max-width: 768px) {
+	.infoPdRegCont label.error {
+		display:inline-block !important;
+		line-height:20px;
+	}
+	.infoPdRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoPdRegCont #table_reg th {
+    	width: 105px;
+	}
+	.infoPdRegCont #table_reg th,
+	.infoPdRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoPdRegCont #table_reg input[type='text'] {
+		width:75%;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoPdRegCont #table_reg input[type='radio'] {
+    	margin-right: 0px;
+	}
+	.infoPdRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoPdRegCont #table_reg td select.select_half {
+		height:37px;
+	}
+	.infoPdRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+	.infoPdRegCont #table_reg td input.input_half {
+		width:50%;
+	}
+	.infoPdRegCont #table_reg .select_half {
+		width:25% !important;
+	}
+	.infoPdRegCont #table_reg td .sacks_unit {
+		width:50%;
+	}
+	.infoPdRegCont #table_reg td .p_unit {
+		width:25%;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoPdRegCont .code_wrap {
+		display:block;
+	}
+	.infoPdRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoPdRegCont #table_reg .code_wrap input.input_half {
+		display:inline-block;
+	}
+	.infoPdRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoPdRegCont #table_reg th{
+		width:100px !important;
+	}
+	.infoPdRegCont #table_reg td .btn_dup {
+		height:30px !important;
+		line-height: 30px !important;
+		right:2%;
+	}
+	.infoPdRegCont #table_reg td select.select_half {
+		height:30px;
+		width:20%;
+	}
+	.infoPdRegCont #table_reg td .p_unit
+	.infoPdRegCont #table_reg td .mix_standard {
+		height:30px;
+	}
+
+}
+
+/* 고객업체 등록 */
+.infoCustomerRegCont #table_reg td select.select_half {
+	width:85px;
+	height:36px;
+}
+.infoCustomerRegCont #table_reg td #initial_text {
+	display:none;
+	width:90px;
+	text-align:center;
+}
+.infoCustomerRegCont #table_reg td #cu_code {
+	width:90px;
+}
+@media screen and (max-width: 768px) {
+	.infoCustomerRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoCustomerRegCont #table_reg th {
+    	width: 110px;
+	}
+	.infoCustomerRegCont #table_reg th,
+	.infoCustomerRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoCustomerRegCont #table_reg input[type='text'] {
+		width:75%;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoCustomerRegCont #table_reg select {
+		width:auto;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+	}
+	.infoCustomerRegCont #table_reg .select_number{
+		width:20%;
+		height:35px;
+		margin-right:5px;
+	}
+	.infoCustomerRegCont #table_reg input[type=text].phonenum {
+		width:22%;
+		height: 35px;
+	}
+	.infoCustomerRegCont #table_reg .select_em{
+		width:20%;
+		height:37px;
+	}
+	.infoCustomerRegCont #table_reg input[type=text].in_em {
+		width:33%;
+		height: 35px;
+	}
+	.infoCustomerRegCont #table_reg input[type=radio] {
+    	margin-right: 0px;
+	}
+	.infoCustomerRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoCustomerRegCont #table_reg .select_number{
+		width:75%;
+		margin-right:7%;
+	}
+	.infoCustomerRegCont #table_reg .select_em{
+		width:75%;
+		margin-left:0px;
+	}
+	.infoCustomerRegCont #table_reg .code_wrap .select_half {
+		width:90px !important;
+		margin:0;
+	}
+	.infoCustomerRegCont #table_reg .code_wrap input[type=text] {
+		display:inline-block;
+	}
+	.infoCustomerRegCont #table_reg td .btn_dup {
+		position:unset;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoCustomerRegCont #table_reg th{
+		width:110px !important;
+	}
+	.infoCustomerRegCont #table_reg td .btn_dup {
+		height:30px !important;
+		line-height: 30px !important;
+		right:2%;
+	}
+	.infoCustomerRegCont #table_reg .code_wrap .select_half {
+		height:30px;
+	}
+}
+
+/* 기업정보 등록 */
+@media screen and (max-width: 768px) {
+	.infoCompanyRegCont #table_reg{
+		padding:10px 0;
+		background: #f8f8f8;
+	    border: 1px solid #f8f8f8 !important;
+	    border-collapse: inherit;
+	    border-radius:10px;
+	    overflow:hidden;
+	    box-shadow: 0px 0px 6px 1px #dedede;
+	    margin-bottom: 15px;
+	}
+	.infoCompanyRegCont #table_reg th {
+    	width: 110px;
+	}
+	.infoCompanyRegCont #table_reg th,
+	.infoCompanyRegCont #table_reg td {
+		border: 0 !important;
+		background: #f8f8f8;
+		font-size:12px;
+		padding: 10px;
+	}
+	.infoCompanyRegCont #table_reg input[type='text'] {
+		width:75%;
+		box-shadow: 2px 2px 3px 0px #dedede;
+		border-radius: 5px;
+		font-size:13px !important;
+	}
+	.infoCompanyRegCont #table_reg .trhome {
+		width:92% !important;
+	}
+	.infoCompanyRegCont #table_reg .select_number{
+		width:20%;
+		height:35px;
+		margin-right:5px;
+	}
+	.infoCompanyRegCont #table_reg input[type=text].phonenum {
+		width:22%;
+		height: 35px;
+	}
+	.infoCompanyRegCont #table_reg .select_em{
+		width:20%;
+		height:37px;
+	}
+	.infoCompanyRegCont #table_reg input[type=text].in_em {
+		width:33%;
+		height: 35px;
+	}
+	.infoCompanyRegCont #table_reg input[type=radio] {
+    	margin-right: 0px;
+	}
+	.infoCompanyRegCont .sub_con h2.sub_tit{
+		margin-bottom:15px;
+		text-align: center;
+	}
+	.infoCompanyRegCont #table_reg label{
+		display:block;
+	}
+	.infoCompanyRegCont #table_reg .bank_select{
+		width:37% !important;
+	}
+	.infoCompanyRegCont #table_reg .bank_text{
+		width:60% !important;
+	}
+	.infoCompanyRegCont #table_reg .mar10{
+		margin-bottom: 10px !important;
+	}
+	.infoCompanyRegCont #table_reg .i_block{
+	    display: flex;
+	    line-height: 27px;
+	    margin-bottom: -10px;
+	}
+}
+@media screen and (max-width: 560px) {
+	.infoCompanyRegCont #table_reg .select_number{
+		width:75%;
+		margin-right:7%;
+	}
+	.infoCompanyRegCont #table_reg .select_em{
+		width:75%;
+		margin-left:0px;
+	}
+}
+@media screen and (max-width: 414px) {
+	.infoCompanyRegCont #table_reg th{
+		width:110px !important;
+	}
+}

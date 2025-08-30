@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>수주조회 등록</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/produce.css">
+<style>
+#table_reg th {
+    font-size:11px !important;
+}
+#table_reg td{
+    padding-left: unset;
+}
+@media screen and (min-width: 768px){
+	#table_reg{
+	   width:50%!important;
+	}
+}
+@media screen and (max-width: 414px){
+    #table_reg th {
+        width: 100px !important;
+    }
+    #table_reg td input[type=text] {
+        height: 35px;
+    }
+}
+</style>
+<script>
+var produce_table;
+$(document).ready(function(){
+	/*js 스크립트 불러오기*/
+	js_reonload_src("datepicker");//js 폴더
+	
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	var od_no = urlParams.get("od_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","","");
+	$('#myform').append($('<input/>',{type:'hidden',name:'s_no',value:s_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'od_no',value:od_no}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'tip_index',id:'tip_index',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'mt_number',id:'mt_number',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'p_unit',id:'p_unit',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'output',id:'output',value:''})); //레시피 기준생산량
+	$('#myform').append($('<input/>',{type:'hidden',name:'o_unit',id:'o_unit',value:''})); //레시피 기준단위
+	$('#myform').append($('<input/>',{type:'hidden',name:'box_qty',id:'box_qty',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'sacks_unit',id:'sacks_unit',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'p_unit',id:'p_unit',value:''}));
+
+
+
+	//입력제한
+	$("input[name='box'],input[name='piece'],input[name='quantity'],input[name='weight']").on('keyup', function(event) {
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+		    var inputVal = $(this).val();
+		    $(this).val(inputVal.replace(/[^0-9,]/gi,''));
+	    }
+	});
+	
+	//제품명
+	javascript_onload_src("script_ajax_layer_pop");
+	$("#myform").on("click", "#p_name", function() {
+		script_ajax_layer_pop('/produce/popup_product.html',jQuery('#myform').serialize(),'.popup-22');
+	});
+	
+	//공정 선택
+	$("#myform").on("click", ".ro_name,.method", function(){
+		script_ajax_layer_pop('/popup/popup_route.html',jQuery('#myform').serialize()+"&mode=order",'.popup-5');
+	});
+	
+	//작업자 배정
+	$("#myform").on("click", ".user_name", function() {
+		script_ajax_layer_pop('/produce/popup_worker.html',jQuery('#myform').serialize(),'.popup-24');
+	});
+	
+	//배합 선택
+	$("#myform").on("click", ".mi_name", function() {
+		script_ajax_layer_pop('/popup/popup_mix.html',jQuery('#myform').serialize()+"&mode=order",'.popup-22');
+	});
+	
+	//등록 버튼
+	$("#myform .bot_btn > .btn_right").click(function(){
+		location.href='/produce/pr_order.html';
+	});
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+ 	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : false, // 검색 기능 숨기기
+		ordering : false, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		order : [ 1, "desc" ],
+		dataType : "json",
+		paging : false,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        }]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+	
+	//추가버튼 
+	$('#add_row3').on( 'click', function () {
+		draw_row(table);
+	});
+	
+	//삭제버튼
+	$("#myform").on("click", ".btn_plma", function(){
+		table.row($(this).parents('tr')).remove().draw();
+		no_display();
+	});
+	
+	no_display();
+});
+function draw_row(table,data){
+	if(!data){
+		var data = new Array();
+		var co = new Array();
+		data = {"po_no":"","turn":"","line":"","ro_name":"","ro_code":"","user_id":"","user_name":"","span_time_1":"","method":"-1","mi_name":"","mi_code":"","batter":"","re_batter":"","ratio":""};
+		co = {"-1":""};
+	}else{
+		var co = new Array();
+		co = {"1":"수기 수량 측정","2":"세절 중량 측정","3":"배합 중량 측정","4":"수기 불량 측정","5":"미 측정(자동)","6":"외포장실","7":"창고(입고)","8":"창고(출고)"};
+		!data['po_no'] ? data['po_no']="" : false;
+		!data['turn'] ? data['turn']="" : false;
+		!data['line'] ? data['line']="" : false;
+		!data['ro_name'] ? data['ro_name']="" : false;
+		!data['ro_code'] ? data['ro_code']="" : false;
+		!data['user_id'] ? data['user_id']="" : false;
+		!data['user_name'] ? data['user_name']="" : false;
+		!data['span_time_1'] ? data['span_time_1']="" : false;
+		!data['method'] ? data['method']="" : false;
+		!data['mi_name'] ? data['mi_name']="" : false;
+		!data['mi_code'] ? data['mi_code']="" : false;
+		!data['batter'] ? data['batter']="" : false;
+		!data['re_batter'] ? data['re_batter']="" : false;
+		!data['ratio'] ? data['ratio']="" : false;
+	}
+	table.row.add([
+		"<td class='control' tabindex='0'>상세</td>",
+        "<div class='btn_plma btn_number' title='제거'>-</div><input type='hidden' class='po_no' name='po_no[]' value='"+data['po_no']+"'>",
+        "<input type='text' class='turn' name='turn[]' value='"+data['turn']+"'>",
+        "<input type='text' class='line' name='line[]' value='"+data['line']+"' readonly>",
+        "<input type='text' class='ro_name' name='ro_name[]' value='"+data['ro_name']+"' style='cursor:pointer;' readonly><input type='hidden' class='ro_code' name='ro_code[]' value='"+data['ro_code']+"'>",
+        "<input type='text' class='user_name' name='user_name[]' value='"+data['user_name']+"' style='cursor:pointer;' readonly><input type='hidden' class='user_id' name='user_id[]' value='"+data['user_id']+"'>",
+        "<input type='text' class='time_text dubble' name='span_time_1[]' value='"+data['span_time_1']+"'><select class='select_time dubble' name='span_time_2[]'><option value='m'>분</option><option value='h'>시간</option></select>",
+        "<input type='text' class='method' value='"+co[data['method']]+"' style='cursor:pointer;' readonly><input type='hidden' name='method[]' value='"+data['method']+"'>",
+        "<input type='text' class='mi_name' name='mi_name[]' value='"+data['mi_name']+"' style='cursor:pointer;' readonly><input type='hidden' class='mi_code' name='mi_code[]' value='"+data['mi_code']+"'>",
+        "<input type='text' class='batter' name='batter[]' value='"+data['batter']+"' readonly><input type='hidden' class='re_batter' name='re_batter[]' value='"+data['re_batter']+"'>",
+        "<input type='text' class='ratio' name='ratio[]' value='"+data['ratio']+"' readonly>"
+    ]).draw(false);
+	no_display();
+}
+function no_display(){ // 행 삭제 - 숫자입력
+	var a1 = $('.btn_number').length;
+	for(var i=1;i<=a1;i++){
+		$('.btn_number').eq(i-1).text(i);
+	}
+}
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="prOrderRegCont">
+				<!--side_bar-->
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/produce/main.html">생산관리</a></li>
+					<li></li>
+					<li><a href="/produce/pr_order.html">생산지시 관리</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<h2 class="sub_tit">생산지시 등록</h2>
+					<table id="table_reg" class="date_table" style="width:50%; float: left; margin-right: -1px;">
+						<tr>
+							<th>생산지시시작일</th>
+							<td><input type="text" class="btn_candle input_calendar" id="s_date" name="s_date"></td>
+						</tr>
+					</table>
+					
+					<table id="table_reg" class="date_table" style="width:50%; float: left; margin-right: -1px;">
+						<tr>
+							<th>생산지시종료일</th>
+							<td><input type="text" class="btn_candle input_calendar" id="e_date" name="e_date"></td>
+						</tr>
+					</table>
+					
+					<table id="table_reg" style="width:25%; float: left; margin-right: -2px;">
+						<tr>
+							<th>제품명</th>
+							<td>
+								<input type="text" class="insearch" name="p_name" id="p_name">
+							</td>
+						</tr>
+						<tr>
+							<th>생산지시수량</th>
+							<td>
+								<input type="text" id="quantity" name="quantity" value="0" onkeyup="o_multiplication(1);">
+							</td>
+						</tr>
+						<tr>
+							<th>BOX 생산지시수량</th>
+							<td>
+								<input type="text" id="box" name="box" value="0" onkeyup="o_multiplication(3);">
+							</td>
+						</tr>
+					</table>
+		
+					<table id="table_reg" style="width:25%; float: left;">
+						<tr>
+							<th>생산 시간대</th>
+							<td>
+								<label><input type="radio" name="ra_check" value="d" checked>주간</label>
+								<label><input type="radio" name="ra_check" value="n">야간</label>
+							</td>
+						</tr>
+						<tr>
+							<th>생산지시중량(kg)</th>
+							<td>
+								<input type="text" id="weight" name="weight" value="0" onkeyup="o_multiplication(2);">
+							</td>
+						</tr>
+						<tr>
+							<th>낱개수량</th>
+							<td><input type="text" id="piece" name="piece" value="0" onkeyup="o_multiplication(4);"></td>
+						</tr>
+					</table>
+		
+					<table class="table_ri" id="table">
+		   				<thead>
+		   					<tr>
+		   						<th id="add_row3" style="cursor: pointer;">추가</th>
+		   						<th>순번</th>
+		   						<th>작업라인</th>
+		   						<th>공정명</th>
+		   						<th>작업자</th>
+		   						<th>소요시간</th>
+		   						<th>측정방법</th>
+		   						<th>배합명</th>
+		   						<th>배터(kg)</th>
+		   						<th>비율(%)</th>
+		   					</tr>
+		   				</thead>
+		   				<tbody>
+		   					<tr>
+		   						<td>
+		   							<div class="btn_plma btn_number" title="제거">1</div>
+		   							<input type="hidden" class="po_no" name="po_no[]">
+								</td>
+		   						<td><input type="text" class="turn" name="turn[]"></td>
+		   						<td><input type="text" class="line" name="line[]"></td>
+		   						<td>
+		   							<input type="text" class="ro_name" name="ro_name[]" style="cursor:pointer;" readonly>
+		   							<input type="hidden" class="ro_code" name="ro_code[]">
+								</td>
+		   						<td>
+		   							<input type="text" class="user_name" name="user_name[]" style="cursor:pointer;" readonly>
+		   							<input type="hidden" class="user_id" name="user_id[]">
+								</td>
+		   						<td>
+		   							<input type="text" class="time_text dubble" name="span_time_1[]"> 
+		   							<select class="select_time dubble" name="span_time_2[]">
+		   								<option value='m'>분</option>
+		   								<option value='h'>시간</option>
+		   							</select>
+		   						</td>
+		   						<td>
+		   							<input type="text" class="method" style="cursor:pointer;" readonly>
+		   							<input type="hidden" name="method[]">
+								</td>
+		   						<td>
+		   							<input type="text" class="mi_name" name="mi_name[]" style="cursor:pointer;" readonly>
+		   							<input type="hidden" class="mi_code" name="mi_code[]">
+								</td>
+		   						<td>
+		   							<input type="text" class="batter" name="batter[]">
+		   							<input type="hidden" class="re_batter" name="re_batter[]">
+								</td>
+		   						<td><input type="text" class="ratio" name="ratio[]" readonly></td>
+		   					</tr>
+		   				</tbody>
+					</table>
+					
+					<table class="table_ri">
+						<colgroup>
+							<col width="25%">
+							<col width="25%">
+							<col width="25%">
+							<col width="25%">
+						</colgroup>
+						<tr>
+							<th rowspan="2">총합</th>
+							<th>소요시간</th>
+							<th>배터(kg)</th>
+							<th>비율(%)</th>
+						</tr>
+						<tr>
+							<td id="time_sum">0 시간 0 분</td>
+							<td id="batter_sum">0.00</td>
+							<td id="ratio_sum">0.00</td>
+						</tr>
+					</table>
+					
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn"><a href="/produce/pr_order.html">취소</a></div>
+							<div class="btn btn_right save" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+				<div id="lay" style="overflow: auto;">
+					<div class="bg"></div>
+					<div id="lay2"></div>
+				</div>
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>

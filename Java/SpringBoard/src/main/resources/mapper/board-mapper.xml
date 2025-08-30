@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.BoardMapper">
+	<select id="selectBoardList" parameterType="int" resultType="board">
+		select * from (select ceil(rownum / 7) as pageno, b.* from 
+				(select * from board order by bno desc) b) where pageno = #{no}
+	</select>
+	<select id="selectAllCount" resultType="int">
+		select count(*) from board
+	</select>
+	<insert id="insertBoard" parameterType="board">
+		insert into board(bno, title, content, writer) 
+		values(board_no.nextval,#{title},#{content},#{writer})
+	</insert>
+	<select id="selectBoard" parameterType="int" resultType="board">
+		select * from board where bno = #{bno}
+	</select>
+	<update id="addCount" parameterType="int">
+		update board set bcount = bcount + 1 where bno = #{bno}
+	</update>
+	<update id="updateBoard" parameterType="map">
+		update board set title = #{title}, content = #{content} where bno = #{bno} 
+	</update>	
+	<delete id="deleteBoard" parameterType="int">
+		delete from board where bno = #{bno}
+	</delete>
+	<insert id="insertBoardLike" parameterType="map">
+		insert into board_like values(#{bno},#{id})
+	</insert>
+	<delete id="deleteBoardLike" parameterType="map">
+		delete from board_like where writer like #{id} and bno = #{bno} 
+	</delete>
+	<select id="selectBoardLike" parameterType="int" resultType="int">
+		select count(*) from board_like where bno = #{bno}
+	</select>
+	<insert id="insertBoardHate" parameterType="map">
+		insert into board_hate values(#{bno},#{id})
+	</insert>
+	<delete id="deleteBoardHate" parameterType="map">
+		delete from board_hate where writer like #{id} and bno = #{bno} 
+	</delete>
+	<select id="selectBoardHate" parameterType="int" resultType="int">
+		select count(*) from board_hate where bno = #{bno}
+	</select>
+	<select id="selectSearchBoard" parameterType="map" resultType="board">
+		select * from board
+		<choose>
+			<when test="kind.equals('id')">
+				where writer like #{search}
+			</when>
+			<when test="kind.equals('title')">
+				where title like '%' || #{search} || '%'
+			</when>
+			<otherwise>
+				where content like '%' || #{search} || '%'
+			</otherwise>
+		</choose>		
+		 order by bno desc
+	</select>
+	
+</mapper>
+
+
+
+
+
+

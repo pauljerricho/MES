@@ -1,0 +1,52 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+
+$mode = $_POST['mode'];
+
+$lib->lib_fun("session_start_print");
+$session_start_print->session_start_print_(); //세션 스타트
+
+$lib->lib_fun("db_connect");
+$db_connect->db_connect_();
+
+$mode=="send" ? $id_txt = "send_id" : $id_txt = "rv_id";
+
+$lib->lib_fun("query_where");
+$query_where->query_where_($id_txt,"$id_txt='$_SESSION[userid]'","and");
+$where = $query_where->query_where_join_();
+
+if($_POST['start']){
+    $page = (int)($_POST['start']/$_POST['length'])+1;
+}
+
+$order = $_POST['order'][0];
+$orderby_array = array("1"=>"num","2"=>"subject","3"=>"$id_txt","4"=>"regist_day");
+
+$orderby = $orderby_array[$order['column']]." ".$order['dir'];
+
+//테이블 검색
+$lib->lib_fun("total_idata_row");
+list($data,$total,$row_page) = $total_idata_row->total_idata_row_("*","message",$where,$orderby,"",$_POST['length'],"10");
+
+if($total>0){
+    $mode="send" ? $id_txt = "rv_id" : $id_txt = "send_id"; //수신인 아이디
+    $lib->lib_fun("data_ione_row_return");
+    foreach ($data as $key=>$value){
+        $row = $data_ione_row_return->data_ione_row_return_("name","members","id='$value[$id_txt]'","","");
+        $data[$key]['name'] = $row['name'];
+    }
+}
+
+$db_connect->db_close();
+
+empty($data) ? $data=array() : $data;
+
+$echo_data = array(
+    'recordsFiltered' => $total,
+    'data' => $data,
+    'pagePrevent' => array("pagePrevent") //페이징버튼 증식 방지
+);
+
+$lib->lib_fun("json_connet");
+echo $json_connet->json_connet_($echo_data);
+?>

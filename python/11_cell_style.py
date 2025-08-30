@@ -1,6 +1,6 @@
 from openpyxl.styles import Font
 from openpyxl import load_workbook
-wb = load_workbook("sample3.xlsx")
+wb = load_workbook("sample.xlsx")
 ws = wb.active
 
 # 번호, 영어, 수학
@@ -17,5 +17,7 @@ ws.row_dimensions["1"].height = 50
 # 스타일 적용
 a1.font = Font(color="FF0000", italic=True, bold=True)
 b1.font = Font(color="CC33FF", name="Arial", strike=True)
+c1.font = Font(color="0000FF", size=20, underline="single")
+
 
 wb.save("sample_style.xlsx")

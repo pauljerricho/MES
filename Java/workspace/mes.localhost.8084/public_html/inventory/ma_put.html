@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>창고관리 리스트</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/inventory.css">
+<style>
+#table_reg{margin:10px 0;}
+.gom_wrap{margin:0px 0 -10px 0}
+.inout_date{
+    width: auto;
+    padding: 0 10px;
+    height: 35px;
+    border: none;
+    border: 2px solid #dfe2e5;
+    font-size: 13px;
+}
+</style>
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	js_reonload_src("datepicker");//js 폴더
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/inventory/ma_put.html","delete");
+	$('#myform').append($('<input/>',{type:'hidden',name:'in_out',value:''}));
+	$('#myform').append($('<input/>',{type:'hidden',name:'date_today',value:''}));
+
+
+
+	//전체선택
+	javascript_onload_src("script_check_box");
+	$("#myform").on("click","input[name='chk_all']",function(){
+		script_checkall(this,"s_no[]");
+	});
+	
+	//분류 탭 검색
+	$(".tab li").click(function(){
+		$(".tab li").removeClass("teb_on");
+		$(this).addClass("teb_on");
+	});
+	
+	//버블링 이벤트
+	$("#myform").on("click","input[name='s_no[]']",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 이벤트
+	$("#myform").on("click","#table tbody tr[role='row']",function(){
+		$(this).find("input[name='s_no[]']").click();
+	});
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 11, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+</script>
+</head>
+<body>
+<div class="background"></div>
+<div class="header_wrap">
+	<!--header-->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+	<!--header-->
+</div>
+<!--header_wrap-->
+<!-- 퀵바 -->
+<div class="quick_wrap ui-draggable ui-draggable-handle">
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+</div>
+<!-- quick_wrap -->
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+<!--m_menu-->
+<div class="content">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+	<div class="content_detail" id="content_detail">
+		<div id="content" class="maPutCont">
+			<ul class="lnb">
+				<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+				<li></li>
+				<li><a href="/inventory/main.html">재고관리</a></li>
+				<li></li>
+				<li><a href="#">입/출고 현황</a></li>
+			</ul>
+			<!--lnb-->
+			<div class="sub_con">
+				<div class="tit_box">
+					<h2 class="sub_tit">입/출고 현황</h2>
+					<p class="sub_txt">
+						<span>0</span>개의 데이터가 조회되었습니다.
+					</p>
+				</div>
+				<!-- tit_box -->
+				<table id="table_reg">
+					<tr>
+						<th>등록년도</th>
+						<td>
+							<select name="inout_date" class="inout_date"></select>
+							<span class="txt_red">( 연간 총 금액 : <b>0</b> 원 )</span>
+						</td>
+					</tr>
+					<tr>
+						<th>처리일자</th>
+						<td>
+							<input type="text" class="btn_candle input_calendar" id='input_date1' name="inout_date1">
+							<span class="phonespan">~</span>
+							<input type="text" class="btn_candle input_calendar" id='input_date2' name="inout_date2">
+						</td>
+					</tr>
+				</table>
+				<div class="search_pc">
+					<select class="select_pc">
+						<option value="">전체</option>
+						<option value="1">입고</option>
+						<option value="2">출고</option>
+					</select>
+				<ul class="tab">
+					<li class="teb_on">전체(<span class="tab1">0</span>)</li>
+					<li>입고(<span class="tab2">0</span>)</li>
+					<li>출고(<span class="tab3">0</span>)</li>
+				</ul>
+				<!--tab-->
+					<input type="text" id="search_po_p" name="search_key" placeholder="search">
+					<div class="gla" style="cursor:pointer;"></div>
+				</div>
+				<!-- search_pc -->			
+				<table id="table">
+					<colgroup>
+						<col width="4%"> <!--체크박스-->
+						<col width="9%"> <!--제품번호-->
+						<col width="10%"> <!--제품명-->
+						<col width="9%"> <!--창고명-->
+						<col width="9%"> <!--구역명-->
+						<col width="6%"> <!--BOX-->
+						<col width="6%"> <!--총 수량-->
+						<col width="6%"> <!--포당 중량-->
+						<col width="6%"> <!--총 중량-->
+						<col width="6%"> <!--단위-->
+						<col width="7%"> <!--가격-->
+						<col width="10%"> <!--처리일자-->
+						<col width="6%"> <!--구분-->
+						<col width="6%"> <!--입/출-->
+					</colgroup>
+					<thead>
+						<tr>
+							<th><input type="checkbox" name="chk_all"></th>
+							<th>제품번호</th>
+							<th>제품명</th>
+							<th>창고명</th>
+							<th>구역명</th>
+							<th>BOX</th>
+							<th>총 수량</th>
+							<th>포당 중량</th>
+							<th>총 중량</th>
+							<th>단위</th>
+							<th>가격</th>
+							<th>처리일자</th>
+							<th>구분</th>
+							<th>입/출</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" name="s_no[]"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="bot_box">
+					<div class="bot_btn">
+						<div class="btn delete" title="선택삭제">선택삭제</div>
+					</div>
+					<!-- bot_btn -->
+				</div>
+				<!-- bot_box -->
+			</div>
+			<!--con-->
+			<div id="lay" style="overflow: auto;">
+				<div class="bg"></div>
+				<div id="lay2"></div>
+			</div>
+		</div>
+		<!--content-->
+	</div>
+</div>
+<!--content-->
+<div id="copy">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+</div>
+<div class="keyboard"></div>
+</body>
+</html>

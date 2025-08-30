@@ -1,0 +1,17 @@
+package controller;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import service.StudentService;
+import vo.StudentVO;
+
+public class PrintController extends Controller {
+	public void execute(Scanner sc) {
+		ArrayList<StudentVO> list = StudentService.getInstance().getList();
+
+		for (int i = 0; i < list.size(); i++)
+			System.out.println(list.get(i));
+
+	}
+}

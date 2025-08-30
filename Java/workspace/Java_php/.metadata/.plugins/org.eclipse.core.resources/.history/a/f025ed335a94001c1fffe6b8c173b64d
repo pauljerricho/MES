@@ -1,0 +1,11 @@
+<?php
+require_once("$_SERVER[DOCUMENT_ROOT]/../lib/lib_road.inc");
+
+$num = $_POST['num'];
+
+$lib->lib_fun("value_check2");
+if(!$value_check2->value_check2_(array($num))){
+    $error = "인자가 부족하여 처리 할 수 없습니다.";
+    goto error; //error:로 이동
+}
+?>

@@ -1,0 +1,45 @@
+$(document).ready(function(){
+	const urlParams = new URLSearchParams(location.search);
+	var mode = urlParams.get("mode");
+	
+	if(mode=="send"){
+		var id_txt = "rv_id";
+		$("#msg_box h3").text("송신 메세지함 > 목록보기")
+		$("#mytable tr:nth-child(1) > th:nth-child(3)").text("받은이");
+	}else{
+		var id_txt = "send_id";
+		$("#msg_box h3").text("수신 메세지함 > 목록보기")
+		$("#mytable tr:nth-child(1) > th:nth-child(3)").text("보낸이");
+		
+	}
+	
+	var table_data = $("#mytable").DataTable({
+		ajax:{
+			url:"/trans_page_file/",
+			async:false,
+			data:{
+				'mod':'data',
+				'mode':mode
+			}			
+		},
+		columns:[
+			{data:null},
+			{data:'article_num'},
+			{data:'subject',
+				render:function(subject,type,data){
+					return "<a href='msg_view.php?mode="+mode+"&num="+data.num+"'>"+subject+"</a>";
+				}			
+			},
+			{data:'name',
+				render:function(name,type,data){
+					return name+"("+data.id_text+")";
+				}
+			},
+			{data:'regist_day'}
+		
+			//부트스트랩(반응형 동작)
+		],
+	});
+	
+	new $.fn.dataTable.Responsive(table_data);
+});

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>생산관리 리스트</title>
+<?include "$_SERVER[DOCUMENT_ROOT]/inc/head_html_text.html";?>
+<link rel="stylesheet" href="/css/produce.css">
+<meta charset="utf-8">
+<style>
+	#copy{margin-top:30%;}
+</style>
+<script>
+$(document).ready(function() {
+	/*js 스크립트 불러오기*/
+	js_reonload_src("datepicker");//js 폴더
+	
+	/*URL 파라미터 가져오기*/
+	const urlParams = new URLSearchParams(location.search);
+	var s_no = urlParams.get("s_no");
+	
+	/*FORM 태그 삽입하기*/
+	script_new_reformdata(".sub_con","myform","/produce/pr_order.html","delete");
+	$('#myform').append($('<input/>',{type:'hidden',name:'po_code',value:s_no}));
+
+
+
+	//체크박스 전체 선택
+	javascript_onload_src("script_checkall");
+	$("#table input[name='chk_all']").click(function(){
+		script_checkall(this,"s_no[]");
+	});
+	
+	//분류 탭 검색
+	$(".tab li").click(function(){
+		$(".tab li").removeClass("teb_on");
+		$(this).addClass("teb_on");
+	});
+	
+	//버블링 이벤트
+	$("#table").on("click","tbody > tr > td.control, input[type='checkbox'], .btn_check",function(e){
+		e.stopPropagation();
+	});
+	
+	//tr 클릭 이벤트
+	$("#table").on("click","tbody tr[role='row']",function(e){
+		var s_no = $(this).find("input[name='s_no[]']").val();
+		location.href='/produce/pr_order_mod.html?s_no='+s_no;
+	});
+	
+	//인쇄
+	$("#table").on("click",".print",function(e){
+		e.stopPropagation();
+		window.open('/printing/pro_order.html?s_no=','주문서','width=800, scrollbars=yes, menubar=no, status=no, toolbar=no');
+	});
+	
+	//등록 버튼
+	$("#myform .bot_btn .btn_right").click(function(){
+		location.href='/produce/pr_order_reg.html';
+	});
+	
+	//데이터 출력(추후 ajax로 변경)
+	$("#table tbody").append("<tr style='background:#dd9379'><td><input type='checkbox' name='s_no[]'></td><td>j220201</td><td>명절선물세트</td><td>제일식품</td><td>2022-02-23<br>10:01:12</td><td>2022-02-23</td><td>주간</td><td>100</td><td>50%</td><td><div class='print' title='인쇄'></div></td><td><div class='btn_check' onclick=\"location.href='/produce/produce_state.html'\" title='생산시작'>생산시작</div></td></tr>");
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>j220202</td><td>명절선물세트</td><td>제일식품</td><td>2022-02-23<br>11:01:12</td><td>2022-02-23</td><td>주간</td><td>100</td><td>100%</td><td><div class='print' title='인쇄'></div></td><td><div class='btn_check' onclick=\"location.href='/produce/produce_state.html'\" title='생산시작'>생산시작</div></td></tr>");
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>j220203</td><td>명절선물세트</td><td>제일식품</td><td>2022-02-23<br>12:01:12</td><td>2022-02-23</td><td>주간</td><td>100</td><td>100%</td><td><div class='print' title='인쇄'></div></td><td><div class='btn_check' onclick=\"location.href='/produce/produce_state_release.html?s_no=&year='\" style='margin-bottom:5px;' title='부자재출고'>부자재출고</div><div class='btn_check' onclick=\"location.href='/produce/produce_state_end.html?s_no=&year='\" title='제품입고'>제품입고</div></td></tr>");
+	$("#table tbody").append("<tr><td><input type='checkbox' name='s_no[]'></td><td>j220204</td><td>명절선물세트</td><td>제일식품</td><td>2022-02-23<br>13:01:12</td><td>2022-02-23</td><td>주간</td><td>100</td><td>100%</td><td><div class='print' title='인쇄'></div></td><td>생산완료</td></tr>");
+	
+	//데이터테이블
+	$("#table thead tr").prepend("<th>상세</th>");
+	$("#table tbody tr").prepend("<td>상세</td>");
+	var table = $("#table").DataTable({
+		lengthChange : false, // 표시 건수기능 숨기기
+		searching : true, // 검색 기능 숨기기
+		ordering : true, // 정렬 기능 숨기기
+		info : false, // 정보 표시 숨기기
+		processing : false, // 페이징 기능 숨기기
+		serverMethod : 'post',
+		serverSide: false,
+		order : [ 5, "desc" ],
+		dataType : "json",
+		paging : true,
+		pageLength : 10,
+		pagingType : "full_numbers",
+		dom : 'rt<"bottom"iflp>',
+		language : {
+	        "emptyTable": "데이터가 없습니다.",
+	        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+	        "info": "현재 _START_ - _END_ / _TOTAL_건",
+	        "infoEmpty": "데이터 없음",
+	        "infoFiltered": "( _MAX_건의 데이터에서 필터링되었습니다. )",
+	        "search": "",
+	        "zeroRecords": "일치하는 데이터가 없습니다.",
+	        "loadingRecords": "로딩중...",
+	        "processing":  false,
+	        "paginate": {
+	            "next": "다음",
+	            "previous": "이전",
+	            "first": '처음',
+	            "last": '끝'
+	        }
+		},
+		responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+          }
+        ]
+	});
+	
+	new $.fn.dataTable.Responsive( table );
+});
+</script>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="header_wrap">
+		<!--header-->
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/header.html";?>
+		<!--header-->
+	</div>
+	<!--header_wrap-->
+	<!-- 퀵바 -->
+	<div class="quick_wrap ui-draggable ui-draggable-handle">
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/q_menu.html";?>
+	</div>
+	<!-- quick_wrap -->
+	<?include "$_SERVER[DOCUMENT_ROOT]/inc/m_menu.html";?>
+	<!--m_menu-->
+	<div class="content">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/left_menu.html";?>
+		<div class="content_detail" id="content_detail">
+			<div id="content" class="prOrderCont">
+				<ul class="lnb">
+					<li><a href="/index.html"><img src="/img/icon_home.jpg" alt="홈으로"></a></li>
+					<li></li>
+					<li><a href="/produce/main.html">생산관리</a></li>
+					<li></li>
+					<li><a href="#">생산지시 관리</a></li>
+				</ul>
+				<!--lnb-->
+				<div class="sub_con">
+					<div class="tit_box">
+						<h2 class="sub_tit">생산지시 관리</h2>
+						<p class="sub_txt">
+							<span>0</span>개의 데이터가 조회되었습니다.
+						</p>
+					</div>
+					<!-- tit_box -->
+					<table id="table_reg">
+						<tr>
+							<th>생산 시작일자</th>
+							<td>
+								<input type="text" class="btn_candle input_calendar" id='input_date1' name="inout_date1">
+								<span class="phonespan">~</span>
+								<input type="text" class="btn_candle input_calendar" id='input_date2' name="inout_date2">
+							</td>
+							<th>생산 종료일자</th>
+							<td>
+								<input type="text" class="btn_candle input_calendar" id='input_date3' name="inout_date3">
+								<span class="phonespan">~</span>
+								<input type="text" class="btn_candle input_calendar" id='input_date4' name="inout_date4">
+							</td>
+						</tr>
+					</table>
+					<div class="search_pc">
+						<select class="select_pc">
+							<option value="0">전체</option>
+							<option value="1">생산대기</option>
+							<option value="2">생산중</option>
+							<option value="3">생산완료</option>
+						</select>
+			   			<ul class="tab">
+			   				<li class="teb_on">전체(<span class="tab1">0</span>)</li>
+			   				<li>생산대기(<span class="tab2">0</span>)</li>
+			   				<li>생산중(<span class="tab3">0</span>)</li>
+			   				<li>생산완료(<span class="tab4">0</span>)</li>
+			   			</ul>
+			   			<!--tab-->
+						<input type="text" id="search_po_p" name="search_key" placeholder="search">
+						<div class="gla" style="cursor:pointer;"></div>
+					</div>
+					<!-- search_pc -->
+					<table id="table" class="ui celled table">
+						<colgroup>
+							<col width="5%">
+							<col width="9%">
+							<col width="12%">
+							<col width="12%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="9%">
+							<col width="8%">
+							<col width="9%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th class="check"><input type="checkbox" name="chk_all"></th>
+								<th>지시번호</th>
+								<th>제품명</th>
+								<th>고객업체</th>
+								<th>생산등록일</th>
+								<th>생산시작일<br>생산종료일</th>
+								<th>생산시간대</th>
+								<th>생산수량</th>
+								<th>생산가능여부</th>
+								<th>인쇄</th>
+								<th>생산상태</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="bot_box">
+						<div class="bot_btn">
+							<div class="btn delete" title="선택삭제">선택삭제</div>
+							<div class="btn btn_right" title="등록">등록</div>
+						</div>
+						<!-- bot_btn -->
+					</div>
+					<!-- bot_box -->
+				</div>
+				<!--con-->
+			</div>
+			<!--content-->
+		</div>
+	</div>
+	<!--content-->
+	<div id="copy">
+		<?include "$_SERVER[DOCUMENT_ROOT]/inc/copy_wrap.html";?>
+	</div>
+	<div class="keyboard"></div>
+</body>
+</html>
