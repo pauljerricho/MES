@@ -1,0 +1,25 @@
+{
+  "name": "basic-calculator",
+  "version": "1.0.0",
+  "description": "A simple calculator application that performs basic arithmetic operations.",
+  "main": "src/calculator.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/calculator.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/basic-calculator.git"
+  },
+  "keywords": [
+    "calculator",
+    "typescript",
+    "arithmetic"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
